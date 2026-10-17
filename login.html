@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Operator - PrintShop POS</title>
+</head>
+
+<body>
+
+  <header>
+    <h1>PrintShop POS</h1>
+    <p>Konsol Operator - Akses Terbatas</p>
+    <nav aria-label="Navigasi autentikasi">
+      <ul>
+        <li><a href="index.html">← Kembali ke Beranda User</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section aria-labelledby="login-heading">
+      <h2 id="login-heading">Login Operator</h2>
+
+      <article aria-label="Formulir login operator">
+        <h3>Masuk ke Konsol Operator</h3>
+        <figure>
+          <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS untuk konsol operator" width="120"
+            height="60" />
+        </figure>
+
+        <form id="form-login" action="dasbor.html" method="post" novalidate>
+          <fieldset>
+            <legend>Kredensial Operator</legend>
+
+            <p>
+              <label for="email-operator">Alamat Email</label>
+              <input type="email" id="email-operator" name="email-operator" placeholder="operator@printshop.com"
+                required autocomplete="email" aria-describedby="email-hint" />
+              <span id="email-hint">Gunakan email yang terdaftar sebagai operator toko.</span>
+            </p>
+
+            <p>
+              <label for="pin-operator">PIN Operator (6 digit)</label>
+              <input type="password" id="pin-operator" name="pin-operator" placeholder="Masukkan PIN 6 digit"
+                minlength="6" maxlength="6" pattern="[0-9]{6}" required autocomplete="current-password"
+                aria-describedby="pin-hint" inputmode="numeric" />
+              <span id="pin-hint">PIN terdiri dari 6 angka. Hubungi admin toko jika lupa PIN.</span>
+            </p>
+
+            <p>
+              <input type="checkbox" id="ingat-saya" name="ingat-saya" value="true" />
+              <label for="ingat-saya">Ingat saya di perangkat ini (30 hari)</label>
+            </p>
+
+            <p>
+              <button type="submit">Masuk ke Konsol →</button>
+            </p>
+          </fieldset>
+        </form>
+
+        <section aria-labelledby="error-login-heading" aria-live="assertive" role="alert">
+          <h3 id="error-login-heading" hidden>Login Gagal</h3>
+          <p hidden>Email atau PIN tidak cocok. Periksa kembali kredensial Anda dan coba lagi. Setelah 5 kali percobaan
+            gagal, akun akan dikunci selama 15 menit.</p>
+        </section>
+      </article>
+
+      <article aria-label="Opsi pemulihan akses">
+        <h3>Lupa PIN?</h3>
+        <p>Jika Anda lupa PIN, hubungi administrator toko untuk melakukan reset PIN.</p>
+        <form action="#" method="post">
+          <fieldset>
+            <legend>Reset PIN via Email</legend>
+            <p>
+              <label for="email-reset">Alamat Email Terdaftar</label>
+              <input type="email" id="email-reset" name="email-reset" placeholder="operator@printshop.com" required />
+            </p>
+            <p>
+              <button type="submit">Kirim Tautan Reset PIN</button>
+            </p>
+          </fieldset>
+        </form>
+      </article>
+    </section>
+
+    <section aria-labelledby="info-keamanan-heading">
+      <h2 id="info-keamanan-heading">Informasi Keamanan</h2>
+      <ul>
+        <li>Sesi login akan kedaluwarsa otomatis setelah 8 jam tidak aktif.</li>
+        <li>Jangan bagikan PIN Anda kepada siapapun, termasuk sesama karyawan.</li>
+        <li>Selalu logout setelah selesai menggunakan konsol, terutama di perangkat bersama.</li>
+        <li>Semua aktivitas login dan aksi operator dicatat dalam audit log.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p><small>PrintShop POS &mdash; Konsol Operator. Akses tidak sah dilarang dan dapat dipidanakan sesuai hukum yang
+        berlaku.</small></p>
+  </footer>
+
+</body>
+
+</html>

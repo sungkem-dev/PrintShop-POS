@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiket Pesanan #ORD-042 - PrintShop POS</title>
+</head>
+<body>
+
+  <header>
+    <h1>PrintShop POS</h1>
+    <nav aria-label="Navigasi utama">
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="tiket.html" aria-current="page">Tiket Pesanan</a></li>
+      </ul>
+    </nav>
+    <p>Langkah 4 dari 4: Pesanan Dikonfirmasi!</p>
+  </header>
+
+  <main>
+
+    <section aria-labelledby="sukses-heading">
+      <h2 id="sukses-heading">Pembayaran Berhasil!</h2>
+      <figure>
+        <img
+          src="./assets/images/icon-check-circle.svg"
+          alt="Ikon tanda centang hijau dalam lingkaran menandakan pembayaran berhasil"
+          width="80"
+          height="80"
+        />
+        <figcaption>Pesanan Anda sudah masuk antrean. Silakan pantau status di bawah ini.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="tiket-heading">
+      <h2 id="tiket-heading">Tiket Pesanan Digital</h2>
+
+      <article aria-label="Tiket pesanan dengan nomor dan kode klaim">
+        <h3>Nomor Pesanan</h3>
+        <p><strong>#ORD-042</strong></p>
+
+        <h3>Kode Klaim</h3>
+        <p>
+          <strong><code>XK7-29F</code></strong>
+          <br />
+          <small>Tunjukkan kode ini ke operator saat mengambil cetakan.</small>
+        </p>
+
+        <h3>Waktu Pemesanan</h3>
+        <p>09 Okt 2026, 07:42 WIB</p>
+
+        <h3>Detail Spesifikasi</h3>
+        <table>
+          <caption>Rincian spesifikasi cetak untuk pesanan #ORD-042</caption>
+          <tbody>
+            <tr>
+              <th scope="row">Nama File</th>
+              <td>tugas-akhir-bab3.pdf</td>
+            </tr>
+            <tr>
+              <th scope="row">Ukuran Kertas</th>
+              <td>A4</td>
+            </tr>
+            <tr>
+              <th scope="row">Mode Warna</th>
+              <td>Hitam &amp; Putih</td>
+            </tr>
+            <tr>
+              <th scope="row">Sisi Cetak</th>
+              <td>Satu Sisi</td>
+            </tr>
+            <tr>
+              <th scope="row">Halaman Dicetak</th>
+              <td>1–24 (24 lembar)</td>
+            </tr>
+            <tr>
+              <th scope="row">Jumlah Salinan</th>
+              <td>1 salinan</td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>Total Dibayar</strong></th>
+              <td><strong>Rp 12.000</strong></td>
+            </tr>
+            <tr>
+              <th scope="row">Status Pembayaran</th>
+              <td>LUNAS ✓</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          <a href="./assets/images/tiket-ord-042.png" download="tiket-ORD-042.png">
+            Unduh Tiket sebagai Gambar
+          </a>
+        </p>
+      </article>
+    </section>
+
+    <section aria-labelledby="tracker-heading">
+      <h2 id="tracker-heading">Status Pesanan (Live)</h2>
+      <p aria-live="polite" role="status">Status diperbarui otomatis setiap 5 detik.</p>
+
+      <article aria-label="Pelacak tahapan status pesanan">
+        <h3>Tahapan Pesanan</h3>
+        <ol aria-label="Tiga tahapan status pesanan">
+          <li aria-current="step">
+            <strong>Waiting in Queue</strong>
+            <br />
+            <img
+              src="./assets/images/status-waiting.svg"
+              alt="Ikon jam menandakan pesanan sedang menunggu dalam antrean"
+              width="24"
+              height="24"
+            />
+            <span>Pesanan Anda sedang menunggu diproses operator.</span>
+            <br />
+            <small>Posisi Antrean: <strong>No. 3</strong> | Estimasi: ±10 menit</small>
+          </li>
+          <li>
+            <strong>Printing in Progress</strong>
+            <br />
+            <img
+              src="./assets/images/status-printing.svg"
+              alt="Ikon printer menandakan dokumen sedang dicetak"
+              width="24"
+              height="24"
+            />
+            <span>Dokumen sedang dicetak oleh operator.</span>
+          </li>
+          <li>
+            <strong>Ready for Pickup</strong>
+            <br />
+            <img
+              src="./assets/images/status-ready.svg"
+              alt="Ikon paket dengan tanda centang menandakan dokumen siap diambil"
+              width="24"
+              height="24"
+            />
+            <span>Cetakan siap! Tunjukkan tiket ke operator.</span>
+          </li>
+        </ol>
+      </article>
+
+      <article aria-label="Panduan pengambilan dokumen">
+        <h3>Cara Mengambil Cetakan</h3>
+        <ol>
+          <li>Tunggu notifikasi atau status berubah menjadi <strong>Ready for Pickup</strong>.</li>
+          <li>Datang ke loket toko dengan menunjukkan halaman tiket ini.</li>
+          <li>Sebutkan nomor pesanan: <strong>#ORD-042</strong> dan kode klaim: <strong>XK7-29F</strong>.</li>
+          <li>Terima cetakanmu dan nikmati hasilnya!</li>
+        </ol>
+      </article>
+    </section>
+
+    <section aria-labelledby="bantuan-heading">
+      <h2 id="bantuan-heading">Butuh Bantuan?</h2>
+      <ul>
+        <li>Jika terjadi kesalahan cetak, hubungi operator di loket secara langsung.</li>
+        <li>Untuk pertanyaan pembayaran, operator dapat memeriksa riwayat transaksi.</li>
+        <li>File Anda akan otomatis dihapus dari server 2 jam setelah pesanan selesai.</li>
+      </ul>
+      <p>
+        <a href="unggah.html">Buat Pesanan Baru →</a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p><small>PrintShop POS - Terima kasih telah menggunakan layanan kami. Sampai jumpa!</small></p>
+  </footer>
+
+</body>
+</html>
