@@ -5,281 +5,958 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dasbor Operator - PrintShop POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
 </head>
 
-<body>
+<body class="console-body">
 
-  <header>
-    <h1>PrintShop POS - Konsol Operator</h1>
-    <p>Gerai Kampus Utama | Operator: Ahmad Hidayat | <time datetime="2026-10-09T07:42:00+07:00">09 Okt 2026, 07:42
-        WIB</time></p>
-    <nav aria-label="Navigasi konsol operator">
-      <ul>
-        <li><a href="dasbor.html" aria-current="page">Dasbor</a></li>
-        <li><a href="antrean.html">Antrean Aktif</a></li>
-        <li><a href="dasbor.html#laporan">Laporan</a></li>
-        <li><a href="login.html">Logout</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="console-container">
 
-  <main>
+    <!-- Mobile Backdrop -->
+    <div id="console-backdrop" class="console-backdrop" aria-hidden="true"></div>
 
-    <section aria-labelledby="kpi-heading">
-      <h2 id="kpi-heading">Ringkasan Hari Ini - 09 Okt 2026</h2>
+    <!-- Sidebar Konsol Operator (Referensi Kelompok2_modul5/images/image1.png & image5.png) -->
+    <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
+      <div>
+        <div class="console-sidebar-header">
+          <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
+            <span class="brand-icon-box">
+              <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
+            </span>
+            <div class="console-brand-title">
+              <strong>PrintShop POS</strong>
+              <span class="console-status-pill">
+                <span class="console-status-dot"></span>
+                Campus Console
+              </span>
+            </div>
+          </a>
+        </div>
 
-      <article aria-label="KPI Pendapatan Hari Ini">
-        <h3>Pendapatan Hari Ini</h3>
-        <p><strong>Rp 187.500</strong></p>
-        <p><small>↑ +12% dibanding kemarin (Rp 167.200)</small></p>
-      </article>
+        <nav class="console-nav-menu" aria-label="Navigasi konsol operator">
+          <div class="console-nav-section-title">Terminal Operasional</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="antrean.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <span>Active Print Queue</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#riwayat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Riwayat Pesanan</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#manual">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="20" y1="8" x2="20" y2="14"></line>
+                  <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <span>Tambah Pesanan (Walk-In)</span>
+              </a>
+            </li>
+          </ul>
 
-      <article aria-label="KPI Pesanan Aktif">
-        <h3>Pesanan Aktif</h3>
-        <p><strong>8 pesanan</strong></p>
-        <p><small>3 sedang dicetak, 5 menunggu antrean</small></p>
-        <p><a href="antrean.html">Lihat Antrean →</a></p>
-      </article>
+          <div class="console-nav-section-title">Financial &amp; Reports</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="dasbor.html" class="active" aria-current="page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="9"></rect>
+                  <rect x="14" y="3" width="7" height="5"></rect>
+                  <rect x="14" y="12" width="7" height="9"></rect>
+                  <rect x="3" y="16" width="7" height="5"></rect>
+                </svg>
+                <span>Dashboard &amp; Analitik</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="dasbor.html#laporan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Laporan Harian</span>
+              </a>
+            </li>
+          </ul>
 
-      <article aria-label="KPI Total Lembar Tercetak">
-        <h3>Lembar Tercetak Hari Ini</h3>
-        <p><strong>375 lembar</strong></p>
-        <p><small>Termasuk 48 lembar warna dan 327 lembar hitam-putih</small></p>
-      </article>
+          <div class="console-nav-section-title">System Management</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="dasbor.html#status-printer-heading">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span>Status Mesin Printer</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#batal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span>Pembatalan &amp; Refund</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
-      <article aria-label="KPI Total Transaksi">
-        <h3>Total Transaksi</h3>
-        <p><strong>27 transaksi</strong></p>
-        <p><small>25 selesai, 2 dibatalkan/refund</small></p>
-      </article>
-    </section>
+      <div class="console-user-footer">
+        <div class="console-user-card">
+          <div class="console-user-avatar" aria-hidden="true">AH</div>
+          <div class="console-user-info">
+            <div class="console-user-name">Ahmad Hidayat</div>
+            <div class="console-user-role">Kasir Loket A1 &bull; Mandiri</div>
+          </div>
+          <a href="login.html" class="console-logout-btn" title="Logout dari Konsol" aria-label="Logout dari Konsol">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </aside>
 
-    <section aria-labelledby="status-printer-heading">
-      <h2 id="status-printer-heading">Status Printer &amp; Hardware</h2>
-      <table border="1">
-        <caption>Status kondisi printer dan level kertas saat ini</caption>
-        <thead>
-          <tr>
-            <th scope="col">Printer</th>
-            <th scope="col">Status</th>
-            <th scope="col">Level Kertas</th>
-            <th scope="col">Tugas Aktif</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Printer 1 - HP LaserJet</td>
-            <td>
-              <img src="./assets/images/status-ready.svg" alt="Ikon tanda centang hijau" width="16" height="16" />
-              Siap (Ready)
-            </td>
-            <td>Penuh (500/500 lembar)</td>
-            <td>Mencetak #ORD-042</td>
-            <td><a href="antrean.html">Kelola</a></td>
-          </tr>
-          <tr>
-            <td>Printer 2 - Epson L3150</td>
-            <td>
-              <img src="./assets/images/status-warning.svg" alt="Ikon segitiga peringatan kuning" width="16"
-                height="16" />
-              Kertas Hampir Habis
-            </td>
-            <td>Rendah (45/500 lembar)</td>
-            <td>Idle</td>
-            <td><a href="antrean.html">Kelola</a></td>
-          </tr>
-          <tr>
-            <td>Printer 3 - Canon iP2870</td>
-            <td>
-              <img src="./assets/images/status-error.svg" alt="Ikon silang merah menandakan error" width="16"
-                height="16" />
-              Error / Kertas Macet
-            </td>
-            <td>Tidak terdeteksi</td>
-            <td>Dijeda</td>
-            <td><a href="antrean.html">Kelola</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <!-- Area Konten Utama Konsol Operator -->
+    <div class="console-main-area">
 
-    <section aria-labelledby="grafik-heading">
-      <h2 id="grafik-heading">Pendapatan 7 Hari Terakhir</h2>
-      <figure>
-        <img src="./assets/images/chart-pendapatan-7hari.png"
-          alt="Grafik batang pendapatan 7 hari terakhir: Rab Rp125rb, Kam Rp98rb, Jum Rp167rb, Sab Rp201rb, Min Rp88rb, Sen Rp167rb, Sel Rp188rb"
-          width="700" height="300" />
-        <figcaption>Grafik pendapatan harian toko PrintShop POS (3 Okt - 9 Okt 2026)</figcaption>
-      </figure>
-      <table border="1">
-        <caption>Data pendapatan 7 hari terakhir dalam bentuk tabel</caption>
-        <thead>
-          <tr>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Hari</th>
-            <th scope="col">Transaksi</th>
-            <th scope="col">Lembar</th>
-            <th scope="col">Pendapatan</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>03 Okt 2026</td>
-            <td>Rabu</td>
-            <td>18</td>
-            <td>245</td>
-            <td>Rp 125.000</td>
-          </tr>
-          <tr>
-            <td>04 Okt 2026</td>
-            <td>Kamis</td>
-            <td>14</td>
-            <td>190</td>
-            <td>Rp 98.000</td>
-          </tr>
-          <tr>
-            <td>05 Okt 2026</td>
-            <td>Jumat</td>
-            <td>25</td>
-            <td>330</td>
-            <td>Rp 167.200</td>
-          </tr>
-          <tr>
-            <td>06 Okt 2026</td>
-            <td>Sabtu</td>
-            <td>31</td>
-            <td>412</td>
-            <td>Rp 201.500</td>
-          </tr>
-          <tr>
-            <td>07 Okt 2026</td>
-            <td>Minggu</td>
-            <td>11</td>
-            <td>148</td>
-            <td>Rp 88.000</td>
-          </tr>
-          <tr>
-            <td>08 Okt 2026</td>
-            <td>Senin</td>
-            <td>25</td>
-            <td>327</td>
-            <td>Rp 167.200</td>
-          </tr>
-          <tr>
-            <td>09 Okt 2026</td>
-            <td>Selasa (Hari Ini)</td>
-            <td>27</td>
-            <td>375</td>
-            <td>Rp 187.500</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th scope="row" colspan="2">Total 7 Hari</th>
-            <td>151 transaksi</td>
-            <td>2.027 lembar</td>
-            <td>Rp 1.034.400</td>
-          </tr>
-        </tfoot>
-      </table>
-    </section>
+      <!-- Header Atas Konsol -->
+      <header class="console-top-header">
+        <div class="console-top-left">
+          <button type="button" id="btn-sidebar-toggle" class="btn-sidebar-toggle" aria-label="Buka navigasi bilah sisi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="console-breadcrumb-title">
+            <strong>PrintShop POS - Konsol Operator</strong>
+            <span>Gerai Kampus Utama | Kios Mandiri Gedung A (Lt. 1)</span>
+          </div>
+        </div>
 
-    <section id="laporan" aria-labelledby="laporan-heading">
-      <h2 id="laporan-heading">Laporan &amp; Ekspor Data</h2>
+        <div class="console-top-right">
+          <span class="live-time-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <time id="live-clock" datetime="2026-10-09T07:42:00+07:00">09 Okt 2026, 07:42 WIB</time>
+          </span>
 
-      <article aria-label="Filter dan ekspor laporan">
-        <h3>Unduh Laporan</h3>
-        <form action="#" method="get">
-          <fieldset>
-            <legend>Filter Periode Laporan</legend>
-            <p>
-              <label for="periode-dari">Dari Tanggal</label>
-              <input type="date" id="periode-dari" name="periode-dari" value="2026-10-01" />
-            </p>
-            <p>
-              <label for="periode-sampai">Sampai Tanggal</label>
-              <input type="date" id="periode-sampai" name="periode-sampai" value="2026-10-09" />
-            </p>
-            <p>
-              <label for="format-ekspor">Format Ekspor</label>
-              <select id="format-ekspor" name="format-ekspor">
-                <option value="csv">CSV (Spreadsheet)</option>
-                <option value="pdf">PDF</option>
-              </select>
-            </p>
-            <p>
-              <button type="submit">Ekspor Laporan</button>
-            </p>
-          </fieldset>
-        </form>
-      </article>
+          <span class="badge-audit-sync" title="Status koneksi gateway & spooler">
+            <span class="console-status-dot"></span>
+            <span class="audit-sync-text">Rekonsiliasi Sinkron</span>
+          </span>
 
-      <article aria-label="Rincian pendapatan per kategori layanan">
-        <h3>Pendapatan per Kategori Bulan Ini</h3>
-        <table border="1">
-          <caption>Distribusi pendapatan berdasarkan jenis layanan cetak bulan Oktober 2026</caption>
-          <thead>
-            <tr>
-              <th scope="col">Kategori</th>
-              <th scope="col">Jumlah Pesanan</th>
-              <th scope="col">Lembar</th>
-              <th scope="col">Pendapatan</th>
-              <th scope="col">Persentase</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Cetak Hitam-Putih A4</td>
-              <td>98</td>
-              <td>1.420</td>
-              <td>Rp 710.000</td>
-              <td>68%</td>
-            </tr>
-            <tr>
-              <td>Cetak Warna A4</td>
-              <td>28</td>
-              <td>186</td>
-              <td>Rp 372.000</td>
-              <td>25%</td>
-            </tr>
-            <tr>
-              <td>Cetak B/W F4</td>
-              <td>17</td>
-              <td>204</td>
-              <td>Rp 122.400</td>
-              <td>7%</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th scope="row">Total</th>
-              <td>143 pesanan</td>
-              <td>1.810 lembar</td>
-              <td>Rp 1.204.400</td>
-              <td>100%</td>
-            </tr>
-          </tfoot>
-        </table>
-      </article>
-    </section>
+          <a href="index.html" class="btn-export-outline" title="Pratinjau antarmuka pelanggan">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span class="nav-preview-text">Web Pelanggan</span>
+          </a>
+        </div>
+      </header>
 
-    <section aria-labelledby="aksi-cepat-heading">
-      <h2 id="aksi-cepat-heading">Aksi Cepat</h2>
-      <ul>
-        <li><a href="antrean.html">Buka Antrean Aktif (8 pesanan menunggu)</a></li>
-        <li><a href="antrean.html">Kelola Status Printer</a></li>
-        <li><a href="dasbor.html#laporan">Ekspor Laporan Hari Ini</a></li>
-        <li><a href="login.html">Logout dari Konsol</a></li>
-      </ul>
-    </section>
+      <!-- Konten Utama Dasbor -->
+      <main class="console-content">
 
-  </main>
+        <!-- Baris Judul & Filter Periode -->
+        <div class="console-page-head">
+          <div class="console-title-group">
+            <h1>Dasbor &amp; Laporan Keuangan</h1>
+            <p>Operator: <strong>Ahmad Hidayat</strong> &bull; Sesi Aktif: Loket A1 (Shift Pagi)</p>
+          </div>
 
-  <footer>
-    <p><small>PrintShop POS Konsol Operator &mdash; Data diperbarui setiap 30 detik. Terakhir disinkronkan: <time
-          datetime="2026-10-09T07:42:00+07:00">07:42:15 WIB</time></small></p>
-  </footer>
+          <div class="console-head-actions">
+            <div class="date-filter-btn-group" role="group" aria-label="Filter cepat rentang waktu">
+              <button type="button" class="date-filter-btn active">Hari Ini</button>
+              <button type="button" class="date-filter-btn">Kemarin</button>
+              <button type="button" class="date-filter-btn">Pekan Ini</button>
+            </div>
+
+            <button type="button" id="btn-export-csv-quick" class="btn-export-outline">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Ekspor CSV</span>
+            </button>
+
+            <a href="antrean.html" class="btn-primary btn-console-queue">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 11 12 14 22 4"></polyline>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+              <span>Buka Antrean Aktif</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Banner Rekonsiliasi Otomatis (Sesuai Modul 5 image1.png & image5.png) -->
+        <aside class="audit-reconcile-card" aria-label="Status Audit dan Rekonsiliasi Kasir">
+          <div class="audit-lead-info">
+            <div class="audit-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="audit-text-details">
+              <h3>
+                Rekonsiliasi Otomatis: 100% Cocok
+                <span class="badge-discrepancy">ZERO DISCREPANCY</span>
+              </h3>
+              <p>
+                Audit Realtime Spooler &amp; Bank Gateway: 100% Cocok &bull; Selisih Kas: <strong>Rp0</strong>. Sebanyak <strong>375 halaman</strong> tercetak hari ini sesuai dengan transaksi lunas terbitan loket.
+              </p>
+            </div>
+          </div>
+
+          <div class="audit-action-group">
+            <span class="spooler-sync-pill">
+              <span class="console-status-dot"></span>
+              Spooler Sync: 07:42 WIB
+            </span>
+          </div>
+        </aside>
+
+        <!-- 4 KPI Utama Ringkasan Hari Ini -->
+        <section aria-labelledby="kpi-heading">
+          <h2 id="kpi-heading" class="sr-only">Ringkasan Hari Ini - 09 Okt 2026</h2>
+
+          <div class="kpi-summary-grid">
+            <article class="kpi-metric-card" aria-label="KPI Pendapatan Hari Ini">
+              <div class="kpi-card-top">
+                <span class="kpi-card-title">Pendapatan Hari Ini</span>
+                <span class="kpi-icon-badge emerald" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-metric-value">Rp 187.500</div>
+              <div class="kpi-trend-badge positive">
+                <span>&uarr; +12% dibanding kemarin (Rp 167.200)</span>
+              </div>
+              <p class="kpi-card-sub">QRIS: Rp 145.000 &bull; Tunai: Rp 42.500</p>
+            </article>
+
+            <article class="kpi-metric-card" aria-label="KPI Pesanan Aktif">
+              <div class="kpi-card-top">
+                <span class="kpi-card-title">Pesanan Aktif</span>
+                <span class="kpi-icon-badge blue" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-metric-value">8 Pesanan</div>
+              <div class="kpi-trend-badge neutral">
+                <span>3 mencetak, 5 menunggu antrean</span>
+              </div>
+              <p class="kpi-card-sub">
+                <a href="antrean.html" class="kpi-card-link">Lihat Antrean Masuk &rarr;</a>
+              </p>
+            </article>
+
+            <article class="kpi-metric-card" aria-label="KPI Total Lembar Tercetak">
+              <div class="kpi-card-top">
+                <span class="kpi-card-title">Lembar Tercetak Hari Ini</span>
+                <span class="kpi-icon-badge purple" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-metric-value">375 Lembar</div>
+              <div class="kpi-trend-badge neutral">
+                <span>48 lembar warna, 327 hitam-putih</span>
+              </div>
+              <p class="kpi-card-sub">Efisiensi Duplex (Bolak-balik): 62%</p>
+            </article>
+
+            <article class="kpi-metric-card" aria-label="KPI Total Transaksi">
+              <div class="kpi-card-top">
+                <span class="kpi-card-title">Total Transaksi</span>
+                <span class="kpi-icon-badge amber" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-metric-value">27 Transaksi</div>
+              <div class="kpi-trend-badge neutral">
+                <span>25 selesai, 2 dibatalkan/refund</span>
+              </div>
+              <p class="kpi-card-sub">Rata-rata Nilai: Rp 6.944 / transaksi</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Grid 2 Kolom: Grafik Omzet 7 Hari & Kategori Layanan -->
+        <div class="analytics-two-col-grid">
+
+          <!-- Grafik Batang 7 Hari Terakhir -->
+          <section aria-labelledby="grafik-heading" class="console-card">
+            <div class="console-card-header">
+              <div>
+                <h2 id="grafik-heading">Pendapatan 7 Hari Terakhir</h2>
+                <span class="header-meta">3 Okt &ndash; 9 Okt 2026 &bull; Rata-rata: Rp 147.771/hari</span>
+              </div>
+              <button type="button" id="toggle-table-btn" class="btn-export-outline" style="padding: 6px 12px; font-size: 12px;">
+                Tampilkan Tabel
+              </button>
+            </div>
+
+            <div class="console-card-body">
+              <!-- Visual Interactive Bar Chart -->
+              <div class="bar-chart-visual" aria-hidden="true">
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 62%;">
+                    <span class="bar-tooltip">Rp 125.000</span>
+                  </div>
+                  <span class="bar-label">Rab<br><small>3 Okt</small></span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 48%;">
+                    <span class="bar-tooltip">Rp 98.000</span>
+                  </div>
+                  <span class="bar-label">Kam<br><small>4 Okt</small></span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 83%;">
+                    <span class="bar-tooltip">Rp 167.200</span>
+                  </div>
+                  <span class="bar-label">Jum<br><small>5 Okt</small></span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 100%;">
+                    <span class="bar-tooltip">Rp 201.500 (Puncak)</span>
+                  </div>
+                  <span class="bar-label">Sab<br><small>6 Okt</small></span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 44%;">
+                    <span class="bar-tooltip">Rp 88.000</span>
+                  </div>
+                  <span class="bar-label">Min<br><small>7 Okt</small></span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill" style="height: 83%;">
+                    <span class="bar-tooltip">Rp 167.200</span>
+                  </div>
+                  <span class="bar-label">Sen<br><small>8 Okt</small></span>
+                </div>
+                <div class="bar-col active">
+                  <div class="bar-fill" style="height: 93%;">
+                    <span class="bar-tooltip">Rp 187.500 (Hari Ini)</span>
+                  </div>
+                  <span class="bar-label">Sel<br><small>9 Okt</small></span>
+                </div>
+              </div>
+
+              <div class="chart-legend-strip">
+                <div class="legend-item">
+                  <span class="legend-indicator today"></span>
+                  <span>Hari Ini (09 Okt): <strong>Rp 187.500</strong></span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-indicator past"></span>
+                  <span>Total 7 Hari: <strong>Rp 1.034.400</strong></span>
+                </div>
+              </div>
+
+              <!-- Figure Image Fallback Sesuai Semantik HTML Modul 6 -->
+              <figure style="display: none; margin-top: 16px;" id="chart-image-container">
+                <img src="./assets/images/chart-pendapatan-7hari.png"
+                  alt="Grafik batang pendapatan 7 hari terakhir: Rab Rp125rb, Kam Rp98rb, Jum Rp167rb, Sab Rp201rb, Min Rp88rb, Sen Rp167rb, Sel Rp188rb"
+                  width="700" height="300" style="width: 100%; border-radius: 12px; border: 1px solid var(--line);" />
+                <figcaption style="font-size: 12px; color: var(--muted); margin-top: 6px; text-align: center;">
+                  Grafik pendapatan harian toko PrintShop POS (3 Okt - 9 Okt 2026)
+                </figcaption>
+              </figure>
+
+              <!-- Tabel Pendapatan 7 Hari (Preserved Semantic Table) -->
+              <div id="chart-table-wrap" class="table-responsive-container" style="display: none; margin-top: 16px;">
+                <table class="console-table">
+                  <caption>Data pendapatan 7 hari terakhir dalam bentuk tabel</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Tanggal</th>
+                      <th scope="col">Hari</th>
+                      <th scope="col">Transaksi</th>
+                      <th scope="col">Lembar</th>
+                      <th scope="col">Pendapatan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>03 Okt 2026</td>
+                      <td>Rabu</td>
+                      <td>18</td>
+                      <td>245</td>
+                      <td>Rp 125.000</td>
+                    </tr>
+                    <tr>
+                      <td>04 Okt 2026</td>
+                      <td>Kamis</td>
+                      <td>14</td>
+                      <td>190</td>
+                      <td>Rp 98.000</td>
+                    </tr>
+                    <tr>
+                      <td>05 Okt 2026</td>
+                      <td>Jumat</td>
+                      <td>25</td>
+                      <td>330</td>
+                      <td>Rp 167.200</td>
+                    </tr>
+                    <tr>
+                      <td>06 Okt 2026</td>
+                      <td>Sabtu</td>
+                      <td>31</td>
+                      <td>412</td>
+                      <td>Rp 201.500</td>
+                    </tr>
+                    <tr>
+                      <td>07 Okt 2026</td>
+                      <td>Minggu</td>
+                      <td>11</td>
+                      <td>148</td>
+                      <td>Rp 88.000</td>
+                    </tr>
+                    <tr>
+                      <td>08 Okt 2026</td>
+                      <td>Senin</td>
+                      <td>25</td>
+                      <td>327</td>
+                      <td>Rp 167.200</td>
+                    </tr>
+                    <tr style="background: #ecfdf5; font-weight: 700;">
+                      <td>09 Okt 2026</td>
+                      <td>Selasa (Hari Ini)</td>
+                      <td>27</td>
+                      <td>375</td>
+                      <td style="color: #065f46;">Rp 187.500</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th scope="row" colspan="2">Total 7 Hari</th>
+                      <td>151 transaksi</td>
+                      <td>2.027 lembar</td>
+                      <td>Rp 1.034.400</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Rincian Kategori Layanan Cetak Bulan Ini -->
+          <section aria-label="Rincian pendapatan per kategori layanan" class="console-card">
+            <div class="console-card-header">
+              <div>
+                <h3>Pendapatan per Kategori Bulan Ini</h3>
+                <span class="header-meta">Oktober 2026 &bull; Distribusi Berdasarkan Format</span>
+              </div>
+              <span class="badge-discrepancy" style="background: #ecfdf5; color: #065f46;">100% Terverifikasi</span>
+            </div>
+
+            <div class="console-card-body">
+              <div class="category-item-list">
+                <div>
+                  <div class="category-row-head">
+                    <strong>Cetak Hitam-Putih A4</strong>
+                    <span>Rp 710.000 (68%) &bull; 98 Pesanan</span>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill c-green" style="width: 68%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="category-row-head">
+                    <strong>Cetak Warna A4</strong>
+                    <span>Rp 372.000 (25%) &bull; 28 Pesanan</span>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill c-blue" style="width: 25%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="category-row-head">
+                    <strong>Cetak B/W F4 (Folio)</strong>
+                    <span>Rp 122.400 (7%) &bull; 17 Pesanan</span>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill c-amber" style="width: 7%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="category-total-badge">
+                <div>
+                  <div style="font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Total Omzet Bulan Ini</div>
+                  <strong style="font-size: 16px; color: var(--ink);">Rp 1.204.400</strong>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Volume Cetak</div>
+                  <strong style="font-size: 14px; color: var(--primary-hover);">1.810 Lembar (143 Pesanan)</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Section Status Printer & Hardware (Sesuai Modul 5 image1.png & image5.png) -->
+        <section aria-labelledby="status-printer-heading" style="margin-bottom: 32px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div>
+              <h2 id="status-printer-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 2px;">
+                Status Printer &amp; Hardware
+              </h2>
+              <p style="font-size: 13px; color: var(--muted); margin: 0;">Status kondisi fisik printer dan ketersediaan baki kertas saat ini</p>
+            </div>
+            <a href="antrean.html" class="btn-export-outline" style="font-size: 12.5px; padding: 6px 14px;">
+              Buka Konsol Spooler &rarr;
+            </a>
+          </div>
+
+          <div class="printer-status-grid">
+            <!-- Printer 1 -->
+            <article class="printer-card" aria-label="Printer 1 HP LaserJet">
+              <div>
+                <div class="printer-card-top">
+                  <h3 class="printer-name">Printer 1 &ndash; HP LaserJet</h3>
+                  <span class="printer-status-chip ready">
+                    <img src="./assets/images/status-ready.svg" alt="" width="14" height="14" />
+                    Siap (Ready)
+                  </span>
+                </div>
+
+                <div class="printer-meter-wrap">
+                  <div class="printer-meter-label">
+                    <span>Level Kertas Baki 1:</span>
+                    <strong>Penuh (500/500 lbr)</strong>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill c-green" style="width: 100%;"></div>
+                  </div>
+                </div>
+
+                <div class="printer-task-row">
+                  <span>Tugas Aktif: <strong>Mencetak #ORD-042</strong></span>
+                </div>
+              </div>
+
+              <a href="antrean.html" class="btn-printer-manage">
+                <span>Kelola Antrean</span>
+                &rarr;
+              </a>
+            </article>
+
+            <!-- Printer 2 -->
+            <article class="printer-card" aria-label="Printer 2 Epson L3150">
+              <div>
+                <div class="printer-card-top">
+                  <h3 class="printer-name">Printer 2 &ndash; Epson L3150</h3>
+                  <span class="printer-status-chip warning">
+                    <img src="./assets/images/status-warning.svg" alt="" width="14" height="14" />
+                    Kertas Hampir Habis
+                  </span>
+                </div>
+
+                <div class="printer-meter-wrap">
+                  <div class="printer-meter-label">
+                    <span>Level Kertas Baki 1:</span>
+                    <strong style="color: #b45309;">Rendah (45/500 lbr)</strong>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill c-amber" style="width: 9%;"></div>
+                  </div>
+                </div>
+
+                <div class="printer-task-row">
+                  <span>Tugas Aktif: <strong>Idle (Menunggu)</strong></span>
+                </div>
+              </div>
+
+              <a href="antrean.html" class="btn-printer-manage" style="background: #fffbeb; color: #92400e; border-color: #fde68a;">
+                <span>Isi Ulang Kertas</span>
+                &rarr;
+              </a>
+            </article>
+
+            <!-- Printer 3 -->
+            <article class="printer-card" aria-label="Printer 3 Canon iP2870">
+              <div>
+                <div class="printer-card-top">
+                  <h3 class="printer-name">Printer 3 &ndash; Canon iP2870</h3>
+                  <span class="printer-status-chip error">
+                    <img src="./assets/images/status-error.svg" alt="" width="14" height="14" />
+                    Error / Macet
+                  </span>
+                </div>
+
+                <div class="printer-meter-wrap">
+                  <div class="printer-meter-label">
+                    <span>Level Kertas Baki 1:</span>
+                    <strong style="color: #dc2626;">Tidak terdeteksi</strong>
+                  </div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill" style="width: 0%; background: #ef4444;"></div>
+                  </div>
+                </div>
+
+                <div class="printer-task-row">
+                  <span>Tugas Aktif: <strong style="color: #dc2626;">Dijeda (Paper Jam)</strong></span>
+                </div>
+              </div>
+
+              <a href="antrean.html" class="btn-printer-manage" style="background: #fef2f2; color: #991b1b; border-color: #fecaca;">
+                <span>Reset &amp; Perbaiki</span>
+                &rarr;
+              </a>
+            </article>
+          </div>
+
+          <!-- Semantic Table Backup for Accessibility & Screen Readers -->
+          <div class="sr-only">
+            <table border="1">
+              <caption>Status kondisi printer dan level kertas saat ini</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Printer</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Level Kertas</th>
+                  <th scope="col">Tugas Aktif</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Printer 1 - HP LaserJet</td>
+                  <td>Siap (Ready)</td>
+                  <td>Penuh (500/500 lembar)</td>
+                  <td>Mencetak #ORD-042</td>
+                  <td><a href="antrean.html">Kelola</a></td>
+                </tr>
+                <tr>
+                  <td>Printer 2 - Epson L3150</td>
+                  <td>Kertas Hampir Habis</td>
+                  <td>Rendah (45/500 lembar)</td>
+                  <td>Idle</td>
+                  <td><a href="antrean.html">Kelola</a></td>
+                </tr>
+                <tr>
+                  <td>Printer 3 - Canon iP2870</td>
+                  <td>Error / Kertas Macet</td>
+                  <td>Tidak terdeteksi</td>
+                  <td>Dijeda</td>
+                  <td><a href="antrean.html">Kelola</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Laporan & Ekspor Data Form -->
+        <section id="laporan" aria-labelledby="laporan-heading" class="export-section-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h2 id="laporan-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 2px;">
+                Laporan &amp; Ekspor Data
+              </h2>
+              <p style="font-size: 13px; color: var(--muted); margin: 0;">Unduh dataset laporan operasional dan pembukuan keuangan toko</p>
+            </div>
+            <span class="badge-discrepancy" style="background: #f1f5f9; color: #475569;">Format CSV / PDF</span>
+          </div>
+
+          <article aria-label="Filter dan ekspor laporan">
+            <h3 class="sr-only">Unduh Laporan</h3>
+            <form id="form-ekspor" action="#" method="get">
+              <fieldset style="border: 0; padding: 0; margin: 0;">
+                <legend class="sr-only">Filter Periode Laporan</legend>
+
+                <div class="export-grid-form">
+                  <div class="export-field-wrap">
+                    <label for="periode-dari">Dari Tanggal</label>
+                    <input type="date" id="periode-dari" name="periode-dari" value="2026-10-01" />
+                  </div>
+
+                  <div class="export-field-wrap">
+                    <label for="periode-sampai">Sampai Tanggal</label>
+                    <input type="date" id="periode-sampai" name="periode-sampai" value="2026-10-09" />
+                  </div>
+
+                  <div class="export-field-wrap">
+                    <label for="format-ekspor">Format Berkas</label>
+                    <select id="format-ekspor" name="format-ekspor">
+                      <option value="csv">CSV (Spreadsheet Excel)</option>
+                      <option value="pdf">PDF (Dokumen Cetak Resmi)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <button type="submit" id="btn-submit-export" class="btn-primary btn-export-submit">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                      <span>Unduh Laporan</span>
+                    </button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+
+            <div id="export-toast" style="display: none; margin-top: 14px; padding: 12px 16px; border-radius: 10px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 13px;">
+              Laporan berhasil dibuat dan diunduh ke komputer Anda.
+            </div>
+          </article>
+        </section>
+
+        <!-- Aksi Cepat Konsol -->
+        <section aria-labelledby="aksi-cepat-heading" style="margin-bottom: 24px;">
+          <h2 id="aksi-cepat-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 12px;">
+            Aksi Cepat
+          </h2>
+
+          <div class="quick-actions-grid">
+            <a href="antrean.html" class="quick-action-card">
+              <div class="quick-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              </div>
+              <div class="quick-action-text">
+                <strong>Antrean Aktif</strong>
+                <span>8 pesanan menunggu</span>
+              </div>
+              <span class="arrow-icon">&rarr;</span>
+            </a>
+
+            <a href="antrean.html#printer" class="quick-action-card">
+              <div class="quick-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+              </div>
+              <div class="quick-action-text">
+                <strong>Kelola Printer</strong>
+                <span>Periksa baki kertas</span>
+              </div>
+              <span class="arrow-icon">&rarr;</span>
+            </a>
+
+            <a href="#laporan" class="quick-action-card">
+              <div class="quick-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </div>
+              <div class="quick-action-text">
+                <strong>Ekspor Hari Ini</strong>
+                <span>Unduh laporan berkala</span>
+              </div>
+              <span class="arrow-icon">&rarr;</span>
+            </a>
+
+            <a href="login.html" class="quick-action-card" style="border-color: #fecaca;">
+              <div class="quick-action-icon" style="background: #fee2e2; color: #ef4444;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </div>
+              <div class="quick-action-text">
+                <strong>Logout Konsol</strong>
+                <span>Akhiri sesi aman</span>
+              </div>
+              <span class="arrow-icon" style="color: #ef4444;">&rarr;</span>
+            </a>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Footer Konsol -->
+      <footer class="console-site-footer">
+        <p>
+          <small>
+            PrintShop POS Konsol Operator: Data diperbarui otomatis setiap 30 detik.
+          </small>
+        </p>
+        <p>
+          <small>
+            Terakhir disinkronkan: <time datetime="2026-10-09T07:42:15+07:00">07:42:15 WIB</time> &bull; Loket A1
+          </small>
+        </p>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Interaktivitas Dasbor Operator (Andrew Wijaya - feat(analytics))
+    document.addEventListener('DOMContentLoaded', function () {
+      // 1. Mobile Sidebar Toggle
+      const sidebarToggleBtn = document.getElementById('btn-sidebar-toggle');
+      const sidebar = document.getElementById('console-sidebar');
+      const backdrop = document.getElementById('console-backdrop');
+
+      if (sidebarToggleBtn && sidebar && backdrop) {
+        sidebarToggleBtn.addEventListener('click', function () {
+          sidebar.classList.toggle('is-open');
+          backdrop.classList.toggle('is-open');
+        });
+
+        backdrop.addEventListener('click', function () {
+          sidebar.classList.remove('is-open');
+          backdrop.classList.remove('is-open');
+        });
+      }
+
+      // 2. Toggle Tampilkan / Sembunyikan Tabel Pendapatan 7 Hari
+      const toggleTableBtn = document.getElementById('toggle-table-btn');
+      const tableWrap = document.getElementById('chart-table-wrap');
+
+      if (toggleTableBtn && tableWrap) {
+        toggleTableBtn.addEventListener('click', function () {
+          const isHidden = tableWrap.style.display === 'none';
+          tableWrap.style.display = isHidden ? 'block' : 'none';
+          toggleTableBtn.textContent = isHidden ? 'Sembunyikan Tabel' : 'Tampilkan Tabel';
+        });
+      }
+
+      // 3. Filter Rentang Waktu Tombol Cepat
+      const filterBtns = document.querySelectorAll('.date-filter-btn');
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      // 4. Simulasi Ekspor CSV
+      function triggerCsvDownload(filename) {
+        const csvContent = "data:text/csv;charset=utf-8,"
+          + "Tanggal,Hari,Transaksi,Lembar,Pendapatan\n"
+          + "03 Okt 2026,Rabu,18,245,125000\n"
+          + "04 Okt 2026,Kamis,14,190,98000\n"
+          + "05 Okt 2026,Jumat,25,330,167200\n"
+          + "06 Okt 2026,Sabtu,31,412,201500\n"
+          + "07 Okt 2026,Minggu,11,148,88000\n"
+          + "08 Okt 2026,Senin,25,327,167200\n"
+          + "09 Okt 2026,Selasa,27,375,187500\n"
+          + "Total 7 Hari,,151,2027,1034400\n";
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename || "Laporan_PrintShop_POS_7Hari.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      const quickCsvBtn = document.getElementById('btn-export-csv-quick');
+      if (quickCsvBtn) {
+        quickCsvBtn.addEventListener('click', function () {
+          triggerCsvDownload("Laporan_Ringkas_PrintShop_POS.csv");
+        });
+      }
+
+      // 5. Form Ekspor Berkas
+      const exportForm = document.getElementById('form-ekspor');
+      const exportToast = document.getElementById('export-toast');
+
+      if (exportForm) {
+        exportForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const format = document.getElementById('format-ekspor').value;
+          const dari = document.getElementById('periode-dari').value;
+          const sampai = document.getElementById('periode-sampai').value;
+
+          if (format === 'csv') {
+            triggerCsvDownload(`Laporan_PrintShop_${dari}_sd_${sampai}.csv`);
+          }
+
+          if (exportToast) {
+            exportToast.style.display = 'block';
+            exportToast.textContent = `Laporan periode ${dari} s.d. ${sampai} (${format.toUpperCase()}) berhasil diproses dan diunduh.`;
+            setTimeout(function () {
+              exportToast.style.display = 'none';
+            }, 4000);
+          }
+        });
+      }
+
+      // 6. Live Clock Update
+      const clockEl = document.getElementById('live-clock');
+      function updateLiveClock() {
+        if (!clockEl) return;
+        const now = new Date();
+        const opts = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        clockEl.textContent = now.toLocaleDateString('id-ID', opts) + ' WIB';
+      }
+      setInterval(updateLiveClock, 30000);
+    });
+  </script>
 
 </body>
 

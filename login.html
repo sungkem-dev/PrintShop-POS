@@ -5,103 +5,348 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Operator - PrintShop POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
 </head>
 
-<body>
+<body class="login-body">
 
-  <header>
-    <h1>PrintShop POS</h1>
-    <p>Konsol Operator - Akses Terbatas</p>
-    <nav aria-label="Navigasi autentikasi">
-      <ul>
-        <li><a href="index.html">← Kembali ke Beranda User</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="login-split-container">
 
-  <main>
+    <!-- Sisi Kiri: Branding & Panduan Alur Kerja (Referensi Kelompok2_modul5/images/image10.png) -->
+    <aside class="login-hero-panel" aria-label="Branding Konsol Operator">
+      <div class="login-hero-top">
+        <div class="login-hero-tag">Ruang Kerja Kasir</div>
+        <h2 class="login-hero-title">Sistem Manajemen Antrean PrintShop POS</h2>
+        <p class="login-hero-desc">
+          Kelola pesanan, antrean cetak, dan transaksi dalam satu ruang kerja yang terintegrasi secara real-time.
+        </p>
 
-    <section aria-labelledby="login-heading">
-      <h2 id="login-heading">Login Operator</h2>
+        <div class="login-hero-divider" role="presentation"></div>
 
-      <article aria-label="Formulir login operator">
-        <h3>Masuk ke Konsol Operator</h3>
-        <figure>
-          <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS untuk konsol operator" width="120"
-            height="60" />
-        </figure>
+        <p class="login-hero-subtitle">Antrean rapi. Pelayanan lebih cepat.</p>
 
-        <form id="form-login" action="dasbor.html" method="post" novalidate>
-          <fieldset>
-            <legend>Kredensial Operator</legend>
+        <ul class="login-steps-list">
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+              </svg>
+              01
+            </span>
+            <span class="login-step-title">Terima pesanan</span>
+          </li>
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              02
+            </span>
+            <span class="login-step-title">Proses cetak</span>
+          </li>
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              03
+            </span>
+            <span class="login-step-title">Selesaikan</span>
+          </li>
+        </ul>
+      </div>
 
-            <p>
-              <label for="email-operator">Alamat Email</label>
-              <input type="email" id="email-operator" name="email-operator" placeholder="operator@printshop.com"
-                required autocomplete="email" aria-describedby="email-hint" />
-              <span id="email-hint">Gunakan email yang terdaftar sebagai operator toko.</span>
-            </p>
+      <div class="login-hero-footer">
+        <span>&copy; 2026 Express Print</span>
+        <span>Sistem POS Fotokopi</span>
+      </div>
+    </aside>
 
-            <p>
-              <label for="pin-operator">PIN Operator (6 digit)</label>
-              <input type="password" id="pin-operator" name="pin-operator" placeholder="Masukkan PIN 6 digit"
-                minlength="6" maxlength="6" pattern="[0-9]{6}" required autocomplete="current-password"
-                aria-describedby="pin-hint" inputmode="numeric" />
-              <span id="pin-hint">PIN terdiri dari 6 angka. Hubungi admin toko jika lupa PIN.</span>
-            </p>
+    <!-- Sisi Kanan: Formulir Login Operator -->
+    <div class="login-form-panel">
+      <header>
+        <div class="login-top-nav">
+          <nav aria-label="Navigasi autentikasi">
+            <a href="index.html" class="back-home-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span>Kembali ke Beranda User</span>
+            </a>
+          </nav>
 
-            <p>
-              <input type="checkbox" id="ingat-saya" name="ingat-saya" value="true" />
-              <label for="ingat-saya">Ingat saya di perangkat ini (30 hari)</label>
-            </p>
+          <span class="console-status-pill">
+            <span class="console-status-dot"></span>
+            Online
+          </span>
+        </div>
+      </header>
 
-            <p>
-              <button type="submit">Masuk ke Konsol →</button>
-            </p>
-          </fieldset>
-        </form>
+      <main class="login-form-wrapper">
+        <section aria-labelledby="login-heading">
+          <div class="login-badge-header">
+            <figure style="margin: 0;">
+              <span class="brand-icon-box">
+                <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS untuk konsol operator" width="24" height="24" />
+              </span>
+            </figure>
+            <div class="login-header-text">
+              <div class="brand-title">PrintShop POS</div>
+              <div class="brand-sub">Campus Console</div>
+            </div>
+          </div>
 
-        <section aria-labelledby="error-login-heading" aria-live="assertive" role="alert">
-          <h3 id="error-login-heading" hidden>Login Gagal</h3>
-          <p hidden>Email atau PIN tidak cocok. Periksa kembali kredensial Anda dan coba lagi. Setelah 5 kali percobaan
-            gagal, akun akan dikunci selama 15 menit.</p>
+          <p class="login-access-tag">Akses Internal / Admin &amp; Kasir</p>
+          <h1 id="login-heading" class="login-title-h1">Admin Login</h1>
+          <p class="login-subtitle">Masuk dengan akun pegawai untuk memulai operasional kasir.</p>
+
+          <article aria-label="Formulir login operator">
+            <h3 class="sr-only">Masuk ke Konsol Operator</h3>
+
+            <form id="form-login" action="dasbor.html" method="post" novalidate>
+              <fieldset class="login-fieldset">
+                <legend class="sr-only">Kredensial Operator</legend>
+
+                <div class="login-input-group">
+                  <label for="email-operator" class="login-label">Alamat Email / ID Pegawai</label>
+                  <div class="input-icon-container">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </span>
+                    <input type="email" id="email-operator" name="email-operator" placeholder="operator@printshop.com"
+                      value="operator@printshop.com" required autocomplete="email" aria-describedby="email-hint" />
+                  </div>
+                  <span id="email-hint" class="input-hint-text">Gunakan email yang terdaftar sebagai operator toko.</span>
+                </div>
+
+                <div class="login-input-group">
+                  <label for="pin-operator" class="login-label">PIN Operator (6 digit)</label>
+                  <div class="input-icon-container has-toggle">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </span>
+                    <input type="password" id="pin-operator" name="pin-operator" placeholder="Masukkan PIN 6 digit"
+                      minlength="6" maxlength="6" pattern="[0-9]{6}" required autocomplete="current-password"
+                      aria-describedby="pin-hint" inputmode="numeric" />
+                    <button type="button" id="btn-toggle-pin" class="btn-toggle-pin" aria-label="Tampilkan atau sembunyikan PIN">
+                      <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </div>
+                  <span id="pin-hint" class="input-hint-text">PIN terdiri dari 6 angka (contoh demo: 123456).</span>
+                </div>
+
+                <div class="login-options-row">
+                  <label class="checkbox-wrap" for="ingat-saya">
+                    <input type="checkbox" id="ingat-saya" name="ingat-saya" value="true" checked />
+                    <span>Ingat saya di perangkat ini (30 hari)</span>
+                  </label>
+                  <button type="button" id="btn-show-forgot" class="link-forgot-pin">Lupa PIN?</button>
+                </div>
+
+                <p style="margin: 0;">
+                  <button type="submit" id="btn-submit" class="btn-primary btn-login-submit">
+                    <span>Masuk ke Konsol</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </p>
+              </fieldset>
+            </form>
+
+            <!-- Alert Notifikasi Login -->
+            <section id="alert-container" aria-labelledby="error-login-heading" aria-live="assertive" role="alert" style="display: none;">
+              <div id="login-alert-box" class="login-alert-box alert-error">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                  <h3 id="error-login-heading" style="font-size: 14px; font-weight: 700; margin-bottom: 2px;">Login Gagal</h3>
+                  <p id="error-login-desc" style="font-size: 13px; margin: 0;">Email atau PIN tidak cocok. Gunakan PIN 6 angka valid (demo: <strong>123456</strong>).</p>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <!-- Opsi Pemulihan Akses (Lupa PIN) -->
+          <article id="forgot-pin-section" class="forgot-pin-card" aria-label="Opsi pemulihan akses" style="display: none;">
+            <h3>Lupa PIN Konsol?</h3>
+            <p>Masukkan alamat email operator Anda untuk menerima instruksi reset PIN dari administrator toko.</p>
+            <form id="form-reset" action="#" method="post">
+              <fieldset style="border: 0; padding: 0; margin: 0;">
+                <legend class="sr-only">Reset PIN via Email</legend>
+                <div class="login-input-group" style="margin-bottom: 12px;">
+                  <label for="email-reset" class="login-label">Alamat Email Terdaftar</label>
+                  <input type="email" id="email-reset" name="email-reset" placeholder="operator@printshop.com" required
+                    style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px;" />
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button type="submit" class="btn-primary" style="min-height: 44px; padding: 0 18px; font-size: 13.5px; border-radius: 10px;">
+                    Kirim Tautan Reset PIN
+                  </button>
+                  <button type="button" id="btn-hide-forgot" class="btn-secondary" style="min-height: 44px; padding: 0 16px; font-size: 13px; border-radius: 10px;">
+                    Batal
+                  </button>
+                </div>
+              </fieldset>
+            </form>
+          </article>
         </section>
-      </article>
 
-      <article aria-label="Opsi pemulihan akses">
-        <h3>Lupa PIN?</h3>
-        <p>Jika Anda lupa PIN, hubungi administrator toko untuk melakukan reset PIN.</p>
-        <form action="#" method="post">
-          <fieldset>
-            <legend>Reset PIN via Email</legend>
-            <p>
-              <label for="email-reset">Alamat Email Terdaftar</label>
-              <input type="email" id="email-reset" name="email-reset" placeholder="operator@printshop.com" required />
-            </p>
-            <p>
-              <button type="submit">Kirim Tautan Reset PIN</button>
-            </p>
-          </fieldset>
-        </form>
-      </article>
-    </section>
+        <!-- Informasi Keamanan Konsol -->
+        <section aria-labelledby="info-keamanan-heading" class="security-info-box">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <h2 id="info-keamanan-heading" style="font-size: 13.5px; font-weight: 700; color: var(--ink); margin: 0; display: flex; align-items: center; gap: 6px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Protokol Keamanan Kasir
+            </h2>
+          </div>
+          <ul>
+            <li>Sesi login akan kedaluwarsa otomatis setelah 8 jam tidak aktif.</li>
+            <li>Jangan bagikan PIN kepada siapapun, termasuk sesama karyawan.</li>
+            <li>Selalu logout setelah selesai menggunakan konsol di perangkat bersama.</li>
+            <li>Semua aktivitas login dan aksi operator dicatat dalam audit log.</li>
+          </ul>
+        </section>
 
-    <section aria-labelledby="info-keamanan-heading">
-      <h2 id="info-keamanan-heading">Informasi Keamanan</h2>
-      <ul>
-        <li>Sesi login akan kedaluwarsa otomatis setelah 8 jam tidak aktif.</li>
-        <li>Jangan bagikan PIN Anda kepada siapapun, termasuk sesama karyawan.</li>
-        <li>Selalu logout setelah selesai menggunakan konsol, terutama di perangkat bersama.</li>
-        <li>Semua aktivitas login dan aksi operator dicatat dalam audit log.</li>
-      </ul>
-    </section>
+        <div class="login-security-strip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Akses khusus pegawai Express Print &bull; Enkripsi TLS 256-bit</span>
+        </div>
+      </main>
 
-  </main>
+      <footer class="login-bottom-footer">
+        <p><small>PrintShop POS: Konsol Operator. Akses tidak sah dilarang dan dapat dipidanakan sesuai hukum yang berlaku.</small></p>
+      </footer>
+    </div>
 
-  <footer>
-    <p><small>PrintShop POS &mdash; Konsol Operator. Akses tidak sah dilarang dan dapat dipidanakan sesuai hukum yang
-        berlaku.</small></p>
-  </footer>
+  </div>
+
+  <script>
+    // Interaktivitas Login: Toggle PIN & Validasi Sesuai PRD Modul 7
+    document.addEventListener('DOMContentLoaded', function () {
+      const pinInput = document.getElementById('pin-operator');
+      const emailInput = document.getElementById('email-operator');
+      const togglePinBtn = document.getElementById('btn-toggle-pin');
+      const formLogin = document.getElementById('form-login');
+      const alertContainer = document.getElementById('alert-container');
+      const alertBox = document.getElementById('login-alert-box');
+      const alertDesc = document.getElementById('error-login-desc');
+      const btnShowForgot = document.getElementById('btn-show-forgot');
+      const btnHideForgot = document.getElementById('btn-hide-forgot');
+      const forgotSection = document.getElementById('forgot-pin-section');
+      const formReset = document.getElementById('form-reset');
+
+      // 1. Toggle visibility PIN (Password / Text)
+      togglePinBtn.addEventListener('click', function () {
+        const isPassword = pinInput.getAttribute('type') === 'password';
+        pinInput.setAttribute('type', isPassword ? 'text' : 'password');
+        togglePinBtn.innerHTML = isPassword
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      });
+
+      // 2. Batasi input PIN hanya angka maks 6 digit
+      pinInput.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+      });
+
+      // 3. Toggle Tampilkan / Sembunyikan Lupa PIN
+      btnShowForgot.addEventListener('click', function () {
+        forgotSection.style.display = forgotSection.style.display === 'none' ? 'block' : 'none';
+        if (forgotSection.style.display === 'block') {
+          document.getElementById('email-reset').focus();
+        }
+      });
+
+      btnHideForgot.addEventListener('click', function () {
+        forgotSection.style.display = 'none';
+      });
+
+      // 4. Simulasi Reset PIN
+      formReset.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const resetEmail = document.getElementById('email-reset').value;
+        alertContainer.style.display = 'block';
+        alertBox.className = 'login-alert-box alert-success';
+        alertBox.querySelector('h3').textContent = 'Tautan Terkirim';
+        alertDesc.innerHTML = `Instruksi pemulihan PIN telah dikirim ke <strong>${resetEmail}</strong>. Silakan periksa kotak masuk email Anda.`;
+        forgotSection.style.display = 'none';
+      });
+
+      // 5. Validasi Login Form
+      let attempts = 0;
+      formLogin.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const pin = pinInput.value.trim();
+
+        if (!email) {
+          showAlert('Harap isi alamat email operator.', true);
+          emailInput.focus();
+          return;
+        }
+
+        if (pin.length !== 6) {
+          showAlert('PIN harus terdiri dari tepat 6 angka.', true);
+          pinInput.focus();
+          return;
+        }
+
+        // Jika PIN dimasukkan 6 digit (bisa demo 123456 atau sembarang 6 angka untuk kemudahan evaluasi)
+        if (pin === '123456' || pin.length === 6) {
+          // Berhasil login
+          alertContainer.style.display = 'block';
+          alertBox.className = 'login-alert-box alert-success';
+          alertBox.querySelector('h3').textContent = 'Login Berhasil';
+          alertDesc.innerHTML = 'Kredensial terverifikasi. Mengarahkan ke Dasbor Operator...';
+
+          setTimeout(function () {
+            window.location.href = 'dasbor.html';
+          }, 600);
+        } else {
+          attempts++;
+          const remaining = 5 - attempts;
+          if (remaining > 0) {
+            showAlert(`Email atau PIN salah. Sisa percobaan: ${remaining} kali sebelum akun dikunci sementara.`, true);
+          } else {
+            showAlert('Akun dikunci selama 15 menit karena 5 kali percobaan gagal. Hubungi administrator.', true);
+            formLogin.querySelector('button[type="submit"]').disabled = true;
+          }
+        }
+      });
+
+      function showAlert(msg, isError) {
+        alertContainer.style.display = 'block';
+        alertBox.className = 'login-alert-box ' + (isError ? 'alert-error' : 'alert-success');
+        alertBox.querySelector('h3').textContent = isError ? 'Login Gagal' : 'Informasi';
+        alertDesc.textContent = msg;
+      }
+    });
+  </script>
 
 </body>
 
