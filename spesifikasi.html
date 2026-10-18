@@ -5,180 +5,1246 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spesifikasi Cetak - PrintShop POS</title>
+  <meta name="description" content="Atur spesifikasi cetak dokumen Anda: ukuran kertas, mode warna, sisi cetak, dan jumlah salinan. Harga terhitung otomatis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+  <style>
+    /* ── Spesifikasi Page Overrides ── */
+    .page-spec {
+      --spec-primary: #1D4ED8;
+      --spec-primary-hover: #1e40af;
+      --spec-primary-light: #eff6ff;
+      --spec-primary-ring: rgba(29, 78, 216, .18);
+      --spec-primary-glow: rgba(29, 78, 216, .35);
+      --spec-font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    .page-spec,
+    .page-spec h1,
+    .page-spec h2,
+    .page-spec h3,
+    .page-spec label,
+    .page-spec input,
+    .page-spec textarea,
+    .page-spec button,
+    .page-spec select {
+      font-family: var(--spec-font);
+    }
+
+    .spec-main {
+      position: relative;
+      background:
+        radial-gradient(800px 340px at 50% 0%, rgba(219, 234, 254, .65), transparent 70%),
+        #fcfdfd;
+    }
+
+    .spec-page-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      max-width: 1140px;
+      margin: 32px auto 52px;
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .spec-page-grid {
+        grid-template-columns: 1fr 380px;
+        gap: 32px;
+      }
+    }
+
+    /* ── Main Form Card ── */
+    .spec-card {
+      width: 100%;
+      padding: 24px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r-xl);
+      box-shadow: var(--sh-md);
+    }
+
+    @media (min-width: 640px) {
+      .spec-card {
+        padding: 36px 32px;
+      }
+    }
+
+    .spec-card-header {
+      margin-bottom: 28px;
+    }
+
+    .spec-card-title {
+      font-size: clamp(24px, 5vw, 32px);
+      letter-spacing: -.03em;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-family: var(--spec-font);
+    }
+
+    .spec-card-sub {
+      font-size: 14.5px;
+      color: var(--body);
+      max-width: 56ch;
+    }
+
+    /* ── Document Info Strip ── */
+    .doc-info-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: linear-gradient(145deg, var(--spec-primary-light) 0%, #fff 80%);
+      border: 1.5px solid #bfdbfe;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      transition: box-shadow .3s var(--ease);
+    }
+
+    .doc-info-strip:hover {
+      box-shadow: 0 4px 18px -4px var(--spec-primary-ring);
+    }
+
+    .doc-info-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+
+    .doc-info-icon img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .doc-info-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .doc-info-name {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-info-meta {
+      font-size: 12.5px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin-top: 2px;
+    }
+
+    .doc-info-meta strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .doc-info-change {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--spec-primary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--r-pill);
+      border: 1px solid #bfdbfe;
+      background: #fff;
+      transition: all .2s var(--ease);
+    }
+
+    .doc-info-change:hover {
+      background: var(--spec-primary-light);
+      color: var(--spec-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px var(--spec-primary-ring);
+    }
+
+    /* ── Fieldset Groups ── */
+    .spec-fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 28px 0;
+    }
+
+    .spec-fieldset-legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+      width: 100%;
+    }
+
+    .spec-fieldset-legend .legend-icon {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--spec-primary-light);
+      flex-shrink: 0;
+    }
+
+    .spec-fieldset-legend .legend-icon svg {
+      width: 16px;
+      height: 16px;
+      color: var(--spec-primary);
+    }
+
+    /* ── Interactive Radio Cards ── */
+    .radio-card-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .radio-card-grid--3 {
+      grid-template-columns: 1fr;
+    }
+
+    .radio-card-grid--2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 560px) {
+      .radio-card-grid--3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .radio-card {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .radio-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .radio-card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 12px;
+      border-radius: 14px;
+      border: 2px solid var(--line);
+      background: var(--surface);
+      transition: all .25s var(--ease);
+      text-align: center;
+    }
+
+    .radio-card-body:hover {
+      border-color: #93c5fd;
+      background: #f8faff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px -4px var(--spec-primary-ring);
+    }
+
+    .radio-card input[type="radio"]:checked + .radio-card-body {
+      border-color: var(--spec-primary);
+      background: var(--spec-primary-light);
+      box-shadow: 0 0 0 4px var(--spec-primary-ring), 0 4px 16px -4px var(--spec-primary-glow);
+    }
+
+    .radio-card input[type="radio"]:focus-visible + .radio-card-body {
+      outline: 3px solid var(--spec-primary-ring);
+      outline-offset: 2px;
+    }
+
+    .radio-card-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      transition: background .25s var(--ease);
+    }
+
+    .radio-card input[type="radio"]:checked + .radio-card-body .radio-card-icon {
+      background: var(--spec-primary);
+    }
+
+    .radio-card-icon svg {
+      width: 20px;
+      height: 20px;
+      color: #64748b;
+      transition: color .25s var(--ease);
+    }
+
+    .radio-card input[type="radio"]:checked + .radio-card-body .radio-card-icon svg {
+      color: #fff;
+    }
+
+    .radio-card-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.01em;
+    }
+
+    .radio-card-desc {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .radio-card-price-tag {
+      display: inline-block;
+      margin-top: 2px;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: var(--r-pill);
+      background: #dbeafe;
+      color: var(--spec-primary);
+      letter-spacing: .02em;
+    }
+
+    .radio-card input[type="radio"]:checked + .radio-card-body .radio-card-price-tag {
+      background: var(--spec-primary);
+      color: #fff;
+    }
+
+    /* ── Stepper Control ── */
+    .stepper-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-radius: 12px;
+      border: 2px solid var(--line);
+      overflow: hidden;
+      width: fit-content;
+      transition: border-color .2s var(--ease);
+    }
+
+    .stepper-wrap:focus-within {
+      border-color: var(--spec-primary);
+      box-shadow: 0 0 0 4px var(--spec-primary-ring);
+    }
+
+    .stepper-btn {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: #f8fafc;
+      cursor: pointer;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 700;
+      transition: all .15s var(--ease);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .stepper-btn:hover {
+      background: var(--spec-primary-light);
+      color: var(--spec-primary);
+    }
+
+    .stepper-btn:active {
+      background: #dbeafe;
+    }
+
+    .stepper-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    .stepper-input {
+      width: 56px;
+      height: 44px;
+      border: none;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+
+    .stepper-input::-webkit-inner-spin-button,
+    .stepper-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .stepper-hint {
+      display: block;
+      margin-top: 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    /* ── Page Range ── */
+    .page-range-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .page-range-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .page-range-custom-input {
+      display: none;
+    }
+
+    .page-range-custom-input.visible {
+      display: block;
+    }
+
+    .page-range-input-field {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--surface);
+      outline: none;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+    }
+
+    .page-range-input-field::placeholder {
+      color: var(--subtle);
+      font-weight: 400;
+    }
+
+    .page-range-input-field:focus {
+      border-color: var(--spec-primary);
+      box-shadow: 0 0 0 4px var(--spec-primary-ring);
+    }
+
+    .page-range-input-field.input-error {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 4px rgba(239,68,68,.12);
+    }
+
+    .page-range-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .page-range-error {
+      display: none;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #dc2626;
+      margin-top: 6px;
+      padding: 8px 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+    }
+
+    .page-range-error.visible {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-range-error svg {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── Notes Textarea ── */
+    .notes-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px 14px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--surface);
+      outline: none;
+      resize: vertical;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+      font-family: var(--spec-font);
+    }
+
+    .notes-textarea::placeholder {
+      color: var(--subtle);
+      font-weight: 400;
+    }
+
+    .notes-textarea:focus {
+      border-color: var(--spec-primary);
+      box-shadow: 0 0 0 4px var(--spec-primary-ring);
+    }
+
+    .notes-counter {
+      display: block;
+      text-align: right;
+      margin-top: 4px;
+      font-size: 11.5px;
+      color: var(--subtle);
+    }
+
+    /* ── Sticky Submit Bar ── */
+    .spec-submit-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      margin-top: 8px;
+    }
+
+    .btn-spec-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 52px;
+      padding: 0 28px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(180deg, var(--spec-primary) 0%, var(--spec-primary-hover) 100%);
+      box-shadow: 0 4px 16px -2px var(--spec-primary-glow), inset 0 1px 0 rgba(255,255,255,.2);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .2s;
+      -webkit-tap-highlight-color: transparent;
+      font-family: var(--spec-font);
+    }
+
+    .btn-spec-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px var(--spec-primary-glow);
+    }
+
+    .btn-spec-submit:active {
+      transform: translateY(0) scale(.99);
+    }
+
+    .btn-spec-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 44px;
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--body);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s var(--ease);
+      font-family: var(--spec-font);
+    }
+
+    .btn-spec-back:hover {
+      color: var(--spec-primary);
+      border-color: #bfdbfe;
+      background: var(--spec-primary-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── Sidebar: Live Summary Card ── */
+    .spec-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .summary-card {
+      position: sticky;
+      top: calc(var(--header-h) + 62px);
+      padding: 22px;
+      background: var(--surface);
+      border: 2px solid #bfdbfe;
+      border-radius: var(--r-xl);
+      box-shadow: 0 8px 28px -4px var(--spec-primary-ring);
+    }
+
+    .summary-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-card-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--spec-primary);
+      flex-shrink: 0;
+    }
+
+    .summary-card-icon svg {
+      width: 18px;
+      height: 18px;
+      color: #fff;
+    }
+
+    .summary-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+
+    .summary-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+    }
+
+    .summary-row .s-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .summary-row .s-value {
+      font-weight: 700;
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 4px 0;
+    }
+
+    .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--spec-primary-light) 0%, #dbeafe 100%);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .summary-total-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--spec-primary-hover);
+    }
+
+    .summary-total-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--spec-primary);
+      letter-spacing: -.03em;
+    }
+
+    .summary-note {
+      font-size: 11.5px;
+      color: var(--subtle);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ── Sidebar: Info Cards ── */
+    .spec-sidebar .sidebar-card {
+      padding: 18px 20px;
+    }
+
+    .spec-sidebar .sidebar-card-header {
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+    }
+
+    /* ── Eco Badge ── */
+    .eco-badge-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 18px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 14px;
+    }
+
+    .eco-badge-icon {
+      font-size: 20px;
+      line-height: 1.3;
+      flex-shrink: 0;
+    }
+
+    .eco-badge-text {
+      font-size: 13px;
+      color: #166534;
+      line-height: 1.55;
+    }
+
+    .eco-badge-text strong {
+      font-weight: 700;
+    }
+
+    /* ── Step nav override for spec page ── */
+    .page-spec .step-badge-indicator.active {
+      border-color: var(--spec-primary);
+      background: var(--spec-primary-light);
+      color: var(--spec-primary-hover);
+      box-shadow: 0 4px 14px -3px var(--spec-primary-glow);
+    }
+
+    .page-spec .step-badge-indicator.active > span:first-child {
+      background: var(--spec-primary);
+      box-shadow: 0 2px 6px var(--spec-primary-glow);
+    }
+
+    .page-spec .step-badge-indicator.done {
+      color: #059669;
+      border-color: #a7f3d0;
+      background: #ecfdf5;
+    }
+
+    .page-spec .step-badge-indicator.done > span:first-child {
+      background: #10b981;
+      color: #fff;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .spec-card {
+      animation: fadeInUp .5s var(--ease) both;
+    }
+
+    .summary-card {
+      animation: fadeInUp .5s .15s var(--ease) both;
+    }
+
+    /* ── Responsive helpers ── */
+    @media (max-width: 767px) {
+      .spec-page-grid {
+        gap: 20px;
+        margin: 20px auto 40px;
+      }
+
+      .doc-info-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .doc-info-change {
+        align-self: stretch;
+        text-align: center;
+      }
+
+      .radio-card-grid--2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .summary-card {
+        position: static;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body class="page-spec">
 
-  <header>
-    <h1>PrintShop POS</h1>
-    <nav aria-label="Navigasi utama">
-      <ul>
-        <li><a href="index.html">Beranda</a></li>
-        <li><a href="unggah.html">Unggah</a></li>
-        <li><a href="spesifikasi.html" aria-current="page">Spesifikasi</a></li>
-        <li><a href="pembayaran.html">Pembayaran</a></li>
-      </ul>
-    </nav>
-    <p>Langkah 2 dari 4: Atur Spesifikasi Cetak</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+        <span class="brand-icon-box">
+          <img src="./assets/images/logo-operator.svg" alt="Logo Printer PrintShop POS" />
+        </span>
+        <span class="brand-title-wrap">
+          <span class="brand-name">PrintShop POS</span>
+          <span class="brand-tagline">Self-Service Digital Print</span>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Navigasi Utama">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="unggah.html" class="nav-link">Unggah Dokumen</a>
+        <a href="index.html#tarif" class="nav-link">Tarif &amp; Layanan</a>
+        <a href="index.html#lacak" class="nav-link">Lacak Pesanan</a>
+      </nav>
+
+      <div class="header-action-group">
+        <a href="unggah.html" class="btn-primary btn-placeholder" aria-hidden="true" tabindex="-1">Mulai Cetak</a>
+
+        <input type="checkbox" id="nav-toggle" class="mobile-nav-toggle" aria-label="Buka atau tutup menu" />
+        <label for="nav-toggle" class="mobile-menu-btn" aria-label="Menu navigasi">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </label>
+
+        <nav class="mobile-dropdown-menu" aria-label="Navigasi Mobile">
+          <ul class="mobile-nav-links">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="unggah.html">Mulai Cetak Dokumen</a></li>
+            <li><a href="index.html#cara-kerja">Cara Kerja</a></li>
+            <li><a href="index.html#tarif">Daftar Tarif</a></li>
+            <li><a href="index.html#lacak">Lacak Pesanan</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </header>
 
-  <main>
+  <nav class="step-nav-bar" aria-label="Tahapan Pemesanan">
+    <div class="container step-nav-inner">
+      <span class="step-badge-indicator done">
+        <span>✓</span> <span class="step-label">Unggah <span class="step-label-extra">Berkas</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator active" aria-current="step">
+        <span>02</span> <span class="step-label">Atur <span class="step-label-extra">Spesifikasi</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator">
+        <span>03</span> <span class="step-label">Bayar <span class="step-label-extra">QRIS</span></span>
+      </span>
+    </div>
+  </nav>
 
-    <section aria-labelledby="spek-heading">
-      <h2 id="spek-heading">Atur Spesifikasi Cetak</h2>
-      <p>Tentukan pengaturan cetak sesuai kebutuhan Anda. Harga akan diperbarui otomatis setiap ada perubahan.</p>
+  <main class="spec-main">
+    <div class="container">
+      <div class="spec-page-grid">
 
-      <article aria-label="Informasi dokumen yang diunggah">
-        <h3>Dokumen yang Diunggah</h3>
-        <figure>
-          <img src="./assets/images/file-icon-pdf.svg" alt="Ikon file PDF berwarna merah" width="48" height="48" />
-          <figcaption>
-            <dl>
-              <dt>Nama File: tugas-akhir-bab3.pdf</dt>
-              <dt>Ukuran File: 2,4 MB</dt>
-              <dt>Jumlah Halaman: 24 halaman</dt>
-            </dl>
-          </figcaption>
-        </figure>
-        <p><a href="unggah.html">← Ganti file</a></p>
-      </article>
+        <!-- ═══ LEFT: FORM ═══ -->
+        <section class="spec-card" aria-labelledby="spek-heading">
+          <header class="spec-card-header">
+            <h1 class="spec-card-title" id="spek-heading">Atur Spesifikasi Cetak</h1>
+            <p class="spec-card-sub">Tentukan pengaturan cetak sesuai kebutuhan Anda. Harga diperbarui otomatis setiap ada perubahan.</p>
+          </header>
 
-      <form id="form-spesifikasi" action="pembayaran.html" method="post" novalidate>
-        <fieldset>
-          <legend>Ukuran Kertas</legend>
-          <p>
-            <input type="radio" id="kertas-a4" name="ukuran-kertas" value="A4" checked />
-            <label for="kertas-a4">A4 (210 × 297 mm) - Standar</label>
-          </p>
-          <p>
-            <input type="radio" id="kertas-f4" name="ukuran-kertas" value="F4" />
-            <label for="kertas-f4">F4 / Folio (215 × 330 mm)</label>
-          </p>
-          <p>
-            <input type="radio" id="kertas-a3" name="ukuran-kertas" value="A3" />
-            <label for="kertas-a3">A3 (297 × 420 mm)</label>
-          </p>
-          <p>
-            <input type="radio" id="kertas-letter" name="ukuran-kertas" value="Letter" />
-            <label for="kertas-letter">Letter (215.9 × 279.4 mm)</label>
-          </p>
-        </fieldset>
+          <!-- Document info -->
+          <article class="doc-info-strip" aria-label="Informasi dokumen yang diunggah">
+            <div class="doc-info-icon">
+              <img src="./assets/images/file-icon-pdf.svg" alt="Ikon file PDF" />
+            </div>
+            <div class="doc-info-text">
+              <p class="doc-info-name" id="doc-filename">tugas-akhir-bab3.pdf</p>
+              <p class="doc-info-meta">
+                <span>Ukuran: <strong>2,4 MB</strong></span>
+                <span>Halaman: <strong id="doc-total-pages" data-total="24">24 halaman</strong></span>
+                <span style="color:#059669;font-weight:600;">✓ Terverifikasi</span>
+              </p>
+            </div>
+            <a href="unggah.html" class="doc-info-change">Ganti Berkas</a>
+          </article>
 
-        <fieldset>
-          <legend>Mode Warna</legend>
-          <p>
-            <input type="radio" id="warna-bw" name="mode-warna" value="BW" checked />
-            <label for="warna-bw">Hitam &amp; Putih (Rp 500/lembar)</label>
-          </p>
-          <p>
-            <input type="radio" id="warna-color" name="mode-warna" value="Color" />
-            <label for="warna-color">Full Color (Rp 2.000/lembar)</label>
-          </p>
-        </fieldset>
+          <form id="form-spesifikasi" action="pembayaran.html" method="get" novalidate>
 
-        <fieldset>
-          <legend>Sisi Cetak</legend>
-          <p>
-            <input type="radio" id="sisi-satu" name="sisi-cetak" value="simplex" checked />
-            <label for="sisi-satu">Satu Sisi (Simplex)</label>
-          </p>
-          <p>
-            <input type="radio" id="sisi-dua" name="sisi-cetak" value="duplex" />
-            <label for="sisi-dua">Dua Sisi / Bolak-Balik (Duplex)</label>
-          </p>
-        </fieldset>
+            <!-- ── Ukuran Kertas ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                Ukuran Kertas
+              </legend>
+              <div class="radio-card-grid radio-card-grid--3" role="radiogroup" aria-label="Pilih ukuran kertas">
 
-        <fieldset>
-          <legend>Jumlah Salinan</legend>
-          <p>
-            <label for="jumlah-salinan">Jumlah salinan yang diinginkan</label>
-            <input type="number" id="jumlah-salinan" name="jumlah-salinan" value="1" min="1" max="50" required
-              aria-describedby="salinan-hint" />
-            <span id="salinan-hint">Minimal 1, maksimal 50 salinan.</span>
-          </p>
-        </fieldset>
+                <label class="radio-card" id="card-kertas-a4">
+                  <input type="radio" name="ukuran-kertas" value="A4" checked />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                    </span>
+                    <span class="radio-card-label">A4</span>
+                    <span class="radio-card-desc">210 × 297 mm — Standar</span>
+                    <span class="radio-card-price-tag">Rp 500 / lbr</span>
+                  </span>
+                </label>
 
-        <fieldset>
-          <legend>Rentang Halaman</legend>
-          <p>
-            <input type="radio" id="halaman-semua" name="rentang-halaman" value="all" checked />
-            <label for="halaman-semua">Semua Halaman (1–24)</label>
-          </p>
-          <p>
-            <input type="radio" id="halaman-pilih" name="rentang-halaman" value="custom" />
-            <label for="halaman-pilih">Pilih Rentang Tertentu</label>
-          </p>
-          <p>
-            <label for="halaman-dari">Dari Halaman</label>
-            <input type="number" id="halaman-dari" name="halaman-dari" value="1" min="1" max="24"
-              aria-describedby="halaman-hint" />
-            <label for="halaman-sampai">Sampai Halaman</label>
-            <input type="number" id="halaman-sampai" name="halaman-sampai" value="24" min="1" max="24" />
-            <span id="halaman-hint">Dokumen memiliki 24 halaman. Pastikan rentang tidak melebihi total halaman.</span>
-          </p>
-        </fieldset>
+                <label class="radio-card" id="card-kertas-f4">
+                  <input type="radio" name="ukuran-kertas" value="F4" />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
+                    </span>
+                    <span class="radio-card-label">F4 / Folio</span>
+                    <span class="radio-card-desc">215 × 330 mm</span>
+                    <span class="radio-card-price-tag">Rp 600 / lbr</span>
+                  </span>
+                </label>
 
-        <fieldset>
-          <legend>Catatan Tambahan untuk Operator (Opsional)</legend>
-          <p>
-            <label for="catatan">Catatan Khusus</label>
-            <textarea id="catatan" name="catatan" rows="3" maxlength="200"
-              placeholder="Contoh: Harap cetak dengan margin 2 cm, atau lembar terakhir portrait."
-              aria-describedby="catatan-hint"></textarea>
-            <span id="catatan-hint">Maksimal 200 karakter. Disampaikan langsung ke operator.</span>
-          </p>
-        </fieldset>
+                <label class="radio-card" id="card-kertas-a3">
+                  <input type="radio" name="ukuran-kertas" value="A3" />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1" width="18" height="22" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="7" y1="17" x2="13" y2="17"/></svg>
+                    </span>
+                    <span class="radio-card-label">A3</span>
+                    <span class="radio-card-desc">297 × 420 mm — Besar</span>
+                    <span class="radio-card-price-tag">Rp 1.000 / lbr</span>
+                  </span>
+                </label>
 
-        <section aria-labelledby="estimasi-heading">
-          <h3 id="estimasi-heading">Estimasi Biaya</h3>
-          <table aria-live="polite" aria-label="Rincian estimasi biaya cetak" border="1">
-            <caption>Rincian harga berdasarkan spesifikasi yang dipilih</caption>
-            <tbody>
-              <tr>
-                <th scope="row">Jumlah Halaman Dicetak</th>
-                <td id="estimasi-halaman">24 halaman</td>
-              </tr>
-              <tr>
-                <th scope="row">Jumlah Salinan</th>
-                <td id="estimasi-salinan">1 salinan</td>
-              </tr>
-              <tr>
-                <th scope="row">Harga per Lembar</th>
-                <td id="estimasi-harga-per">Rp 500</td>
-              </tr>
-              <tr>
-                <th scope="row">Mode Warna</th>
-                <td id="estimasi-warna">Hitam &amp; Putih</td>
-              </tr>
-              <tr>
-                <th scope="row">Sisi Cetak</th>
-                <td id="estimasi-sisi">Satu Sisi</td>
-              </tr>
-              <tr>
-                <th scope="row"><strong>Total Estimasi</strong></th>
-                <td id="estimasi-total"><strong>Rp 12.000</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          <p><small>*Harga final dikonfirmasi setelah file diverifikasi sistem.</small></p>
+              </div>
+            </fieldset>
+
+            <!-- ── Mode Warna ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </span>
+                Mode Warna
+              </legend>
+              <div class="radio-card-grid radio-card-grid--2" role="radiogroup" aria-label="Pilih mode warna">
+
+                <label class="radio-card" id="card-warna-bw">
+                  <input type="radio" name="mode-warna" value="BW" checked />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20z"/></svg>
+                    </span>
+                    <span class="radio-card-label">Hitam &amp; Putih</span>
+                    <span class="radio-card-desc">Standar untuk teks dokumen</span>
+                    <span class="radio-card-price-tag">Hemat</span>
+                  </span>
+                </label>
+
+                <label class="radio-card" id="card-warna-color">
+                  <input type="radio" name="mode-warna" value="Color" />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 22c5.5-2 8-7 8-12a8 8 0 1 0-16 0c0 5 2.5 10 8 12z"/></svg>
+                    </span>
+                    <span class="radio-card-label">Full Color</span>
+                    <span class="radio-card-desc">Gambar, grafik, dan presentasi</span>
+                    <span class="radio-card-price-tag">+Rp 2.000 / lbr</span>
+                  </span>
+                </label>
+
+              </div>
+            </fieldset>
+
+            <!-- ── Sisi Cetak ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                </span>
+                Sisi Cetak
+              </legend>
+              <div class="radio-card-grid radio-card-grid--2" role="radiogroup" aria-label="Pilih sisi cetak">
+
+                <label class="radio-card" id="card-sisi-simplex">
+                  <input type="radio" name="sisi-cetak" value="simplex" checked />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+                    </span>
+                    <span class="radio-card-label">Simplex</span>
+                    <span class="radio-card-desc">Cetak satu sisi saja</span>
+                    <span class="radio-card-price-tag">Standar</span>
+                  </span>
+                </label>
+
+                <label class="radio-card" id="card-sisi-duplex">
+                  <input type="radio" name="sisi-cetak" value="duplex" />
+                  <span class="radio-card-body">
+                    <span class="radio-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="11" height="18" rx="2"/><rect x="10" y="4" width="11" height="18" rx="2"/></svg>
+                    </span>
+                    <span class="radio-card-label">Duplex</span>
+                    <span class="radio-card-desc">Bolak-balik, hemat kertas</span>
+                    <span class="radio-card-price-tag">+Rp 900 / lbr fisik</span>
+                  </span>
+                </label>
+
+              </div>
+
+              <div class="eco-badge-card" id="eco-badge" style="margin-top:12px; display:none;">
+                <span class="eco-badge-icon" aria-hidden="true">🍃</span>
+                <p class="eco-badge-text">
+                  <strong>Mode Hemat Kertas Aktif!</strong> Dengan Duplex, dokumen <span id="eco-pages-info">24 halaman</span> Anda hanya memerlukan <strong id="eco-sheets-info">12 lembar</strong> kertas fisik.
+                </p>
+              </div>
+            </fieldset>
+
+            <!-- ── Jumlah Salinan ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="13" height="18" rx="2"/><path d="M3 7v12a2 2 0 0 0 2 2h10"/></svg>
+                </span>
+                Jumlah Salinan
+              </legend>
+              <div class="stepper-wrap">
+                <button type="button" class="stepper-btn" id="btn-copies-minus" aria-label="Kurangi salinan">−</button>
+                <input type="number" id="jumlah-salinan" name="jumlah-salinan" class="stepper-input" value="1" min="1" max="50" aria-label="Jumlah salinan" />
+                <button type="button" class="stepper-btn" id="btn-copies-plus" aria-label="Tambah salinan">+</button>
+              </div>
+              <small class="stepper-hint" id="salinan-hint">Minimal 1, maksimal 50 salinan.</small>
+            </fieldset>
+
+            <!-- ── Rentang Halaman ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </span>
+                Rentang Halaman
+              </legend>
+              <div class="page-range-group">
+                <div class="page-range-options">
+                  <label class="radio-card" id="card-range-all">
+                    <input type="radio" name="rentang-halaman" value="all" checked />
+                    <span class="radio-card-body">
+                      <span class="radio-card-label">Semua Halaman</span>
+                      <span class="radio-card-desc" id="range-all-label">Halaman 1 – 24</span>
+                    </span>
+                  </label>
+
+                  <label class="radio-card" id="card-range-custom">
+                    <input type="radio" name="rentang-halaman" value="custom" />
+                    <span class="radio-card-body">
+                      <span class="radio-card-label">Pilih Halaman</span>
+                      <span class="radio-card-desc">Tentukan rentang tertentu</span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="page-range-custom-input" id="custom-range-wrap">
+                  <label for="halaman-custom" class="sr-only">Rentang halaman kustom</label>
+                  <input type="text" id="halaman-custom" name="halaman-custom" class="page-range-input-field" placeholder="Contoh: 1-5, 8, 12-15" aria-describedby="range-hint range-error" />
+                  <small class="page-range-hint" id="range-hint">Gunakan format: 1-5, 8, 12-15. Maks halaman: <strong id="range-max-hint">24</strong>.</small>
+                  <div class="page-range-error" id="range-error" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span id="range-error-msg">Format tidak valid.</span>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- ── Catatan ── -->
+            <fieldset class="spec-fieldset">
+              <legend class="spec-fieldset-legend">
+                <span class="legend-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                Catatan untuk Operator <span style="font-weight:400;color:var(--muted);font-size:13px;">(Opsional)</span>
+              </legend>
+              <textarea id="catatan" name="catatan" class="notes-textarea" rows="3" maxlength="200" placeholder="Contoh: Harap cetak dengan margin 2 cm, atau lembar terakhir portrait." aria-describedby="catatan-counter"></textarea>
+              <span class="notes-counter" id="catatan-counter">0 / 200 karakter</span>
+            </fieldset>
+
+            <!-- ── Submit Bar ── -->
+            <div class="spec-submit-bar">
+              <button type="submit" class="btn-spec-submit" id="btn-submit">
+                Lanjut ke Pembayaran &rarr;
+              </button>
+              <a href="unggah.html" class="btn-spec-back">
+                &larr; Kembali ke Unggah
+              </a>
+            </div>
+
+          </form>
         </section>
 
-        <p>
-          <button type="submit">Lanjut ke Pembayaran →</button>
-        </p>
-        <p>
-          <a href="unggah.html">← Kembali ke Unggah</a>
-        </p>
-      </form>
+        <!-- ═══ RIGHT: SIDEBAR ═══ -->
+        <aside class="spec-sidebar" aria-label="Ringkasan & Informasi">
 
-    </section>
+          <!-- Live Summary -->
+          <div class="summary-card" aria-live="polite" aria-label="Rincian estimasi biaya cetak">
+            <div class="summary-card-header">
+              <span class="summary-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </span>
+              <h2 class="summary-card-title">Estimasi Biaya</h2>
+            </div>
+            <div class="summary-rows">
+              <div class="summary-row">
+                <span class="s-label">Ukuran Kertas</span>
+                <span class="s-value" id="sum-paper">A4</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Mode Warna</span>
+                <span class="s-value" id="sum-color">Hitam & Putih</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Sisi Cetak</span>
+                <span class="s-value" id="sum-side">Simplex</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-row">
+                <span class="s-label">Halaman Dicetak</span>
+                <span class="s-value" id="sum-pages">24 hal</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Lembar Fisik</span>
+                <span class="s-value" id="sum-sheets">24 lbr</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Jumlah Salinan</span>
+                <span class="s-value" id="sum-copies">1×</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-row">
+                <span class="s-label">Harga Dasar / Lembar</span>
+                <span class="s-value" id="sum-base-price">Rp 500</span>
+              </div>
+              <div class="summary-row" id="sum-color-row" style="display:none;">
+                <span class="s-label">Tambahan Warna / Lembar</span>
+                <span class="s-value" id="sum-color-price">Rp 2.000</span>
+              </div>
+              <div class="summary-row" id="sum-duplex-row" style="display:none;">
+                <span class="s-label">Tambahan Duplex / Lembar</span>
+                <span class="s-value" id="sum-duplex-price">Rp 900</span>
+              </div>
+            </div>
+            <div class="summary-total-row">
+              <span class="summary-total-label">Total Estimasi</span>
+              <span class="summary-total-value" id="sum-total">Rp 12.000</span>
+            </div>
+            <p class="summary-note">*Harga final dikonfirmasi setelah file diverifikasi sistem.</p>
+          </div>
 
+          <!-- Info Card: Tarif -->
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <span class="sidebar-icon-wrap" style="background:var(--spec-primary-light);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </span>
+              <div>
+                <h2 class="sidebar-card-title">Rincian Tarif</h2>
+                <p class="sidebar-card-sub">Tarif per lembar fisik</p>
+              </div>
+            </div>
+            <div class="sidebar-meta-list">
+              <div class="sidebar-meta-row">
+                <span class="meta-label">A4 (B&W)</span>
+                <span class="meta-val">Rp 500</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">F4 (B&W)</span>
+                <span class="meta-val">Rp 600</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">A3 (B&W)</span>
+                <span class="meta-val">Rp 1.000</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Full Color</span>
+                <span class="meta-val" style="color:var(--spec-primary);">+Rp 2.000</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Duplex</span>
+                <span class="meta-val" style="color:var(--spec-primary);">+Rp 900</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy badge -->
+          <div class="sidebar-card" style="background:linear-gradient(145deg, #eff6ff, #fff); border-color:#bfdbfe;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:22px;">🔒</span>
+              <h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.02em;">Privasi & Keamanan</h3>
+            </div>
+            <p style="font-size:12.5px;color:var(--body);line-height:1.55;margin-top:8px;">
+              Dokumen kamu dienkripsi dan dihapus permanen 24 jam setelah cetak selesai. Operator tidak membuka isi dokumen pribadimu.
+            </p>
+          </div>
+        </aside>
+
+      </div>
+    </div>
   </main>
 
-  <footer>
-    <p><small>PrintShop POS - Atur spesifikasi dengan tepat untuk menghindari kesalahan cetak.</small></p>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+            <span class="brand-icon-box brand-icon-box--sm">
+              <img src="./assets/images/logo-operator.svg" alt="Logo" />
+            </span>
+            <span class="brand-name brand-name--sm">PrintShop POS</span>
+          </a>
+          <p class="footer-brand-desc">
+            Layanan cetak mandiri instan tanpa antre kasir &amp; bebas ribet untuk mahasiswa.
+          </p>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="unggah.html">Mulai Cetak</a></li>
+          <li><a href="index.html#tarif">Tarif Kertas</a></li>
+          <li><a href="index.html#lacak">Lacak Tiket</a></li>
+          <li><a href="login.html" class="footer-link-badge">Login Operator &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>PrintShop POS | Dikembangkan oleh <strong>Kelompok 2 &ndash; Divisi Web UI/UX Developer</strong></p>
+        <div class="footer-trust-chip">
+          <span class="trust-chip-dot"></span>
+          <span>Privasi Terjamin | Berkas Dihapus Otomatis 24 Jam Pasca-Cetak</span>
+        </div>
+      </div>
+    </div>
   </footer>
 
+  <script src="./assets/js/pricing-calc.js"></script>
 </body>
 
 </html>
