@@ -5,153 +5,1192 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pembayaran QRIS - PrintShop POS</title>
+  <meta name="description" content="Bayar pesanan cetak Anda via QRIS. Scan kode QR dengan GoPay, OVO, Dana, atau m-Banking. Konfirmasi otomatis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+  <style>
+    /* ── Pembayaran Page Overrides ── */
+    .page-pay {
+      --pay-primary: #1D4ED8;
+      --pay-primary-hover: #1e40af;
+      --pay-primary-light: #eff6ff;
+      --pay-primary-ring: rgba(29, 78, 216, .18);
+      --pay-primary-glow: rgba(29, 78, 216, .35);
+      --pay-font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    .page-pay,
+    .page-pay h1,
+    .page-pay h2,
+    .page-pay h3,
+    .page-pay label,
+    .page-pay button,
+    .page-pay p,
+    .page-pay span,
+    .page-pay strong {
+      font-family: var(--pay-font);
+    }
+
+    .pay-main {
+      position: relative;
+      background:
+        radial-gradient(800px 340px at 50% 0%, rgba(219, 234, 254, .65), transparent 70%),
+        #fcfdfd;
+    }
+
+    .pay-page-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      max-width: 1140px;
+      margin: 32px auto 52px;
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .pay-page-grid {
+        grid-template-columns: 1fr 380px;
+        gap: 32px;
+      }
+    }
+
+    /* ── QRIS Main Card ── */
+    .pay-card {
+      width: 100%;
+      padding: 24px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r-xl);
+      box-shadow: var(--sh-md);
+    }
+
+    @media (min-width: 640px) {
+      .pay-card {
+        padding: 36px 32px;
+      }
+    }
+
+    .pay-card-header {
+      margin-bottom: 28px;
+    }
+
+    .pay-card-title {
+      font-size: clamp(24px, 5vw, 32px);
+      letter-spacing: -.03em;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .pay-card-sub {
+      font-size: 14.5px;
+      color: var(--body);
+      max-width: 56ch;
+    }
+
+    /* ── Status Badge ── */
+    .status-badge-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: var(--r-pill);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      transition: all .4s var(--ease);
+    }
+
+    .status-badge--pending {
+      color: #92400e;
+      background: #fef3c7;
+      border: 1.5px solid #fde68a;
+      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+      animation: pulse-pending 2s ease-in-out infinite;
+    }
+
+    .status-badge--expired {
+      color: #991b1b;
+      background: #fee2e2;
+      border: 1.5px solid #fecaca;
+      animation: none;
+    }
+
+    .status-badge--paid {
+      color: #065f46;
+      background: #d1fae5;
+      border: 1.5px solid #a7f3d0;
+      animation: none;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-dot--pending {
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, .6);
+    }
+
+    .status-dot--expired {
+      background: #ef4444;
+    }
+
+    .status-dot--paid {
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, .6);
+    }
+
+    @keyframes pulse-pending {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+      50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, .15); }
+    }
+
+    /* ── Timer Section ── */
+    .timer-section {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .timer-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+
+    .timer-display {
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      transition: color .3s;
+    }
+
+    .timer-display.timer--warning {
+      color: #dc2626;
+    }
+
+    .timer-display.timer--expired {
+      color: #991b1b;
+      opacity: .6;
+    }
+
+    /* ── Progress Bar ── */
+    .progress-bar-wrap {
+      width: 100%;
+      max-width: 320px;
+      height: 6px;
+      margin: 12px auto 0;
+      background: #e2e8f0;
+      border-radius: var(--r-pill);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: var(--r-pill);
+      background: linear-gradient(90deg, var(--pay-primary), #3b82f6);
+      transition: width .3s linear;
+      will-change: width;
+    }
+
+    .progress-bar-fill.progress--warning {
+      background: linear-gradient(90deg, #ef4444, #f97316);
+    }
+
+    .progress-bar-fill.progress--expired {
+      background: #991b1b;
+      width: 0% !important;
+    }
+
+    /* ── QR Panel ── */
+    .qr-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px;
+      background: linear-gradient(145deg, var(--pay-primary-light) 0%, #fff 80%);
+      border: 2px solid #bfdbfe;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      transition: all .3s var(--ease);
+    }
+
+    .qr-panel:hover {
+      box-shadow: 0 8px 28px -6px var(--pay-primary-ring);
+    }
+
+    .qr-image-wrap {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 4px 16px -4px rgba(0,0,0,.08);
+      border: 3px solid #fff;
+    }
+
+    .qr-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .qr-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(4px);
+      border-radius: 13px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all .35s var(--ease);
+    }
+
+    .qr-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .qr-overlay-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fee2e2;
+    }
+
+    .qr-overlay-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #dc2626;
+    }
+
+    .qr-overlay-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #991b1b;
+      text-align: center;
+    }
+
+    /* Paid overlay */
+    .qr-overlay--paid .qr-overlay-icon {
+      background: #d1fae5;
+    }
+
+    .qr-overlay--paid .qr-overlay-icon svg {
+      color: #059669;
+    }
+
+    .qr-overlay--paid .qr-overlay-text {
+      color: #065f46;
+    }
+
+    .qr-merchant {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .qr-amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--pay-primary);
+      letter-spacing: -.03em;
+    }
+
+    /* ── Action Buttons ── */
+    .pay-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .btn-pay-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 48px;
+      padding: 0 24px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      border: none;
+      cursor: pointer;
+      transition: all .25s var(--ease);
+      font-family: var(--pay-font);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-pay-action svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-save-qr {
+      color: var(--pay-primary);
+      background: var(--pay-primary-light);
+      border: 1.5px solid #bfdbfe;
+    }
+
+    .btn-save-qr:hover {
+      background: #dbeafe;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px -4px var(--pay-primary-ring);
+    }
+
+    .btn-simulate {
+      color: #fff;
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 4px 16px -2px rgba(16, 185, 129, .35), inset 0 1px 0 rgba(255,255,255,.2);
+    }
+
+    .btn-simulate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(16, 185, 129, .45);
+    }
+
+    .btn-simulate:active {
+      transform: translateY(0) scale(.99);
+    }
+
+    .btn-reload-qr {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+    }
+
+    .btn-reload-qr:hover {
+      background: #fee2e2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px -4px rgba(239, 68, 68, .18);
+    }
+
+    .btn-reload-qr:disabled,
+    .btn-save-qr:disabled,
+    .btn-simulate:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Hidden by default */
+    .btn-reload-qr {
+      display: none;
+    }
+
+    .btn-reload-qr.visible {
+      display: inline-flex;
+    }
+
+    /* ── Expired Alert ── */
+    .expired-alert {
+      display: none;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px;
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+
+    .expired-alert.visible {
+      display: flex;
+    }
+
+    .expired-alert-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: #fee2e2;
+    }
+
+    .expired-alert-icon svg {
+      width: 18px;
+      height: 18px;
+      color: #dc2626;
+    }
+
+    .expired-alert-text {
+      flex: 1;
+    }
+
+    .expired-alert-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 2px;
+    }
+
+    .expired-alert-desc {
+      font-size: 13px;
+      color: #b91c1c;
+      line-height: 1.5;
+    }
+
+    /* ── Paid Success Alert ── */
+    .paid-alert {
+      display: none;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px;
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+
+    .paid-alert.visible {
+      display: flex;
+    }
+
+    .paid-alert-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: #d1fae5;
+    }
+
+    .paid-alert-icon svg {
+      width: 18px;
+      height: 18px;
+      color: #059669;
+    }
+
+    .paid-alert-text {
+      flex: 1;
+    }
+
+    .paid-alert-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 2px;
+    }
+
+    .paid-alert-desc {
+      font-size: 13px;
+      color: #047857;
+      line-height: 1.5;
+    }
+
+    /* ── Guide Section ── */
+    .guide-section {
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .guide-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+
+    .guide-title .guide-icon {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--pay-primary-light);
+      flex-shrink: 0;
+    }
+
+    .guide-title .guide-icon svg {
+      width: 16px;
+      height: 16px;
+      color: var(--pay-primary);
+    }
+
+    .guide-steps {
+      counter-reset: guide;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .guide-step {
+      counter-increment: guide;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--body);
+      line-height: 1.55;
+    }
+
+    .guide-step::before {
+      content: counter(guide);
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pay-primary);
+      background: var(--pay-primary-light);
+      border-radius: 50%;
+      margin-top: 1px;
+    }
+
+    /* ── Sidebar ── */
+    .pay-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      position: sticky;
+      top: calc(var(--header-h) + 62px);
+      padding: 22px;
+      background: var(--surface);
+      border: 2px solid #bfdbfe;
+      border-radius: var(--r-xl);
+      box-shadow: 0 8px 28px -4px var(--pay-primary-ring);
+    }
+
+    .summary-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-card-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--pay-primary);
+      flex-shrink: 0;
+    }
+
+    .summary-card-icon svg {
+      width: 18px;
+      height: 18px;
+      color: #fff;
+    }
+
+    .summary-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+
+    .summary-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+    }
+
+    .summary-row .s-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .summary-row .s-value {
+      font-weight: 700;
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 4px 0;
+    }
+
+    .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--pay-primary-light) 0%, #dbeafe 100%);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .summary-total-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--pay-primary-hover);
+    }
+
+    .summary-total-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--pay-primary);
+      letter-spacing: -.03em;
+    }
+
+    .summary-note {
+      font-size: 11.5px;
+      color: var(--subtle);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ── Troubleshoot Card ── */
+    .troubleshoot-card {
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r-xl);
+      box-shadow: var(--sh-sm);
+    }
+
+    .troubleshoot-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .troubleshoot-title span:first-child {
+      font-size: 18px;
+    }
+
+    .troubleshoot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .troubleshoot-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--body);
+      line-height: 1.5;
+    }
+
+    .troubleshoot-item::before {
+      content: "•";
+      color: var(--subtle);
+      font-weight: 700;
+      margin-top: -1px;
+    }
+
+    /* ── Navigation Bar ── */
+    .pay-nav-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      margin-top: 8px;
+    }
+
+    .btn-pay-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 44px;
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--body);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s var(--ease);
+      font-family: var(--pay-font);
+    }
+
+    .btn-pay-back:hover {
+      color: var(--pay-primary);
+      border-color: #bfdbfe;
+      background: var(--pay-primary-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── Toast Notification ── */
+    .toast-notification {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      background: #0f172a;
+      color: #fff;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--pay-font);
+      box-shadow: 0 12px 32px -4px rgba(0,0,0,.3);
+      z-index: 999;
+      opacity: 0;
+      transition: all .4s var(--ease);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast-notification.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast-notification svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #34d399;
+    }
+
+    /* ── Step nav override ── */
+    .page-pay .step-badge-indicator.active {
+      border-color: var(--pay-primary);
+      background: var(--pay-primary-light);
+      color: var(--pay-primary-hover);
+      box-shadow: 0 4px 14px -3px var(--pay-primary-glow);
+    }
+
+    .page-pay .step-badge-indicator.active > span:first-child {
+      background: var(--pay-primary);
+      box-shadow: 0 2px 6px var(--pay-primary-glow);
+    }
+
+    .page-pay .step-badge-indicator.done {
+      color: #059669;
+      border-color: #a7f3d0;
+      background: #ecfdf5;
+    }
+
+    .page-pay .step-badge-indicator.done > span:first-child {
+      background: #10b981;
+      color: #fff;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .pay-card {
+      animation: fadeInUp .5s var(--ease) both;
+    }
+
+    .summary-card {
+      animation: fadeInUp .5s .15s var(--ease) both;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 767px) {
+      .pay-page-grid {
+        gap: 20px;
+        margin: 20px auto 40px;
+      }
+
+      .qr-image-wrap {
+        width: 200px;
+        height: 200px;
+      }
+
+      .timer-display {
+        font-size: 36px;
+      }
+
+      .summary-card {
+        position: static;
+      }
+
+      .pay-actions {
+        gap: 8px;
+      }
+    }
+
+    @media (min-width: 560px) {
+      .pay-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .pay-actions .btn-pay-action {
+        width: auto;
+        flex: 1;
+        min-width: 180px;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body class="page-pay">
 
-  <header>
-    <h1>PrintShop POS</h1>
-    <nav aria-label="Navigasi utama">
-      <ul>
-        <li><a href="index.html">Beranda</a></li>
-        <li><a href="unggah.html">Unggah</a></li>
-        <li><a href="spesifikasi.html">Spesifikasi</a></li>
-        <li><a href="pembayaran.html" aria-current="page">Pembayaran</a></li>
-      </ul>
-    </nav>
-    <p>Langkah 3 dari 4: Pembayaran QRIS</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+        <span class="brand-icon-box">
+          <img src="./assets/images/logo-operator.svg" alt="Logo Printer PrintShop POS" />
+        </span>
+        <span class="brand-title-wrap">
+          <span class="brand-name">PrintShop POS</span>
+          <span class="brand-tagline">Self-Service Digital Print</span>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Navigasi Utama">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="unggah.html" class="nav-link">Unggah Dokumen</a>
+        <a href="index.html#tarif" class="nav-link">Tarif &amp; Layanan</a>
+        <a href="index.html#lacak" class="nav-link">Lacak Pesanan</a>
+      </nav>
+
+      <div class="header-action-group">
+        <a href="unggah.html" class="btn-primary btn-placeholder" aria-hidden="true" tabindex="-1">Mulai Cetak</a>
+
+        <input type="checkbox" id="nav-toggle" class="mobile-nav-toggle" aria-label="Buka atau tutup menu" />
+        <label for="nav-toggle" class="mobile-menu-btn" aria-label="Menu navigasi">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </label>
+
+        <nav class="mobile-dropdown-menu" aria-label="Navigasi Mobile">
+          <ul class="mobile-nav-links">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="unggah.html">Mulai Cetak Dokumen</a></li>
+            <li><a href="index.html#cara-kerja">Cara Kerja</a></li>
+            <li><a href="index.html#tarif">Daftar Tarif</a></li>
+            <li><a href="index.html#lacak">Lacak Pesanan</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </header>
 
-  <main>
+  <nav class="step-nav-bar" aria-label="Tahapan Pemesanan">
+    <div class="container step-nav-inner">
+      <span class="step-badge-indicator done">
+        <span>✓</span> <span class="step-label">Unggah <span class="step-label-extra">Berkas</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator done">
+        <span>✓</span> <span class="step-label">Atur <span class="step-label-extra">Spesifikasi</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator active" aria-current="step">
+        <span>03</span> <span class="step-label">Bayar <span class="step-label-extra">QRIS</span></span>
+      </span>
+    </div>
+  </nav>
 
-    <section aria-labelledby="ringkasan-heading">
-      <h2 id="ringkasan-heading">Ringkasan Pesanan</h2>
-      <article aria-label="Detail pesanan yang akan dibayar">
-        <h3>Detail Pesanan</h3>
-        <table>
-          <caption>Ringkasan spesifikasi cetak dan rincian biaya</caption>
-          <tbody>
-            <tr>
-              <th scope="row">Nama File</th>
-              <td>tugas-akhir-bab3.pdf</td>
-            </tr>
-            <tr>
-              <th scope="row">Ukuran Kertas</th>
-              <td>A4</td>
-            </tr>
-            <tr>
-              <th scope="row">Mode Warna</th>
-              <td>Hitam &amp; Putih</td>
-            </tr>
-            <tr>
-              <th scope="row">Sisi Cetak</th>
-              <td>Satu Sisi (Simplex)</td>
-            </tr>
-            <tr>
-              <th scope="row">Rentang Halaman</th>
-              <td>Semua Halaman (1–24)</td>
-            </tr>
-            <tr>
-              <th scope="row">Jumlah Salinan</th>
-              <td>1 salinan</td>
-            </tr>
-            <tr>
-              <th scope="row">Harga per Lembar</th>
-              <td>Rp 500</td>
-            </tr>
-            <tr>
-              <th scope="row">Subtotal (24 lembar × Rp 500)</th>
-              <td>Rp 12.000</td>
-            </tr>
-            <tr>
-              <th scope="row">Biaya Layanan</th>
-              <td>Rp 0</td>
-            </tr>
-            <tr>
-              <th scope="row"><strong>Total Pembayaran</strong></th>
-              <td><strong>Rp 12.000</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </article>
-    </section>
+  <main class="pay-main">
+    <div class="container">
+      <div class="pay-page-grid">
 
-    <section aria-labelledby="qris-heading">
-      <h2 id="qris-heading">Bayar dengan QRIS</h2>
+        <!-- ═══ LEFT: QRIS PAYMENT PANEL ═══ -->
+        <section class="pay-card" aria-labelledby="pay-heading">
+          <header class="pay-card-header">
+            <h1 class="pay-card-title" id="pay-heading">Pembayaran QRIS</h1>
+            <p class="pay-card-sub">Scan kode QR di bawah menggunakan aplikasi e-wallet atau m-Banking Anda. Konfirmasi pembayaran otomatis.</p>
+          </header>
 
-      <article aria-label="Instruksi cara pembayaran QRIS">
-        <h3>Cara Membayar</h3>
-        <ol>
-          <li>Buka aplikasi dompet digital atau m-banking Anda (GoPay, OVO, Dana, ShopeePay, atau m-banking manapun yang
-            mendukung QRIS).</li>
-          <li>Pilih menu <strong>Scan QR</strong> atau <strong>Bayar dengan QR</strong>.</li>
-          <li>Arahkan kamera ke kode QR di bawah ini.</li>
-          <li>Periksa nominal: <strong>Rp 12.000</strong>. Pastikan sudah benar sebelum konfirmasi.</li>
-          <li>Konfirmasi pembayaran. Status akan diperbarui otomatis dalam beberapa detik.</li>
-        </ol>
-      </article>
+          <!-- Status Badge -->
+          <div class="status-badge-wrap" aria-live="polite">
+            <div class="status-badge status-badge--pending" id="status-badge" role="status">
+              <span class="status-dot status-dot--pending" id="status-dot"></span>
+              <span id="status-text">Menunggu Pembayaran</span>
+            </div>
+          </div>
 
-      <article aria-label="Kode QR untuk pembayaran">
-        <h3>Kode QR</h3>
-        <figure>
-          <img src="./assets/images/qris-placeholder.png"
-            alt="Kode QR pembayaran QRIS senilai Rp 12.000 untuk pesanan PrintShop POS" width="280" height="280" />
-          <figcaption>
-            <p>Nominal: <strong>Rp 12.000</strong></p>
-            <p>Kode QR ini berlaku selama: <strong id="countdown">05:00</strong></p>
-            <p>Nama Merchant: <strong>PrintShop POS - Gerai Kampus</strong></p>
-          </figcaption>
-        </figure>
+          <!-- Timer -->
+          <div class="timer-section" aria-label="Hitungan mundur batas waktu pembayaran">
+            <p class="timer-label">Batas Waktu Pembayaran</p>
+            <p class="timer-display" id="countdown" aria-live="polite">05:00</p>
+            <div class="progress-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Sisa waktu pembayaran">
+              <div class="progress-bar-fill" id="progress-bar" style="width: 100%;"></div>
+            </div>
+          </div>
 
-        <p>
-          <a href="./assets/images/qris-placeholder.png" download="qris-printshop.png">
-            Simpan QR ke Galeri
-          </a>
-        </p>
-      </article>
+          <!-- Expired Alert -->
+          <div class="expired-alert" id="expired-alert" role="alert">
+            <div class="expired-alert-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="expired-alert-text">
+              <p class="expired-alert-title">Kode QRIS Kedaluwarsa</p>
+              <p class="expired-alert-desc">Batas waktu pembayaran telah habis. Silakan muat ulang untuk mendapatkan kode QR baru.</p>
+            </div>
+          </div>
 
-      <article aria-label="Status pembayaran saat ini" aria-live="polite">
-        <h3>Status Pembayaran</h3>
-        <p role="status">
-          <img src="./assets/images/icon-clock.svg" alt="Ikon jam pasir menandakan status menunggu" width="24"
-            height="24" />
-          Menunggu pembayaran... Jangan tutup halaman ini.
-        </p>
-        <p><small>Status diperbarui otomatis. Tidak perlu me-refresh halaman secara manual.</small></p>
-        <p>
-          <a href="tiket.html">Cek Konfirmasi Pembayaran →</a>
-        </p>
-      </article>
+          <!-- Paid Success Alert -->
+          <div class="paid-alert" id="paid-alert" role="alert">
+            <div class="paid-alert-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="paid-alert-text">
+              <p class="paid-alert-title">Pembayaran Berhasil! ✅</p>
+              <p class="paid-alert-desc">Transaksi lunas. Anda akan dialihkan ke halaman tiket dalam beberapa detik...</p>
+            </div>
+          </div>
 
-      <article aria-label="Opsi jika pembayaran gagal">
-        <h3>Mengalami Kendala?</h3>
-        <ul>
-          <li>Pastikan koneksi internet Anda stabil.</li>
-          <li>Periksa saldo e-wallet atau m-banking Anda.</li>
-          <li>Jika QR kedaluwarsa, minta QR baru dengan menekan tombol di bawah.</li>
-          <li>Hubungi operator toko jika masalah berlanjut.</li>
-        </ul>
-        <form action="pembayaran.html" method="get">
-          <fieldset>
-            <legend>Pembaruan QR</legend>
-            <p>
-              <button type="submit">Minta QR Baru</button>
+          <!-- QR Panel -->
+          <div class="qr-panel" id="qr-panel">
+            <div class="qr-image-wrap" id="qr-image-wrap">
+              <img src="./assets/images/qris-dynamic.jpg" alt="Kode QR QRIS untuk pembayaran PrintShop POS" id="qr-image" />
+              <!-- Expired overlay -->
+              <div class="qr-overlay" id="qr-overlay-expired">
+                <div class="qr-overlay-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                </div>
+                <p class="qr-overlay-text">QR Kedaluwarsa</p>
+              </div>
+              <!-- Paid overlay -->
+              <div class="qr-overlay qr-overlay--paid" id="qr-overlay-paid">
+                <div class="qr-overlay-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <p class="qr-overlay-text">Pembayaran Diterima</p>
+              </div>
+            </div>
+            <p class="qr-merchant">PrintShop POS — Gerai Kampus</p>
+            <p class="qr-amount" id="qr-amount">Rp 12.000</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="pay-actions">
+            <button type="button" class="btn-pay-action btn-save-qr" id="btn-save-qr" aria-label="Simpan gambar QR ke perangkat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Simpan Gambar QR
+            </button>
+            <button type="button" class="btn-pay-action btn-simulate" id="btn-simulate" aria-label="Simulasi pembayaran berhasil">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Cek Status Bayar
+            </button>
+            <button type="button" class="btn-pay-action btn-reload-qr" id="btn-reload-qr" aria-label="Muat ulang kode QRIS">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Muat Ulang QRIS
+            </button>
+          </div>
+
+          <!-- Guide -->
+          <div class="guide-section">
+            <h2 class="guide-title">
+              <span class="guide-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              Cara Membayar
+            </h2>
+            <div class="guide-steps">
+              <p class="guide-step">Buka aplikasi dompet digital (GoPay, OVO, Dana, ShopeePay) atau m-Banking Anda.</p>
+              <p class="guide-step">Pilih menu <strong>Scan QR</strong> atau <strong>Bayar dengan QR</strong>.</p>
+              <p class="guide-step">Arahkan kamera ke kode QR di atas. Pastikan nominal sesuai.</p>
+              <p class="guide-step">Konfirmasi pembayaran. Status akan otomatis berubah menjadi <strong>Lunas</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Bottom Nav -->
+          <div class="pay-nav-bar">
+            <a href="spesifikasi.html" class="btn-pay-back">
+              &larr; Kembali ke Spesifikasi
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══ RIGHT: SIDEBAR ═══ -->
+        <aside class="pay-sidebar" aria-label="Ringkasan Pesanan">
+
+          <!-- Order Summary Card -->
+          <div class="summary-card" aria-live="polite" aria-label="Rincian pesanan dan biaya">
+            <div class="summary-card-header">
+              <span class="summary-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </span>
+              <h2 class="summary-card-title">Rincian Pesanan</h2>
+            </div>
+            <div class="summary-rows">
+              <div class="summary-row">
+                <span class="s-label">Nama File</span>
+                <span class="s-value" id="pay-filename">tugas-akhir-bab3.pdf</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Ukuran Kertas</span>
+                <span class="s-value" id="pay-paper">A4</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Mode Warna</span>
+                <span class="s-value" id="pay-color">Hitam &amp; Putih</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Sisi Cetak</span>
+                <span class="s-value" id="pay-side">Simplex</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-row">
+                <span class="s-label">Halaman Dicetak</span>
+                <span class="s-value" id="pay-pages">24 hal</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Lembar Fisik</span>
+                <span class="s-value" id="pay-sheets">24 lbr</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Jumlah Salinan</span>
+                <span class="s-value" id="pay-copies">1×</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-row">
+                <span class="s-label">Harga per Lembar</span>
+                <span class="s-value" id="pay-price-per">Rp 500</span>
+              </div>
+              <div class="summary-row">
+                <span class="s-label">Biaya Layanan</span>
+                <span class="s-value">Rp 0</span>
+              </div>
+            </div>
+            <div class="summary-total-row">
+              <span class="summary-total-label">Total Pembayaran</span>
+              <span class="summary-total-value" id="pay-total">Rp 12.000</span>
+            </div>
+            <p class="summary-note">Pembayaran aman via QRIS — konfirmasi otomatis tanpa cek mutasi manual.</p>
+          </div>
+
+          <!-- Troubleshoot Card -->
+          <div class="troubleshoot-card">
+            <div class="troubleshoot-title">
+              <span>🛟</span>
+              <span>Mengalami Kendala?</span>
+            </div>
+            <div class="troubleshoot-list">
+              <p class="troubleshoot-item">Pastikan koneksi internet Anda stabil.</p>
+              <p class="troubleshoot-item">Periksa saldo e-wallet atau m-Banking Anda mencukupi.</p>
+              <p class="troubleshoot-item">Jika QR kedaluwarsa, tekan "Muat Ulang QRIS" untuk QR baru.</p>
+              <p class="troubleshoot-item">Hubungi operator toko jika masalah tetap berlanjut.</p>
+            </div>
+          </div>
+
+          <!-- Privacy Badge -->
+          <div class="troubleshoot-card" style="background: linear-gradient(145deg, #eff6ff, #fff); border-color: #bfdbfe;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 22px;">🔒</span>
+              <h3 style="font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em;">Privasi &amp; Keamanan</h3>
+            </div>
+            <p style="font-size: 12.5px; color: var(--body); line-height: 1.55; margin-top: 8px;">
+              Pembayaran diproses aman melalui QRIS. Dokumen kamu dienkripsi dan dihapus permanen 24 jam setelah cetak selesai.
             </p>
-          </fieldset>
-        </form>
-      </article>
+          </div>
+        </aside>
 
-    </section>
-
+      </div>
+    </div>
   </main>
 
-  <footer>
-    <p>
-      <a href="spesifikasi.html">← Kembali ke Spesifikasi</a>
-    </p>
-    <p><small>PrintShop POS - Pembayaran dijamin aman. Konfirmasi otomatis tanpa perlu cek mutasi manual.</small></p>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+            <span class="brand-icon-box brand-icon-box--sm">
+              <img src="./assets/images/logo-operator.svg" alt="Logo" />
+            </span>
+            <span class="brand-name brand-name--sm">PrintShop POS</span>
+          </a>
+          <p class="footer-brand-desc">
+            Layanan cetak mandiri instan tanpa antre kasir &amp; bebas ribet untuk mahasiswa.
+          </p>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="unggah.html">Mulai Cetak</a></li>
+          <li><a href="index.html#tarif">Tarif Kertas</a></li>
+          <li><a href="index.html#lacak">Lacak Tiket</a></li>
+          <li><a href="login.html" class="footer-link-badge">Login Operator &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>PrintShop POS | Dikembangkan oleh <strong>Kelompok 2 &ndash; Divisi Web UI/UX Developer</strong></p>
+        <div class="footer-trust-chip">
+          <span class="trust-chip-dot"></span>
+          <span>Privasi Terjamin | Berkas Dihapus Otomatis 24 Jam Pasca-Cetak</span>
+        </div>
+      </div>
+    </div>
   </footer>
 
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast" aria-live="assertive" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <span id="toast-text">Gambar QR berhasil disimpan!</span>
+  </div>
+
+  <script src="./assets/js/qris-timer.js"></script>
 </body>
 
 </html>
