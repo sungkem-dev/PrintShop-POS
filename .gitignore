@@ -5,3 +5,6 @@ PRD_Modul7.md
 PRD_PrintShop_POS.md
 AGENTS.md
 prompt-log.md
+node_modules
+.env.local
+.env

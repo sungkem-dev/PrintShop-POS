@@ -315,6 +315,22 @@
     </div>
   </footer>
 
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (window.PrintShopAPI) {
+        try {
+          const orders = await window.PrintShopAPI.getOrders({ status: 'WAITING_IN_QUEUE,PRINTING' });
+          const count = orders.length;
+          const statusCol = document.querySelectorAll('.status-metric-col strong');
+          if (statusCol.length >= 2) {
+            statusCol[1].textContent = `±${Math.max(3, count * 3)} Menit (${count} Antrean)`;
+          }
+        } catch (e) {}
+      }
+    });
+  </script>
 </body>
 
 </html>

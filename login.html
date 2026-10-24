@@ -335,25 +335,27 @@
           return;
         }
 
-        if (pin === '123456' || pin.length === 6) {
-          // Berhasil login
-          alertContainer.style.display = 'block';
-          alertBox.className = 'login-alert-box alert-success';
-          alertBox.querySelector('h3').textContent = 'Login Berhasil';
-          alertDesc.innerHTML = 'Kredensial terverifikasi. Mengarahkan ke Dasbor Operator...';
-
-          setTimeout(function () {
-            window.location.href = 'dasbor.html';
-          }, 600);
+        if (window.PrintShopAPI) {
+          window.PrintShopAPI.loginOperator(email, pin).then(function (res) {
+            alertContainer.style.display = 'block';
+            alertBox.className = 'login-alert-box alert-success';
+            alertBox.querySelector('h3').textContent = 'Login Berhasil';
+            alertDesc.innerHTML = `Selamat datang, <strong>${res.operator?.name || 'Operator'}</strong>! Mengarahkan ke Dasbor...`;
+            setTimeout(function () {
+              window.location.href = 'dasbor.html';
+            }, 600);
+          }).catch(function (err) {
+            attempts++;
+            const remaining = 5 - attempts;
+            if (remaining > 0) {
+              showAlert(`${err.message || 'Email atau PIN salah'}. Sisa percobaan: ${remaining} kali.`, true);
+            } else {
+              showAlert('Akun dikunci sementara karena 5 kali percobaan gagal.', true);
+              formLogin.querySelector('button[type="submit"]').disabled = true;
+            }
+          });
         } else {
-          attempts++;
-          const remaining = 5 - attempts;
-          if (remaining > 0) {
-            showAlert(`Email atau PIN salah. Sisa percobaan: ${remaining} kali sebelum akun dikunci sementara.`, true);
-          } else {
-            showAlert('Akun dikunci selama 15 menit karena 5 kali percobaan gagal. Hubungi administrator.', true);
-            formLogin.querySelector('button[type="submit"]').disabled = true;
-          }
+          window.location.href = 'dasbor.html';
         }
       });
 
@@ -366,6 +368,8 @@
     });
   </script>
 
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
 </body>
 
 </html>
