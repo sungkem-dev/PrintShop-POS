@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DataService } from '@/lib/supabase';
+import { DataService, getSupabaseClient } from '@/lib/supabase';
 import { MidtransService } from '@/lib/midtrans';
 
 export async function GET(request, { params }) {
@@ -11,8 +11,36 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, error: 'Pesanan tidak ditemukan' }, { status: 404 });
     }
 
-    // Check if already updated to WAITING_IN_QUEUE or beyond
-    const isPaid = order.status !== 'DRAFT' && order.status !== 'PENDING_PAYMENT' && order.status !== 'CANCELLED';
+    let isPaid = order.status !== 'DRAFT' && order.status !== 'PENDING_PAYMENT' && order.status !== 'CANCELLED';
+
+    // If still pending, check Midtrans directly if transaction exists in Supabase
+    if (!isPaid) {
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        try {
+          const { data: trx } = await supabase
+            .from('transactions')
+            .select('midtrans_order_id')
+            .eq('order_id', order.id)
+            .maybeSingle();
+
+          if (trx?.midtrans_order_id) {
+            const statusCheck = await MidtransService.checkStatus(trx.midtrans_order_id);
+            if (statusCheck && statusCheck.isPaid) {
+              await DataService.updateOrder(order.id, { status: 'WAITING_IN_QUEUE' });
+              await supabase
+                .from('transactions')
+                .update({ transaction_status: statusCheck.status, updated_at: new Date().toISOString() })
+                .eq('order_id', order.id);
+              isPaid = true;
+              order.status = 'WAITING_IN_QUEUE';
+            }
+          }
+        } catch (e) {
+          // Ignore check errors
+        }
+      }
+    }
 
     return NextResponse.json({
       success: true,
@@ -28,7 +56,6 @@ export async function GET(request, { params }) {
   }
 }
 
-// POST endpoint to allow client payment simulator / manual settlement in sandbox
 export async function POST(request, { params }) {
   try {
     const { orderId } = params;
@@ -38,10 +65,17 @@ export async function POST(request, { params }) {
       return NextResponse.json({ success: false, error: 'Pesanan tidak ditemukan' }, { status: 404 });
     }
 
-    // Mark order as paid -> WAITING_IN_QUEUE (FIFO)
     const updated = await DataService.updateOrder(order.id, {
       status: 'WAITING_IN_QUEUE'
     });
+
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      await supabase
+        .from('transactions')
+        .update({ transaction_status: 'settlement', updated_at: new Date().toISOString() })
+        .eq('order_id', order.id);
+    }
 
     return NextResponse.json({
       success: true,
