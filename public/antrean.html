@@ -1,0 +1,3191 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antrean Aktif - PrintShop POS</title>
+  <meta name="description"
+    content="Halaman antrean cetak aktif PrintShop POS Staff Console. Kelola dan pantau pesanan cetak secara real-time." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+
+<body class="console-body">
+
+  <div class="console-container">
+
+    <!-- Mobile Backdrop -->
+    <div id="console-backdrop" class="console-backdrop" aria-hidden="true"></div>
+
+    <!-- Sidebar Konsol Operator -->
+    <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
+      <div>
+        <div class="console-sidebar-header">
+          <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
+            <span class="brand-icon-box">
+              <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
+            </span>
+            <div class="console-brand-title">
+              <strong>PrintShop POS</strong>
+              <span class="console-status-pill">
+                <span class="console-status-dot"></span>
+                Campus Console
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <nav class="console-nav-menu" aria-label="Navigasi konsol operator">
+          <div class="console-nav-section-title">Terminal Operasional</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="antrean.html" class="active" aria-current="page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <span>Active Print Queue</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#riwayat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Riwayat Pesanan</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#manual">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="20" y1="8" x2="20" y2="14"></line>
+                  <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <span>Tambah Pesanan Manual (Walk-In)</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="console-nav-section-title">Financial &amp; Reports</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="dasbor.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="9"></rect>
+                  <rect x="14" y="3" width="7" height="5"></rect>
+                  <rect x="14" y="12" width="7" height="9"></rect>
+                  <rect x="3" y="16" width="7" height="5"></rect>
+                </svg>
+                <span>Dashboard &amp; Analitik</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="dasbor.html#laporan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Laporan Harian</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="console-nav-section-title">System Management</div>
+          <ul class="console-nav-list">
+            <li class="console-nav-item">
+              <a href="dasbor.html#status-printer-heading">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                  </path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span>Status Mesin Printer</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#batal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span>Pembatalan &amp; Refund</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="console-user-footer">
+        <div class="console-user-card">
+          <div class="console-user-avatar" aria-hidden="true">AH</div>
+          <div class="console-user-info">
+            <div class="console-user-name">Ahmad Hidayat</div>
+            <div class="console-user-role">Kasir Loket A1 &bull; Mandiri</div>
+          </div>
+          <a href="login.html" class="console-logout-btn" title="Logout dari Konsol" aria-label="Logout dari Konsol">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Area Konten Utama Konsol Operator -->
+    <div class="console-main-area">
+
+      <!-- Header Atas Konsol -->
+      <header class="console-top-header">
+        <div class="console-top-left">
+          <button type="button" id="btn-sidebar-toggle" class="btn-sidebar-toggle"
+            aria-label="Buka navigasi bilah sisi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="console-breadcrumb-title">
+            <strong>PrintShop POS - Staff Console</strong>
+            <span>Kios Mandiri | Kampus Gedung A (Lt. 1)</span>
+          </div>
+        </div>
+
+        <div class="console-top-right">
+          <span class="live-time-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <time id="live-clock" datetime="2026-10-09T07:42:00+07:00">09 Okt 2026, 07:42 WIB</time>
+          </span>
+
+          <button type="button" class="btn-export-outline" id="btn-add-manual" title="Tambah pesanan manual walk-in">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Manual Order</span>
+          </button>
+
+          <a href="dasbor.html" class="btn-primary btn-console-queue">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            <span>Buka Dasbor</span>
+          </a>
+
+          <div class="console-header-user-chip">
+            <div>
+              <strong>Loket A1</strong>
+              <span>Kasir Utama</span>
+            </div>
+            <div class="console-user-avatar-small" aria-hidden="true">AH</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Konten Utama Antrean -->
+      <main class="console-content">
+
+        <!-- Baris Judul & Aksi -->
+        <div class="console-page-head">
+          <div class="console-title-group">
+            <h1>Antrean Cetak Aktif</h1>
+            <p>Pantau dan kelola seluruh pesanan cetak yang sedang berjalan secara real-time. Sistem FIFO (First In,
+              First Out).</p>
+          </div>
+
+          <div class="console-head-actions">
+            <span class="badge-audit-sync" title="Auto-refresh aktif">
+              <span class="console-status-dot"></span>
+              <span class="audit-sync-text">Auto-refresh 10s</span>
+            </span>
+
+            <button type="button" id="btn-refresh-queue" class="btn-export-outline" title="Perbarui antrean sekarang">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Refresh</span>
+            </button>
+
+            <button type="button" class="btn-export-outline" id="btn-export-queue" title="Ekspor data antrean">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Ringkasan Antrean -->
+        <section class="stats-card-row" aria-labelledby="ringkasan-antrean-heading">
+          <h2 id="ringkasan-antrean-heading" class="sr-only">Ringkasan Antrean</h2>
+
+          <article class="stat-card" aria-label="Total antrean aktif">
+            <div class="stat-card-body">
+              <div class="stat-card-content">
+                <span class="stat-card-label">Total Antrean Aktif</span>
+                <strong class="stat-card-value">11</strong>
+                <span class="stat-card-sub">Pesanan dalam antrean saat ini</span>
+              </div>
+              <div class="stat-card-icon stat-card-icon--primary" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="stat-card" aria-label="Menunggu antrean">
+            <div class="stat-card-body">
+              <div class="stat-card-content">
+                <span class="stat-card-label">Menunggu Antrean</span>
+                <strong class="stat-card-value stat-card-value--warning">5</strong>
+                <span class="stat-card-sub">Waiting in Queue</span>
+              </div>
+              <div class="stat-card-icon stat-card-icon--warning" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="stat-card" aria-label="Sedang diproses">
+            <div class="stat-card-body">
+              <div class="stat-card-content">
+                <span class="stat-card-label">Sedang Diproses</span>
+                <strong class="stat-card-value stat-card-value--info">1</strong>
+                <span class="stat-card-sub">Processing / Reviewing</span>
+              </div>
+              <div class="stat-card-icon stat-card-icon--info" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="stat-card" aria-label="Sedang dicetak">
+            <div class="stat-card-body">
+              <div class="stat-card-content">
+                <span class="stat-card-label">Sedang Dicetak</span>
+                <strong class="stat-card-value stat-card-value--primary">2</strong>
+                <span class="stat-card-sub">Printing di mesin</span>
+              </div>
+              <div class="stat-card-icon stat-card-icon--primary" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="stat-card" aria-label="Siap diambil">
+            <div class="stat-card-body">
+              <div class="stat-card-content">
+                <span class="stat-card-label">Siap Diambil</span>
+                <strong class="stat-card-value stat-card-value--success">3</strong>
+                <span class="stat-card-sub">Ready for Pickup</span>
+              </div>
+              <div class="stat-card-icon stat-card-icon--success" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Filter & Pencarian -->
+        <section class="console-card" aria-labelledby="filter-heading">
+          <div class="console-card-header">
+            <h2 id="filter-heading" class="console-card-title">
+              Filter &amp; Pencarian
+            </h2>
+          </div>
+          <div class="console-card-body">
+            <form id="form-filter" action="antrean.html" method="get" class="filter-form-row">
+              <div class="filter-search-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="filter-search-icon">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="cari-pesanan" name="q"
+                  placeholder="Cari ID Pesanan (misal #ORD-042), nama file, atau pelanggan..."
+                  aria-describedby="cari-hint" class="filter-search-input" />
+              </div>
+
+              <div class="filter-select-group">
+                <label for="filter-status" class="sr-only">Filter Status</label>
+                <select id="filter-status" name="status" class="filter-select">
+                  <option value="">Semua Status</option>
+                  <option value="WAITING_IN_QUEUE">Waiting in Queue</option>
+                  <option value="PROCESSING">Processing</option>
+                  <option value="PRINTING">Printing</option>
+                  <option value="READY_FOR_PICKUP">Ready for Pickup</option>
+                </select>
+              </div>
+
+              <div class="filter-select-group">
+                <label for="filter-printer" class="sr-only">Filter Printer</label>
+                <select id="filter-printer" name="printer" class="filter-select">
+                  <option value="">Semua Printer</option>
+                  <option value="printer-1">Printer 1 - HP LaserJet</option>
+                  <option value="printer-2">Printer 2 - Epson L3150</option>
+                  <option value="printer-3">Printer 3 - Canon iP2870</option>
+                </select>
+              </div>
+
+              <div class="filter-btn-group">
+                <button type="submit" class="btn-primary btn-sm">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                  Terapkan
+                </button>
+                <a href="antrean.html" class="btn-ghost btn-sm">Reset</a>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Tabel Daftar Antrean -->
+        <section class="console-card" aria-labelledby="tabel-antrean-heading">
+          <div class="console-card-header">
+            <h2 id="tabel-antrean-heading" class="console-card-title">
+              Daftar Antrean Masuk
+              <span class="badge-count">11 Pesanan</span>
+            </h2>
+            <p class="console-card-subtitle" aria-live="polite" role="status">
+              <span class="pulse-dot"></span>
+              Data diperbarui otomatis setiap 10 detik &bull; Terakhir: <strong id="last-update-time">07:42:15
+                WIB</strong>
+              &bull; Urutan FIFO
+            </p>
+          </div>
+          <div class="console-card-body console-card-body--flush">
+            <div class="table-responsive">
+              <table class="console-table" aria-label="Daftar antrean cetak aktif">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-narrow">No.</th>
+                    <th scope="col">ID Pesanan</th>
+                    <th scope="col">Waktu Masuk</th>
+                    <th scope="col">Nama File</th>
+                    <th scope="col">Spesifikasi</th>
+                    <th scope="col" class="th-narrow">Hal.</th>
+                    <th scope="col">Total Bayar</th>
+                    <th scope="col">Printer</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Baris 1: Printing -->
+                  <tr>
+                    <td>1</td>
+                    <td><strong class="order-id">#ORD-040</strong></td>
+                    <td><time datetime="2026-10-09T07:28:00+07:00">07:28 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        skripsi-bab1-2.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">2 Copy</span>
+                      <span class="spec-tag">Duplex</span>
+                    </td>
+                    <td class="text-center">48</td>
+                    <td><strong>Rp24.000</strong></td>
+                    <td>Printer 1</td>
+                    <td><span class="status-badge status-badge--printing">Printing</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--success" title="Tandai siap ambil">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Siap Ambil
+                        </button>
+                        <button type="button" class="btn-action-icon" title="Lihat detail">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 2: Printing -->
+                  <tr>
+                    <td>2</td>
+                    <td><strong class="order-id">#ORD-041</strong></td>
+                    <td><time datetime="2026-10-09T07:35:00+07:00">07:35 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        ktp-fotokopi.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">1 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">1</td>
+                    <td><strong>Rp500</strong></td>
+                    <td>Printer 2</td>
+                    <td><span class="status-badge status-badge--printing">Printing</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--success" title="Tandai siap ambil">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Siap Ambil
+                        </button>
+                        <button type="button" class="btn-action-icon" title="Lihat detail">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 3: Processing -->
+                  <tr>
+                    <td>3</td>
+                    <td><strong class="order-id">#ORD-042</strong></td>
+                    <td><time datetime="2026-10-09T07:42:00+07:00">07:42 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        tugas-akhir-bab3.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">1 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">24</td>
+                    <td><strong>Rp12.000</strong></td>
+                    <td>-</td>
+                    <td><span class="status-badge status-badge--processing">Processing</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--primary" title="Mulai cetak">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                          </svg>
+                          Mulai Cetak
+                        </button>
+                        <button type="button" class="btn-action-icon btn-action-icon--danger" title="Batalkan pesanan">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 4: Waiting -->
+                  <tr>
+                    <td>4</td>
+                    <td><strong class="order-id">#ORD-043</strong></td>
+                    <td><time datetime="2026-10-09T07:43:00+07:00">07:43 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        makalah-pancasila.docx
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">1 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">15</td>
+                    <td><strong>Rp7.500</strong></td>
+                    <td>-</td>
+                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--primary" title="Proses pesanan">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.27.4.69.67 1.17.71H21a2 2 0 0 1 0 4h-.09c-.48.04-.9.31-1.17.71z">
+                            </path>
+                          </svg>
+                          Proses
+                        </button>
+                        <button type="button" class="btn-action-icon" title="Lihat detail">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 5: Waiting -->
+                  <tr>
+                    <td>5</td>
+                    <td><strong class="order-id">#ORD-044</strong></td>
+                    <td><time datetime="2026-10-09T07:44:00+07:00">07:44 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        presentasi-seminar.pptx
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag spec-tag--color">Full Color</span>
+                      <span class="spec-tag">1 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">20</td>
+                    <td><strong>Rp40.000</strong></td>
+                    <td>-</td>
+                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--primary"
+                          title="Proses pesanan">Proses</button>
+                        <button type="button" class="btn-action-icon" title="Lihat detail">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 6: Waiting -->
+                  <tr>
+                    <td>6</td>
+                    <td><strong class="order-id">#ORD-045</strong></td>
+                    <td><time datetime="2026-10-09T07:45:00+07:00">07:45 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        laporan-pkl.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">F4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">2 Copy</span>
+                      <span class="spec-tag">Duplex</span>
+                    </td>
+                    <td class="text-center">60</td>
+                    <td><strong>Rp36.000</strong></td>
+                    <td>-</td>
+                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--primary"
+                          title="Proses pesanan">Proses</button>
+                        <button type="button" class="btn-action-icon" title="Lihat detail">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 7: Ready for Pickup -->
+                  <tr class="row-ready">
+                    <td>7</td>
+                    <td><strong class="order-id">#ORD-037</strong></td>
+                    <td><time datetime="2026-10-09T07:10:00+07:00">07:10 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        transkrip-nilai.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag">B&amp;W</span>
+                      <span class="spec-tag">3 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">3</td>
+                    <td><strong>Rp4.500</strong></td>
+                    <td>Printer 1</td>
+                    <td><span class="status-badge status-badge--ready">Ready</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--success" title="Selesaikan pesanan">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Selesai
+                        </button>
+                        <button type="button" class="btn-action-icon" title="Cetak tiket">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Baris 8: Ready for Pickup -->
+                  <tr class="row-ready">
+                    <td>8</td>
+                    <td><strong class="order-id">#ORD-038</strong></td>
+                    <td><time datetime="2026-10-09T07:15:00+07:00">07:15 WIB</time></td>
+                    <td>
+                      <div class="file-info">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        buku-panduan.pdf
+                      </div>
+                    </td>
+                    <td>
+                      <span class="spec-tag">A4</span>
+                      <span class="spec-tag spec-tag--color">Full Color</span>
+                      <span class="spec-tag">1 Copy</span>
+                      <span class="spec-tag">Simplex</span>
+                    </td>
+                    <td class="text-center">8</td>
+                    <td><strong>Rp16.000</strong></td>
+                    <td>Printer 2</td>
+                    <td><span class="status-badge status-badge--ready">Ready</span></td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button type="button" class="btn-action btn-action--success" title="Selesaikan pesanan">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Selesai
+                        </button>
+                        <button type="button" class="btn-action-icon" title="Cetak tiket">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer tabel -->
+            <div class="table-footer">
+              <span class="table-footer-info">Menampilkan 8 dari 11 pesanan aktif</span>
+              <div class="table-pagination">
+                <button type="button" class="pagination-btn" disabled>&laquo;</button>
+                <button type="button" class="pagination-btn active">1</button>
+                <button type="button" class="pagination-btn">2</button>
+                <button type="button" class="pagination-btn">&raquo;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Keterangan Status / Legenda -->
+        <section class="console-card" aria-labelledby="legenda-heading">
+          <div class="console-card-header">
+            <h2 id="legenda-heading" class="console-card-title">
+              Keterangan Status Antrean
+            </h2>
+          </div>
+          <div class="console-card-body">
+            <div class="legend-grid">
+              <div class="legend-item">
+                <span class="status-badge status-badge--waiting">Waiting</span>
+                <span class="legend-desc">Pesanan sudah lunas, menunggu giliran diproses operator.</span>
+              </div>
+              <div class="legend-item">
+                <span class="status-badge status-badge--processing">Processing</span>
+                <span class="legend-desc">Operator sedang memeriksa file dan spesifikasi cetak.</span>
+              </div>
+              <div class="legend-item">
+                <span class="status-badge status-badge--printing">Printing</span>
+                <span class="legend-desc">Dokumen sedang dicetak oleh mesin printer.</span>
+              </div>
+              <div class="legend-item">
+                <span class="status-badge status-badge--ready">Ready</span>
+                <span class="legend-desc">Cetakan selesai dan siap diambil oleh pemesan.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="riwayat" class="console-card section-anchor-target" aria-labelledby="riwayat-heading">
+          <div class="console-card-header">
+            <h2 id="riwayat-heading" class="console-card-title">
+              Riwayat Pesanan
+              <span class="badge-count">47 Transaksi</span>
+            </h2>
+            <div class="section-header-actions">
+              <div class="date-filter-btn-group" role="group" aria-label="Filter rentang riwayat">
+                <button type="button" class="date-filter-btn active" data-history-range="today">Hari Ini</button>
+                <button type="button" class="date-filter-btn" data-history-range="week">7 Hari</button>
+                <button type="button" class="date-filter-btn" data-history-range="month">Bulan Ini</button>
+              </div>
+              <button type="button" class="btn-export-outline" id="btn-export-history" title="Ekspor riwayat ke CSV">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Ekspor CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Summary strip -->
+          <div class="console-card-body history-summary-strip">
+            <div class="history-kpi-row">
+              <div class="history-kpi-card">
+                <span class="history-kpi-label">Total Transaksi</span>
+                <strong class="history-kpi-value">47</strong>
+              </div>
+              <div class="history-kpi-card history-kpi-card--success">
+                <span class="history-kpi-label">Selesai</span>
+                <strong class="history-kpi-value">43</strong>
+              </div>
+              <div class="history-kpi-card history-kpi-card--danger">
+                <span class="history-kpi-label">Dibatalkan</span>
+                <strong class="history-kpi-value">4</strong>
+              </div>
+              <div class="history-kpi-card history-kpi-card--primary">
+                <span class="history-kpi-label">Total Pendapatan</span>
+                <strong class="history-kpi-value">Rp187.500</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="console-card-body console-card-body--flush">
+            <div class="table-responsive">
+              <table class="console-table" aria-label="Riwayat pesanan hari ini">
+                <thead>
+                  <tr>
+                    <th scope="col">ID Pesanan</th>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Nama File</th>
+                    <th scope="col">Spesifikasi</th>
+                    <th scope="col">Hal.</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status Akhir</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong class="order-id">#ORD-034</strong></td>
+                    <td><time datetime="2026-10-19T06:12:00+07:00">06:12 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> makalah-fisika.pdf</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span class="spec-tag">1
+                        Copy</span></td>
+                    <td class="text-center">12</td>
+                    <td><strong>Rp6.000</strong></td>
+                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-034">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong class="order-id">#ORD-035</strong></td>
+                    <td><time datetime="2026-10-19T06:28:00+07:00">06:28 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> proposal-ta-cover.pdf</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">3
+                        Copy</span></td>
+                    <td class="text-center">6</td>
+                    <td><strong>Rp9.000</strong></td>
+                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-035">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="row-cancelled">
+                    <td><strong class="order-id">#ORD-036</strong></td>
+                    <td><time datetime="2026-10-19T06:45:00+07:00">06:45 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> laporan-pkl.pdf</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span
+                        class="spec-tag">Duplex</span></td>
+                    <td class="text-center">40</td>
+                    <td><strong class="text-cancelled">Rp20.000</strong></td>
+                    <td><span class="status-badge status-badge--cancelled">Dibatalkan</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-036">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong class="order-id">#ORD-037</strong></td>
+                    <td><time datetime="2026-10-19T07:03:00+07:00">07:03 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> skripsi-bab4.docx</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span class="spec-tag">2
+                        Copy</span><span class="spec-tag">Duplex</span></td>
+                    <td class="text-center">56</td>
+                    <td><strong>Rp56.000</strong></td>
+                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-037">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong class="order-id">#ORD-038</strong></td>
+                    <td><time datetime="2026-10-19T07:15:00+07:00">07:15 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> cv-lamar-kerja.pdf</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">1
+                        Copy</span></td>
+                    <td class="text-center">2</td>
+                    <td><strong>Rp3.000</strong></td>
+                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-038">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong class="order-id">#ORD-039</strong></td>
+                    <td><time datetime="2026-10-19T07:22:00+07:00">07:22 WIB</time></td>
+                    <td>
+                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg> presentasi-bisnis.pptx</div>
+                    </td>
+                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">1
+                        Copy</span></td>
+                    <td class="text-center">18</td>
+                    <td><strong>Rp27.000</strong></td>
+                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
+                    <td>
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
+                        aria-label="Detail #ORD-039">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="5" scope="row">Total (Hari Ini, 47 Transaksi)</th>
+                    <td colspan="3"><strong>Rp187.500</strong></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="table-footer">
+              <span class="table-footer-info">Menampilkan 6 dari 47 transaksi</span>
+              <div class="table-pagination">
+                <button type="button" class="pagination-btn" disabled>&laquo;</button>
+                <button type="button" class="pagination-btn active">1</button>
+                <button type="button" class="pagination-btn">2</button>
+                <button type="button" class="pagination-btn">3</button>
+                <button type="button" class="pagination-btn">&raquo;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="batal" class="section-anchor-target" aria-labelledby="batal-heading">
+
+          <!-- Section title row -->
+          <div class="refund-section-head">
+            <div class="refund-section-head-left">
+              <div class="refund-section-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+              </div>
+              <div>
+                <h2 id="batal-heading" class="refund-section-title">Manajemen Pembatalan &amp; Refund</h2>
+                <p class="refund-section-sub">Kelola permintaan pembatalan dari pelanggan dan operasi pembatalan manual
+                  oleh admin. Semua tindakan tercatat untuk audit.</p>
+              </div>
+            </div>
+            <div class="refund-summary-chips">
+              <span class="refund-chip refund-chip--pending">
+                <span class="refund-chip-dot"></span>
+                <span>3 Menunggu Persetujuan</span>
+              </span>
+              <span class="refund-chip refund-chip--done">
+                <span class="refund-chip-dot"></span>
+                <span>8 Diproses Hari Ini</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Two-column grid: user reports + admin operations -->
+          <div class="refund-two-col">
+
+            <!-- LEFT: Laporan dari Pengguna -->
+            <div class="console-card refund-panel" aria-labelledby="user-report-heading">
+              <div class="console-card-header">
+                <h3 id="user-report-heading" class="console-card-title">
+                  Laporan dari Pengguna
+                  <span class="badge-count badge-count--warning">3</span>
+                </h3>
+                <p class="console-card-subtitle">Permintaan pembatalan yang dikirim pelanggan melalui sistem tiket.</p>
+              </div>
+              <div class="console-card-body" style="padding: 0;">
+                <ul class="refund-request-list" aria-label="Daftar permintaan pembatalan pengguna">
+
+                  <!-- Request 1: Pending -->
+                  <li class="refund-request-item refund-request-item--pending">
+                    <div class="refund-request-header">
+                      <div class="refund-request-meta">
+                        <strong class="order-id">#ORD-036</strong>
+                        <span class="refund-request-time"><time datetime="2026-10-19T06:52:00+07:00">06:52
+                            WIB</time></span>
+                        <span class="status-badge status-badge--pending-refund">Menunggu Persetujuan</span>
+                      </div>
+                      <span class="refund-amount">Rp20.000</span>
+                    </div>
+                    <p class="refund-reason">
+                      <strong>Alasan:</strong> File salah upload, ingin ganti dengan versi revisi terbaru. Cetakan belum
+                      dimulai.
+                    </p>
+                    <div class="refund-request-source">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      Dilaporkan via halaman tiket pelanggan
+                    </div>
+                    <div class="refund-action-row">
+                      <button type="button" class="btn-action btn-action--success btn-approve-refund"
+                        data-order-id="ORD-036" data-amount="20000" aria-label="Setujui refund untuk pesanan #ORD-036">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Setujui Refund
+                      </button>
+                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-036" aria-label="Tolak permintaan refund #ORD-036" title="Tolak permintaan">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="15" y1="9" x2="9" y2="15"></line>
+                          <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+
+                  <!-- Request 2: Pending -->
+                  <li class="refund-request-item refund-request-item--pending">
+                    <div class="refund-request-header">
+                      <div class="refund-request-meta">
+                        <strong class="order-id">#ORD-028</strong>
+                        <span class="refund-request-time"><time datetime="2026-10-19T05:37:00+07:00">05:37
+                            WIB</time></span>
+                        <span class="status-badge status-badge--pending-refund">Menunggu Persetujuan</span>
+                      </div>
+                      <span class="refund-amount">Rp34.500</span>
+                    </div>
+                    <p class="refund-reason">
+                      <strong>Alasan:</strong> Pembayaran QRIS terpotong dua kali (double charge). Meminta refund salah
+                      satu transaksi.
+                    </p>
+                    <div class="refund-request-source">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      Dilaporkan via halaman tiket pelanggan
+                    </div>
+                    <div class="refund-action-row">
+                      <button type="button" class="btn-action btn-action--success btn-approve-refund"
+                        data-order-id="ORD-028" data-amount="34500" aria-label="Setujui refund untuk pesanan #ORD-028">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Setujui Refund
+                      </button>
+                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-028" aria-label="Tolak permintaan refund #ORD-028" title="Tolak permintaan">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="15" y1="9" x2="9" y2="15"></line>
+                          <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+
+                  <!-- Request 3: Pending -->
+                  <li class="refund-request-item refund-request-item--pending">
+                    <div class="refund-request-header">
+                      <div class="refund-request-meta">
+                        <strong class="order-id">#ORD-031</strong>
+                        <span class="refund-request-time"><time datetime="2026-10-19T06:10:00+07:00">06:10
+                            WIB</time></span>
+                        <span class="status-badge status-badge--pending-refund">Menunggu Persetujuan</span>
+                      </div>
+                      <span class="refund-amount">Rp12.000</span>
+                    </div>
+                    <p class="refund-reason">
+                      <strong>Alasan:</strong> Pesanan sudah selesai tetapi kualitas cetak buram dan tidak sesuai
+                      spesifikasi warna yang dipilih.
+                    </p>
+                    <div class="refund-request-source">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      Dilaporkan via halaman tiket pelanggan
+                    </div>
+                    <div class="refund-action-row">
+                      <button type="button" class="btn-action btn-action--success btn-approve-refund"
+                        data-order-id="ORD-031" data-amount="12000" aria-label="Setujui refund untuk pesanan #ORD-031">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Setujui Refund
+                      </button>
+                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-031" aria-label="Tolak permintaan refund #ORD-031" title="Tolak permintaan">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="15" y1="9" x2="9" y2="15"></line>
+                          <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+            </div><!-- end user reports -->
+
+            <!-- RIGHT: Operasi Admin -->
+            <div class="refund-admin-col">
+
+              <!-- Admin manual cancel form -->
+              <div class="console-card refund-panel" aria-labelledby="admin-cancel-heading">
+                <div class="console-card-header">
+                  <h3 id="admin-cancel-heading" class="console-card-title">
+                    Operasi Pembatalan Admin
+                  </h3>
+                  <p class="console-card-subtitle">Batalkan pesanan aktif secara manual dan proses refund ke pelanggan.
+                  </p>
+                </div>
+                <div class="console-card-body">
+                  <form id="form-admin-cancel" novalidate>
+                    <fieldset class="admin-cancel-fieldset">
+                      <legend class="sr-only">Form pembatalan pesanan oleh admin</legend>
+
+                      <div class="admin-cancel-field">
+                        <label for="cancel-order-id" class="admin-cancel-label">ID Pesanan <span
+                            aria-hidden="true">*</span></label>
+                        <div class="admin-cancel-input-row">
+                          <input type="text" id="cancel-order-id" name="order_id" placeholder="Contoh: ORD-042"
+                            autocomplete="off" aria-required="true" aria-describedby="cancel-order-hint"
+                            class="admin-cancel-input" />
+                          <button type="button" id="btn-lookup-order" class="btn-export-outline"
+                            style="min-height:44px;white-space:nowrap;" aria-label="Cari pesanan">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                              <circle cx="11" cy="11" r="8"></circle>
+                              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Cari
+                          </button>
+                        </div>
+                        <span id="cancel-order-hint" class="admin-cancel-hint">Masukkan ID pesanan yang akan
+                          dibatalkan</span>
+                      </div>
+
+                      <!-- Order preview (hidden until lookup) -->
+                      <div id="cancel-order-preview" class="cancel-order-preview" hidden aria-live="polite">
+                        <div class="cancel-preview-row"><span class="cancel-preview-label">ID</span><strong
+                            id="preview-order-id">#ORD-042</strong></div>
+                        <div class="cancel-preview-row"><span class="cancel-preview-label">File</span><span
+                            id="preview-file">tugas-akhir-bab3.pdf</span></div>
+                        <div class="cancel-preview-row"><span class="cancel-preview-label">Total</span><strong
+                            id="preview-total">Rp12.000</strong></div>
+                        <div class="cancel-preview-row"><span class="cancel-preview-label">Status</span><span
+                            id="preview-status" class="status-badge status-badge--processing">Processing</span></div>
+                      </div>
+
+                      <div class="admin-cancel-field">
+                        <label for="cancel-reason-select" class="admin-cancel-label">Alasan Pembatalan <span
+                            aria-hidden="true">*</span></label>
+                        <select id="cancel-reason-select" name="cancel_reason" class="filter-select"
+                          aria-required="true">
+                          <option value="">Pilih alasan...</option>
+                          <option value="file_corrupt">File rusak / tidak bisa dibuka</option>
+                          <option value="wrong_file">File yang diunggah salah</option>
+                          <option value="double_charge">Double charge / pembayaran duplikat</option>
+                          <option value="printer_error">Error printer tidak dapat diperbaiki</option>
+                          <option value="customer_request">Permintaan langsung dari pelanggan</option>
+                          <option value="admin_decision">Keputusan manajemen / kebijakan toko</option>
+                          <option value="other">Lainnya (isi di kolom catatan)</option>
+                        </select>
+                      </div>
+
+                      <div class="admin-cancel-field">
+                        <label for="cancel-notes" class="admin-cancel-label">Catatan Admin</label>
+                        <textarea id="cancel-notes" name="notes" rows="3"
+                          placeholder="Deskripsi tambahan atau bukti (opsional)..."
+                          class="admin-cancel-textarea"></textarea>
+                      </div>
+
+                      <div class="admin-cancel-field">
+                        <label class="admin-cancel-label">Metode Refund</label>
+                        <div class="refund-method-options">
+                          <label class="refund-method-option">
+                            <input type="radio" name="refund_method" value="qris_reversal" checked />
+                            <span class="refund-method-label">
+                              <strong>QRIS Reversal</strong>
+                              <span>Dana dikembalikan otomatis ke sumber pembayaran (1–3 hari kerja).</span>
+                            </span>
+                          </label>
+                          <label class="refund-method-option">
+                            <input type="radio" name="refund_method" value="store_credit" />
+                            <span class="refund-method-label">
+                              <strong>Kredit Toko</strong>
+                              <span>Dana dicatat sebagai kredit saldo pelanggan untuk pesanan berikutnya.</span>
+                            </span>
+                          </label>
+                          <label class="refund-method-option">
+                            <input type="radio" name="refund_method" value="cash" />
+                            <span class="refund-method-label">
+                              <strong>Tunai di Kasir</strong>
+                              <span>Operator menyerahkan uang tunai kepada pelanggan secara langsung.</span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="admin-cancel-actions">
+                        <button type="submit" id="btn-submit-cancel" class="btn-primary"
+                          style="min-height:44px;gap:8px;" aria-label="Proses pembatalan dan refund">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Proses Pembatalan &amp; Refund
+                        </button>
+                        <button type="reset" class="btn-ghost btn-sm" aria-label="Reset form">Reset</button>
+                      </div>
+
+                      <!-- Feedback alert (hidden by default) -->
+                      <div id="admin-cancel-feedback" class="login-alert-box" hidden role="alert" aria-live="assertive">
+                      </div>
+
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Refund history log -->
+              <div class="console-card refund-panel" aria-labelledby="refund-log-heading">
+                <div class="console-card-header">
+                  <h3 id="refund-log-heading" class="console-card-title">
+                    Log Refund Hari Ini
+                    <span class="badge-count">8</span>
+                  </h3>
+                </div>
+                <div class="console-card-body" style="padding:0;">
+                  <ul class="refund-log-list" aria-label="Log refund yang sudah diproses hari ini" id="refund-log-list">
+                    <li class="refund-log-item">
+                      <div class="refund-log-left">
+                        <strong class="order-id">#ORD-021</strong>
+                        <span class="refund-log-method refund-log-method--qris">QRIS</span>
+                      </div>
+                      <div class="refund-log-right">
+                        <span class="refund-log-amount">Rp8.500</span>
+                        <span class="refund-log-time"><time datetime="2026-10-19T05:14:00+07:00">05:14 WIB</time></span>
+                        <span class="status-badge status-badge--ready"
+                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                      </div>
+                    </li>
+                    <li class="refund-log-item">
+                      <div class="refund-log-left">
+                        <strong class="order-id">#ORD-019</strong>
+                        <span class="refund-log-method refund-log-method--cash">Tunai</span>
+                      </div>
+                      <div class="refund-log-right">
+                        <span class="refund-log-amount">Rp15.000</span>
+                        <span class="refund-log-time"><time datetime="2026-10-19T04:58:00+07:00">04:58 WIB</time></span>
+                        <span class="status-badge status-badge--ready"
+                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                      </div>
+                    </li>
+                    <li class="refund-log-item">
+                      <div class="refund-log-left">
+                        <strong class="order-id">#ORD-015</strong>
+                        <span class="refund-log-method refund-log-method--credit">Kredit</span>
+                      </div>
+                      <div class="refund-log-right">
+                        <span class="refund-log-amount">Rp24.000</span>
+                        <span class="refund-log-time"><time datetime="2026-10-19T04:31:00+07:00">04:31 WIB</time></span>
+                        <span class="status-badge status-badge--ready"
+                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                      </div>
+                    </li>
+                    <li class="refund-log-item">
+                      <div class="refund-log-left">
+                        <strong class="order-id">#ORD-011</strong>
+                        <span class="refund-log-method refund-log-method--qris">QRIS</span>
+                      </div>
+                      <div class="refund-log-right">
+                        <span class="refund-log-amount">Rp6.000</span>
+                        <span class="refund-log-time"><time datetime="2026-10-19T03:50:00+07:00">03:50 WIB</time></span>
+                        <span class="status-badge status-badge--ready"
+                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                      </div>
+                    </li>
+                    <li class="refund-log-item">
+                      <div class="refund-log-left">
+                        <strong class="order-id">#ORD-008</strong>
+                        <span class="refund-log-method refund-log-method--cash">Tunai</span>
+                      </div>
+                      <div class="refund-log-right">
+                        <span class="refund-log-amount">Rp3.000</span>
+                        <span class="refund-log-time"><time datetime="2026-10-19T03:12:00+07:00">03:12 WIB</time></span>
+                        <span class="status-badge status-badge--ready"
+                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div><!-- end admin col -->
+          </div><!-- end refund-two-col -->
+
+          <!-- Refund policy note -->
+          <div class="refund-policy-note" role="note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>Semua tindakan pembatalan dan refund tercatat secara permanen beserta ID operator, timestamp, dan
+              alasan dalam log audit PostgreSQL. Refund QRIS diproses dalam <strong>1–3 hari kerja</strong>. Refund
+              tunai wajib disertai tanda tangan penerima.</span>
+          </div>
+        </section><!-- end #batal -->
+
+      </main>
+
+      <!-- Footer Konsol -->
+      <footer class="console-footer">
+        <div class="console-footer-left">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Semua data tercatat secara permanen di basis data PostgreSQL POS Central untuk kepatuhan audit
+            kasir.</span>
+        </div>
+        <div class="console-footer-right">
+          <span>Hash Audit: <strong>#SHA-256</strong></span>
+          <span>ID Sesi Kasir: <strong>REG-01-SHIFT1</strong></span>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <div id="modal-refund-confirm" class="modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="modal-refund-title" hidden>
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-icon modal-icon--warning" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 id="modal-refund-title" class="modal-title">Konfirmasi Persetujuan Refund</h3>
+          <p class="modal-subtitle">Tindakan ini tidak dapat dibatalkan setelah dikonfirmasi.</p>
+        </div>
+        <button type="button" id="modal-close-refund" class="modal-close-btn" aria-label="Tutup modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">ID Pesanan</span>
+          <strong id="modal-refund-order-id" class="order-id"></strong>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Jumlah Refund</span>
+          <strong id="modal-refund-amount" class="modal-refund-amount-value"></strong>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Metode</span>
+          <span id="modal-refund-method">QRIS Reversal</span>
+        </div>
+        <div class="modal-admin-confirm-field">
+          <label for="modal-admin-pin" class="admin-cancel-label">PIN Supervisor <span
+              aria-hidden="true">*</span></label>
+          <input type="password" id="modal-admin-pin" maxlength="6" autocomplete="off"
+            placeholder="Masukkan PIN 6 digit" class="admin-cancel-input" aria-describedby="modal-pin-hint"
+            aria-required="true" />
+          <span id="modal-pin-hint" class="admin-cancel-hint">Diperlukan untuk mengotorisasi tindakan refund.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal-cancel-btn" class="btn-ghost btn-sm">Batal</button>
+        <button type="button" id="modal-confirm-refund-btn" class="btn-primary" style="gap:8px;min-height:44px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Ya, Proses Refund
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page-Specific Styles for Antrean (layered on top of global.css) -->
+  <style>
+    /* ===== Antrean-Specific Styles ===== */
+
+    /* Stat Cards Row */
+    .stats-card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 12px;
+      padding: 20px;
+      transition: box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .stat-card-body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .stat-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-card-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-card-value {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: #111827;
+    }
+
+    .stat-card-value--warning {
+      color: #d97706;
+    }
+
+    .stat-card-value--info {
+      color: #7c3aed;
+    }
+
+    .stat-card-value--primary {
+      color: #0d7377;
+    }
+
+    .stat-card-value--success {
+      color: #059669;
+    }
+
+    .stat-card-sub {
+      font-size: 11.5px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    .stat-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-card-icon--primary {
+      background: #ecfdf5;
+      color: #0d7377;
+    }
+
+    .stat-card-icon--warning {
+      background: #fffbeb;
+      color: #d97706;
+    }
+
+    .stat-card-icon--info {
+      background: #f5f3ff;
+      color: #7c3aed;
+    }
+
+    .stat-card-icon--success {
+      background: #ecfdf5;
+      color: #059669;
+    }
+
+    /* Filter Form */
+    .filter-form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-search-box {
+      position: relative;
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    .filter-search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .filter-search-input {
+      width: 100%;
+      padding: 10px 14px 10px 40px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      font-size: 13.5px;
+      background: #f9fafb;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .filter-search-input:focus {
+      border-color: #0d7377;
+      box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
+      background: #fff;
+    }
+
+    .filter-select-group {
+      flex: 0 1 200px;
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      font-size: 13.5px;
+      background: #f9fafb;
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+      appearance: auto;
+    }
+
+    .filter-select:focus {
+      border-color: #0d7377;
+      box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
+    }
+
+    .filter-btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-sm {
+      padding: 9px 18px !important;
+      font-size: 13px !important;
+      gap: 6px;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #6b7280;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      padding: 9px 18px;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    /* Console Table Enhancements for Antrean */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .th-narrow {
+      width: 50px;
+      text-align: center;
+    }
+
+    .order-id {
+      color: #0d7377;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .file-info svg {
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+
+    /* Spec Tags */
+    .spec-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      background: #f3f4f6;
+      color: #4b5563;
+      border-radius: 6px;
+      margin: 1px 2px;
+      white-space: nowrap;
+    }
+
+    .spec-tag--color {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: 20px;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    .status-badge--waiting {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge--processing {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .status-badge--printing {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-badge--ready {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    /* Action Buttons */
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-action--primary {
+      background: #0d7377;
+      color: #fff;
+    }
+
+    .btn-action--primary:hover {
+      background: #0a5d60;
+      box-shadow: 0 2px 8px rgba(13, 115, 119, 0.3);
+    }
+
+    .btn-action--success {
+      background: #059669;
+      color: #fff;
+    }
+
+    .btn-action--success:hover {
+      background: #047857;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+    }
+
+    .btn-action-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      background: #fff;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-action-icon:hover {
+      background: #f3f4f6;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+
+    .btn-action-icon--danger {
+      color: #ef4444;
+      border-color: #fecaca;
+    }
+
+    .btn-action-icon--danger:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    /* Row highlight for ready-to-pickup */
+    .row-ready {
+      background: #f0fdf4 !important;
+    }
+
+    .row-ready:hover {
+      background: #dcfce7 !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Badge Count */
+    .badge-count {
+      display: inline-block;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #0d7377;
+      color: #fff;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* Pulse Dot Animation */
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Legend Grid */
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #f9fafb;
+      border-radius: 10px;
+      border: 1px solid #f3f4f6;
+    }
+
+    .legend-desc {
+      font-size: 13px;
+      color: #4b5563;
+    }
+
+    /* Table Footer */
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-color, #e5e7eb);
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .table-footer-info {
+      font-size: 13px;
+    }
+
+    .table-pagination {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      background: #fff;
+      color: #374151;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .pagination-btn.active {
+      background: #0d7377;
+      color: #fff;
+      border-color: #0d7377;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Console Footer */
+    .console-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 28px;
+      border-top: 1px solid var(--border-color, #e5e7eb);
+      background: #f9fafb;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .console-footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .console-footer-left svg {
+      flex-shrink: 0;
+      color: #9ca3af;
+    }
+
+    .console-footer-right {
+      display: flex;
+      gap: 20px;
+    }
+
+    .console-footer-right strong {
+      color: #374151;
+    }
+
+    /* Console Header User Chip */
+    .console-header-user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-color, #e5e7eb);
+      margin-left: 4px;
+    }
+
+    .console-header-user-chip>div:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.3;
+    }
+
+    .console-header-user-chip strong {
+      font-size: 13px;
+      color: #111827;
+    }
+
+    .console-header-user-chip span {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .console-user-avatar-small {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #0d7377;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Utility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-card-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-card-value {
+        font-size: 24px;
+      }
+
+      .filter-form-row {
+        flex-direction: column;
+      }
+
+      .filter-search-box,
+      .filter-select-group {
+        flex: 1 1 100%;
+        min-width: 100%;
+      }
+
+      .console-footer {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .console-footer-right {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .legend-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .console-header-user-chip {
+        display: none;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-card-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== NEW: Anchor Scroll Target ===== */
+    .section-anchor-target {
+      scroll-margin-top: 80px;
+    }
+
+    /* ===== NEW: Section Header Actions ===== */
+    .section-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== NEW: Date Filter Button Group ===== */
+    .date-filter-btn-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .date-filter-btn {
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      background: #fff;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .date-filter-btn:hover {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .date-filter-btn.active {
+      background: #0d7377;
+      color: #fff;
+      border-color: #0d7377;
+    }
+
+    /* ===== NEW: History KPI Strip ===== */
+    .history-summary-strip {
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+    }
+
+    .history-kpi-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .history-kpi-card {
+      flex: 1 1 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 18px;
+      background: #f9fafb;
+      border: 1px solid #f3f4f6;
+      border-radius: 10px;
+    }
+
+    .history-kpi-card--success {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    .history-kpi-card--danger {
+      background: #fff5f5;
+      border-color: #fecaca;
+    }
+
+    .history-kpi-card--primary {
+      background: #f0fdfc;
+      border-color: #99f6e4;
+    }
+
+    .history-kpi-label {
+      font-size: 11.5px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .history-kpi-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111827;
+      line-height: 1;
+    }
+
+    .history-kpi-card--success .history-kpi-value {
+      color: #059669;
+    }
+
+    .history-kpi-card--danger .history-kpi-value {
+      color: #dc2626;
+    }
+
+    .history-kpi-card--primary .history-kpi-value {
+      color: #0d7377;
+    }
+
+    /* ===== NEW: History Table Extras ===== */
+    .row-cancelled {
+      opacity: 0.72;
+    }
+
+    .row-cancelled:hover {
+      opacity: 1;
+    }
+
+    .text-cancelled {
+      color: #dc2626;
+      text-decoration: line-through;
+    }
+
+    .status-badge--cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .console-table tfoot tr {
+      background: #f3f4f6;
+      font-size: 13px;
+    }
+
+    /* ===== NEW: Export Outline Button ===== */
+    .btn-export-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      background: #fff;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-export-outline:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+
+    /* ===== NEW: Refund Section Header ===== */
+    .refund-section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 24px 28px 0;
+    }
+
+    .refund-section-head-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .refund-section-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .refund-section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111827;
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+
+    .refund-section-sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .refund-summary-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .refund-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .refund-chip--pending {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .refund-chip--done {
+      background: #f0fdf4;
+      color: #065f46;
+      border: 1px solid #bbf7d0;
+    }
+
+    .refund-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .refund-chip--pending .refund-chip-dot {
+      background: #d97706;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .refund-chip--done .refund-chip-dot {
+      background: #059669;
+    }
+
+    /* ===== NEW: Refund Two-Column Grid ===== */
+    .refund-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 0 28px 24px;
+    }
+
+    .refund-panel {
+      margin: 0;
+    }
+
+    .refund-admin-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .console-card-subtitle {
+      font-size: 12.5px;
+      color: #9ca3af;
+      margin: 2px 0 0;
+    }
+
+    /* ===== NEW: Badge Count Warning ===== */
+    .badge-count--warning {
+      background: #d97706;
+    }
+
+    /* ===== NEW: Refund Request List ===== */
+    .refund-request-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .refund-request-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+      transition: background 0.15s;
+    }
+
+    .refund-request-item:last-child {
+      border-bottom: none;
+    }
+
+    .refund-request-item--pending {
+      border-left: 3px solid #d97706;
+    }
+
+    .refund-request-item:hover {
+      background: #fffbeb;
+    }
+
+    .refund-request-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .refund-request-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .refund-request-time {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .status-badge--pending-refund {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .refund-amount {
+      font-size: 15px;
+      font-weight: 800;
+      color: #dc2626;
+    }
+
+    .refund-reason {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.5;
+      margin: 0 0 8px;
+    }
+
+    .refund-request-source {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .refund-action-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== NEW: Admin Cancel Form ===== */
+    .admin-cancel-fieldset {
+      border: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .admin-cancel-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .admin-cancel-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .admin-cancel-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .admin-cancel-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      font-size: 13.5px;
+      background: #f9fafb;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .admin-cancel-input:focus {
+      border-color: #0d7377;
+      box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
+      background: #fff;
+    }
+
+    .admin-cancel-hint {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .admin-cancel-textarea {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      font-size: 13.5px;
+      background: #f9fafb;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .admin-cancel-textarea:focus {
+      border-color: #0d7377;
+      box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
+      background: #fff;
+    }
+
+    .admin-cancel-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* ===== NEW: Cancel Order Preview ===== */
+    .cancel-order-preview {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cancel-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .cancel-preview-label {
+      font-weight: 600;
+      color: #6b7280;
+      width: 48px;
+      flex-shrink: 0;
+    }
+
+    /* ===== NEW: Refund Method Options ===== */
+    .refund-method-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .refund-method-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .refund-method-option:hover {
+      border-color: #0d7377;
+      background: #f0fdfc;
+    }
+
+    .refund-method-option input[type="radio"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #0d7377;
+    }
+
+    .refund-method-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .refund-method-label strong {
+      font-size: 13px;
+      color: #111827;
+    }
+
+    .refund-method-label span {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* ===== NEW: Refund Log List ===== */
+    .refund-log-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .refund-log-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .refund-log-item:last-child {
+      border-bottom: none;
+    }
+
+    .refund-log-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .refund-log-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .refund-log-amount {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .refund-log-time {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .refund-log-method {
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .refund-log-method--qris {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .refund-log-method--cash {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .refund-log-method--credit {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    /* ===== NEW: Refund Policy Note ===== */
+    .refund-policy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 20px;
+      margin: 0 28px 28px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    .refund-policy-note svg {
+      flex-shrink: 0;
+      margin-top: 1px;
+      color: #d97706;
+    }
+
+    /* ===== NEW: Feedback Alert Box ===== */
+    .login-alert-box {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .login-alert-box--success {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #065f46;
+    }
+
+    .login-alert-box--error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    /* ===== NEW: Modal ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay[hidden] {
+      display: none;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      animation: modal-slide-in 0.2s ease-out;
+    }
+
+    @keyframes modal-slide-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+    }
+
+    .modal-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-icon--warning {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      margin: 2px 0 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 12.5px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .modal-close-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      transition: color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .modal-close-btn:hover {
+      color: #374151;
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-color, #e5e7eb);
+    }
+
+    .modal-detail-row:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .modal-detail-label {
+      color: #6b7280;
+      font-size: 12.5px;
+    }
+
+    .modal-refund-amount-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #dc2626;
+    }
+
+    .modal-admin-confirm-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-color, #e5e7eb);
+      background: #f9fafb;
+    }
+
+    /* ===== NEW: Responsive for Refund Sections ===== */
+    @media (max-width: 900px) {
+      .refund-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .refund-section-head {
+        flex-direction: column;
+        padding: 18px 16px 0;
+      }
+
+      .refund-two-col {
+        padding: 0 16px 20px;
+      }
+
+      .refund-policy-note {
+        margin: 0 16px 20px;
+      }
+
+      .section-header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .history-kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .refund-log-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .refund-log-right {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // ── 1. Sidebar Toggle (Mobile) ────────────────────────────────
+      const sidebar = document.getElementById('console-sidebar');
+      const backdrop = document.getElementById('console-backdrop');
+      const toggleBtn = document.getElementById('btn-sidebar-toggle');
+
+      function openSidebar() {
+        if (sidebar) sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('visible');
+      }
+
+      function closeSidebar() {
+        if (sidebar) sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('visible');
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+      if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+      // ── 2. Sidebar Smooth-Scroll for Anchor Links ─────────────────
+      sidebar && sidebar.querySelectorAll('a[href*="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          const hash = this.getAttribute('href').split('#')[1];
+          const target = document.getElementById(hash);
+          if (target && this.pathname === location.pathname) {
+            e.preventDefault();
+            closeSidebar();
+            setTimeout(function () {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 80);
+          }
+        });
+      });
+
+      // ── 3. Live Clock ─────────────────────────────────────────────
+      const clockEl = document.getElementById('live-clock');
+      function updateLiveClock() {
+        if (!clockEl) return;
+        const now = new Date();
+        const opts = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        clockEl.textContent = now.toLocaleDateString('id-ID', opts) + ' WIB';
+      }
+      updateLiveClock();
+      setInterval(updateLiveClock, 30000);
+
+      // ── 4. Auto-refresh timestamp ─────────────────────────────────
+      const lastUpdateEl = document.getElementById('last-update-time');
+      function updateLastRefresh() {
+        if (!lastUpdateEl) return;
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        lastUpdateEl.textContent = h + ':' + m + ':' + s + ' WIB';
+      }
+      setInterval(updateLastRefresh, 10000);
+
+      // ── 5. Refresh button ─────────────────────────────────────────
+      const refreshBtn = document.getElementById('btn-refresh-queue');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', function () {
+          updateLastRefresh();
+          refreshBtn.style.transition = 'transform 0.5s ease';
+          refreshBtn.style.transform = 'rotate(360deg)';
+          setTimeout(function () { refreshBtn.style.transform = ''; }, 600);
+        });
+      }
+
+      // ── 6. Filter form ────────────────────────────────────────────
+      const filterForm = document.getElementById('form-filter');
+      if (filterForm) {
+        filterForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          updateLastRefresh();
+        });
+      }
+
+      // ── 7. Riwayat date-range filter tabs ────────────────────────
+      document.querySelectorAll('.date-filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const group = this.closest('.date-filter-btn-group');
+          group && group.querySelectorAll('.date-filter-btn').forEach(function (b) {
+            b.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
+
+      // ── 8. Admin Cancel: order lookup simulation ──────────────────
+      const lookupBtn = document.getElementById('btn-lookup-order');
+      const previewEl = document.getElementById('cancel-order-preview');
+      const cancelInput = document.getElementById('cancel-order-id');
+
+      const fakeOrders = {
+        'ORD-040': { file: 'makalah-ppkn.pdf', total: 'Rp9.000', status: 'Waiting', statusClass: 'status-badge--waiting' },
+        'ORD-041': { file: 'skripsi-final.pdf', total: 'Rp48.000', status: 'Processing', statusClass: 'status-badge--processing' },
+        'ORD-042': { file: 'tugas-akhir-bab3.pdf', total: 'Rp12.000', status: 'Processing', statusClass: 'status-badge--processing' },
+      };
+
+      if (lookupBtn && previewEl && cancelInput) {
+        lookupBtn.addEventListener('click', function () {
+          const raw = cancelInput.value.trim().toUpperCase().replace(/^ORD-?/, 'ORD-').replace(/^#/, '');
+          const order = fakeOrders[raw];
+          if (order) {
+            document.getElementById('preview-order-id').textContent = '#' + raw;
+            document.getElementById('preview-file').textContent = order.file;
+            document.getElementById('preview-total').textContent = order.total;
+            const statusEl = document.getElementById('preview-status');
+            statusEl.textContent = order.status;
+            statusEl.className = 'status-badge ' + order.statusClass;
+            previewEl.hidden = false;
+          } else {
+            previewEl.hidden = true;
+            cancelInput.style.borderColor = '#ef4444';
+            setTimeout(function () { cancelInput.style.borderColor = ''; }, 1500);
+          }
+        });
+      }
+
+      // ── 9. Admin Cancel form submission ───────────────────────────
+      const cancelForm = document.getElementById('form-admin-cancel');
+      const cancelFeedback = document.getElementById('admin-cancel-feedback');
+
+      if (cancelForm && cancelFeedback) {
+        cancelForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const orderId = (cancelInput ? cancelInput.value.trim() : '');
+          const reason = document.getElementById('cancel-reason-select');
+          if (!orderId) {
+            showFeedback(cancelFeedback, 'error', 'Masukkan ID pesanan terlebih dahulu.');
+            return;
+          }
+          if (reason && !reason.value) {
+            showFeedback(cancelFeedback, 'error', 'Pilih alasan pembatalan sebelum melanjutkan.');
+            return;
+          }
+          showFeedback(cancelFeedback, 'success', 'Pembatalan #' + orderId.toUpperCase() + ' berhasil diproses. Refund sedang diteruskan.');
+          cancelForm.reset();
+          if (previewEl) previewEl.hidden = true;
+        });
+      }
+
+      function showFeedback(el, type, msg) {
+        el.className = 'login-alert-box login-alert-box--' + type;
+        el.textContent = msg;
+        el.hidden = false;
+        setTimeout(function () { el.hidden = true; }, 5000);
+      }
+
+      // ── 10. Approve Refund Modal ──────────────────────────────────
+      const modal = document.getElementById('modal-refund-confirm');
+      let pendingOrderId = null;
+      let pendingItem = null;
+
+      document.querySelectorAll('.btn-approve-refund').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          pendingOrderId = this.dataset.orderId;
+          pendingItem = this.closest('.refund-request-item');
+          const amount = Number(this.dataset.amount || 0);
+          document.getElementById('modal-refund-order-id').textContent = '#' + pendingOrderId;
+          document.getElementById('modal-refund-amount').textContent =
+            'Rp' + amount.toLocaleString('id-ID');
+          const pin = document.getElementById('modal-admin-pin');
+          if (pin) pin.value = '';
+          modal.hidden = false;
+        });
+      });
+
+      function closeModal() {
+        if (modal) modal.hidden = true;
+        pendingOrderId = null;
+        pendingItem = null;
+      }
+
+      const closeBtn = document.getElementById('modal-close-refund');
+      const cancelBtn = document.getElementById('modal-cancel-btn');
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      if (modal) modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      const confirmBtn = document.getElementById('modal-confirm-refund-btn');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function () {
+          const pin = document.getElementById('modal-admin-pin');
+          if (!pin || pin.value.length < 4) {
+            pin && (pin.style.borderColor = '#ef4444');
+            setTimeout(function () { if (pin) pin.style.borderColor = ''; }, 1200);
+            return;
+          }
+          if (pendingItem) {
+            pendingItem.style.transition = 'opacity 0.3s, transform 0.3s';
+            pendingItem.style.opacity = '0';
+            pendingItem.style.transform = 'translateX(20px)';
+            setTimeout(function () { pendingItem && pendingItem.remove(); }, 320);
+          }
+          closeModal();
+        });
+      }
+
+      // ── 11. Reject Refund ────────────────────────────────────────
+      document.querySelectorAll('.btn-reject-refund').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const item = this.closest('.refund-request-item');
+          if (!item) return;
+          if (!confirm('Tolak permintaan refund ini? Tindakan tidak dapat diurungkan.')) return;
+          item.style.transition = 'opacity 0.3s';
+          item.style.opacity = '0';
+          setTimeout(function () { item.remove(); }, 320);
+        });
+      });
+
+      // ── 12. Keyboard: Escape closes modal ────────────────────────
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal && !modal.hidden) closeModal();
+      });
+
+    });
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script src="./assets/js/antrean.js"></script>
+</body>
+
+</html>

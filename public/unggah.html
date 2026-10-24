@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unggah Dokumen Cetak - PrintShop POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+
+<body class="page-upload">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+        <span class="brand-icon-box">
+          <img src="./assets/images/logo-operator.svg" alt="Logo Printer PrintShop POS" />
+        </span>
+        <span class="brand-title-wrap">
+          <span class="brand-name">PrintShop POS</span>
+          <span class="brand-tagline">Self-Service Digital Print</span>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Navigasi Utama">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="unggah.html" class="nav-link active">Unggah Dokumen</a>
+        <a href="index.html#tarif" class="nav-link">Tarif &amp; Layanan</a>
+        <a href="index.html#lacak" class="nav-link">Lacak Pesanan</a>
+      </nav>
+
+      <div class="header-action-group">
+        <a href="unggah.html" class="btn-primary btn-placeholder" aria-hidden="true" tabindex="-1">Mulai Cetak</a>
+
+        <input type="checkbox" id="nav-toggle" class="mobile-nav-toggle" aria-label="Buka atau tutup menu" />
+        <label for="nav-toggle" class="mobile-menu-btn" aria-label="Menu navigasi">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </label>
+
+        <nav class="mobile-dropdown-menu" aria-label="Navigasi Mobile">
+          <ul class="mobile-nav-links">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="unggah.html">Mulai Cetak Dokumen</a></li>
+            <li><a href="index.html#cara-kerja">Cara Kerja</a></li>
+            <li><a href="index.html#tarif">Daftar Tarif</a></li>
+            <li><a href="index.html#lacak">Lacak Pesanan</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <nav class="step-nav-bar" aria-label="Tahapan Pemesanan">
+    <div class="container step-nav-inner">
+      <span class="step-badge-indicator active" aria-current="step">
+        <span>01</span> <span class="step-label">Unggah <span class="step-label-extra">Berkas</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator">
+        <span>02</span> <span class="step-label">Atur <span class="step-label-extra">Spesifikasi</span></span>
+      </span>
+      <span class="step-separator" aria-hidden="true">&rarr;</span>
+      <span class="step-badge-indicator">
+        <span>03</span> <span class="step-label">Bayar <span class="step-label-extra">QRIS</span></span>
+      </span>
+    </div>
+  </nav>
+
+  <main class="upload-main">
+    <div class="container">
+      <div class="upload-page-grid">
+        <section class="upload-card-wrapper" aria-labelledby="judul-unggah">
+          <header class="upload-card-header">
+            <h1 class="upload-card-title" id="judul-unggah">Unggah Dokumen Cetak</h1>
+            <p class="upload-card-sub">
+              Guest checkout mandiri - langsung unggah dan atur spesifikasi tanpa perlu registrasi akun.
+            </p>
+          </header>
+
+          <form action="spesifikasi.html" method="get">
+            <label for="file-dokumen" class="dropzone-box">
+              <span class="dropzone-icon-bubble">
+                <img src="./assets/images/upload-cloud.svg" alt="Ikon Unggah Awan" />
+              </span>
+
+              <span class="dropzone-title">Pilih atau Seret Berkas ke Sini</span>
+              <span class="dropzone-desc">
+                Mendukung dokumen tugas kuliah, makalah, laporan praktikum, atau skripsi dalam format PDF, DOCX, dan PPTX.
+              </span>
+
+              <span class="btn-browse">Cari Berkas di Perangkat</span>
+
+              <input type="file" id="file-dokumen" name="file-dokumen" class="sr-only" accept=".pdf,.docx,.pptx" />
+
+              <span class="dropzone-hint-badge">Maksimal ukuran file: 50 MB per dokumen</span>
+            </label>
+
+            <fieldset class="form-group-grid">
+              <legend class="sr-only">Identitas Pemesan</legend>
+
+              <div class="input-field-wrap">
+                <label for="nama-pemesan">Nama Pemesan</label>
+                <input type="text" id="nama-pemesan" name="nama-pemesan" placeholder="Contoh: Budi Santoso" required />
+                <small>Nama ini akan dicantumkan di tiket untuk verifikasi loket.</small>
+              </div>
+
+              <div class="input-field-wrap">
+                <label for="nomor-hp">Nomor WhatsApp (Opsional)</label>
+                <input type="tel" id="nomor-hp" name="nomor-hp" placeholder="Contoh: 081234567890" pattern="[0-9]{10,13}" inputmode="numeric" />
+                <small>Untuk notifikasi jika cetakan sudah selesai.</small>
+              </div>
+            </fieldset>
+
+            <article class="ready-doc-card" aria-label="Dokumen siap cetak">
+              <div class="ready-doc-info">
+                <div class="doc-type-icon">
+                  <img src="./assets/images/file-icon-pdf.svg" alt="Ikon PDF" />
+                </div>
+                <div>
+                  <p class="doc-name">Makalah_Tugas_Akhir_Kelompok2.pdf</p>
+                  <p class="doc-meta">
+                    <span>Ukuran: <strong>4.2 MB</strong></span>
+                    <span> | </span>
+                    <span>Halaman: <strong class="doc-meta-pages">28 Halaman</strong></span>
+                    <span> | </span>
+                    <span class="doc-meta-ok">✓ Terverifikasi</span>
+                  </p>
+                </div>
+              </div>
+
+              <label for="file-dokumen" class="doc-replace">Ganti Berkas</label>
+            </article>
+
+            <div class="sticky-upload-bar">
+              <button type="submit" class="btn-primary btn-submit-action">
+                Lanjut ke Pengaturan Spesifikasi Cetak &rarr;
+              </button>
+            </div>
+          </form>
+
+          <aside class="privacy-strip">
+            <img src="./assets/images/circle-check.svg" alt="Keamanan" />
+            <p>
+              <strong>Privasi Terjamin:</strong> File dokumen kamu dienkripsi di server dan akan dihapus permanen secara otomatis dalam kurun waktu 24 jam setelah pesanan selesai.
+            </p>
+          </aside>
+        </section>
+
+        <aside class="upload-sidebar" aria-label="Informasi Layanan & Panduan">
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <span class="sidebar-icon-wrap">
+                <img src="./assets/images/status-ready.svg" alt="Lokasi" />
+              </span>
+              <div>
+                <h2 class="sidebar-card-title">Status Loket &amp; Antrean</h2>
+                <p class="sidebar-card-sub">Informasi real-time loket kampus</p>
+              </div>
+            </div>
+            <div class="sidebar-meta-list">
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Lokasi Kios</span>
+                <span class="meta-val highlight">Gedung A | Buka</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Estimasi Antrean</span>
+                <span class="meta-val">±5 Menit (Cepat)</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Kecepatan Mesin</span>
+                <span class="meta-val">35 Lembar / Menit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <span class="sidebar-icon-wrap">
+                <img src="./assets/images/file-icon-pdf.svg" alt="Format" />
+              </span>
+              <div>
+                <h2 class="sidebar-card-title">Ketentuan File Cetak</h2>
+                <p class="sidebar-card-sub">Format &amp; tips dokumen rapi</p>
+              </div>
+            </div>
+            <ul class="sidebar-tips-list">
+              <li>
+                <span class="tip-dot"></span>
+                <span><strong>Format:</strong> PDF (sangat disarankan), DOCX, atau PPTX.</span>
+              </li>
+              <li>
+                <span class="tip-dot"></span>
+                <span><strong>Ukuran Maksimal:</strong> Hingga 50 MB per dokumen.</span>
+              </li>
+              <li>
+                <span class="tip-dot"></span>
+                <span><strong>Tips Mahasiswa:</strong> Gunakan format <em>PDF</em> agar posisi margin, font, dan rumus skripsi tidak bergeser saat dicetak.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <span class="sidebar-icon-wrap">
+                <img src="./assets/images/icon-clock.svg" alt="Jam Operasional" />
+              </span>
+              <div>
+                <h2 class="sidebar-card-title">Lokasi &amp; Jam Layanan</h2>
+                <p class="sidebar-card-sub">Pengambilan &amp; bantuan loket</p>
+              </div>
+            </div>
+            <div class="sidebar-meta-list">
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Loket Ambil</span>
+                <span class="meta-val">Gedung A, Lt. 1</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Jam Buka</span>
+                <span class="meta-val">08.00 - 20.00 WIB</span>
+              </div>
+              <div class="sidebar-meta-row">
+                <span class="meta-label">Staf Operator</span>
+                <span class="meta-val highlight">Siap Membantu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card sidebar-card--trust">
+            <div class="sidebar-trust-head">
+              <span class="trust-badge-icon">🔒</span>
+              <h3 class="trust-badge-title">Keamanan Terjamin 100%</h3>
+            </div>
+            <p class="trust-badge-desc">
+              Dokumen kamu dienkripsi otomatis dan dihapus permanen dari server loket 24 jam setelah tiket dicetak. Operator loket tidak membuka isi dokumen pribadimu.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+            <span class="brand-icon-box brand-icon-box--sm">
+              <img src="./assets/images/logo-operator.svg" alt="Logo" />
+            </span>
+            <span class="brand-name brand-name--sm">PrintShop POS</span>
+          </a>
+          <p class="footer-brand-desc">
+            Layanan cetak mandiri instan tanpa antre kasir &amp; bebas ribet untuk mahasiswa.
+          </p>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="unggah.html">Mulai Cetak</a></li>
+          <li><a href="index.html#tarif">Tarif Kertas</a></li>
+          <li><a href="index.html#lacak">Lacak Tiket</a></li>
+          <li><a href="login.html" class="footer-link-badge">Login Operator &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>PrintShop POS | Dikembangkan oleh <strong>Kelompok 2 &ndash; Divisi Web UI/UX Developer</strong></p>
+        <div class="footer-trust-chip">
+          <span class="trust-chip-dot"></span>
+          <span>Privasi Terjamin | Berkas Dihapus Otomatis 24 Jam Pasca-Cetak</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script src="./assets/js/upload.js"></script>
+</body>
+
+</html>
