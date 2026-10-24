@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DataService } from '@/lib/supabase';
+import { DataService, getSupabaseClient } from '@/lib/supabase';
 import { MidtransService } from '@/lib/midtrans';
 
 export async function POST(request) {
@@ -36,6 +36,26 @@ export async function POST(request) {
     // Update order status to PENDING_PAYMENT
     if (order.status === 'DRAFT') {
       await DataService.updateOrder(order.id, { status: 'PENDING_PAYMENT' });
+    }
+
+    // Record into Supabase transactions table if configured
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      try {
+        await supabase.from('transactions').upsert({
+          order_id: order.id,
+          midtrans_order_id: payment.midtransOrderId,
+          payment_type: 'qris',
+          gross_amount: payment.grossAmount,
+          transaction_status: payment.status || 'pending',
+          snap_token: payment.snapToken || null,
+          qr_string: payment.qrString || null,
+          raw_payload: payment.raw || null,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'midtrans_order_id' });
+      } catch (trxErr) {
+        console.warn('Could not record transaction to Supabase:', trxErr.message);
+      }
     }
 
     return NextResponse.json({

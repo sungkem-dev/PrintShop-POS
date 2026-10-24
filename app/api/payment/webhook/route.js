@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DataService } from '@/lib/supabase';
+import { DataService, getSupabaseClient } from '@/lib/supabase';
 
 export async function POST(request) {
   try {
@@ -34,6 +34,24 @@ export async function POST(request) {
           status: 'CANCELLED',
           cancel_reason: `Pembayaran ${transactionStatus} via Midtrans`
         });
+      }
+
+      // Update transactions table if Supabase is connected
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        try {
+          await supabase
+            .from('transactions')
+            .update({
+              transaction_status: transactionStatus,
+              fraud_status: fraudStatus || null,
+              raw_payload: notification,
+              updated_at: new Date().toISOString()
+            })
+            .eq('midtrans_order_id', orderIdStr);
+        } catch (trxErr) {
+          console.warn('Could not update transactions in webhook:', trxErr.message);
+        }
       }
     }
 
