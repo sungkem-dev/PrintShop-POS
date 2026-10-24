@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrintShop POS - Print Instan Tanpa Antre Kasir &amp; Tanpa Flashdisk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+        <span class="brand-icon-box">
+          <img src="./assets/images/logo-operator.svg" alt="Logo Printer PrintShop POS" />
+        </span>
+        <span class="brand-title-wrap">
+          <span class="brand-name">PrintShop POS</span>
+          <span class="brand-tagline">Self-Service Digital Print</span>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Navigasi Utama">
+        <a href="index.html" class="nav-link active">Beranda</a>
+        <a href="unggah.html" class="nav-link">Unggah Dokumen</a>
+        <a href="index.html#tarif" class="nav-link">Tarif &amp; Layanan</a>
+        <a href="index.html#lacak" class="nav-link">Lacak Pesanan</a>
+      </nav>
+
+      <div class="header-action-group">
+        <a href="unggah.html" class="btn-primary">Mulai Cetak</a>
+
+        <input type="checkbox" id="nav-toggle" class="mobile-nav-toggle" aria-label="Buka atau tutup menu" />
+        <label for="nav-toggle" class="mobile-menu-btn" aria-label="Menu navigasi">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2"
+            stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </label>
+
+        <nav class="mobile-dropdown-menu" aria-label="Navigasi Mobile">
+          <ul class="mobile-nav-links">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="unggah.html">Mulai Cetak Dokumen</a></li>
+            <li><a href="index.html#cara-kerja">Cara Kerja</a></li>
+            <li><a href="index.html#tarif">Daftar Tarif</a></li>
+            <li><a href="index.html#lacak">Lacak Pesanan</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section id="hero" class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <div class="hero-copy">
+
+          <h1 class="hero-headline" id="hero-title">
+            Print Dokumen Instan, <br />
+            <span class="text-gradient">Tanpa Antre Kasir &amp; Tanpa Flashdisk.</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Solusi cetak mandiri tugas, makalah, dan skripsi bagi mahasiswa. Cukup unggah dokumen dari HP atau laptopmu,
+            bayar lunas otomatis via QRIS, dan ambil cetakanmu langsung di loket.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="unggah.html" class="btn-primary btn-hero-primary">Mulai Cetak Sekarang &rarr;</a>
+            <a href="#lacak" class="btn-secondary">Lacak Status Pesanan</a>
+          </div>
+
+          <ul class="hero-trust-list">
+            <li class="trust-item">
+              <img src="./assets/images/circle-check.svg" alt="Centang" width="18" height="18" />
+              Tanpa Perlu Simpan Kontak WA
+            </li>
+            <li class="trust-item">
+              <img src="./assets/images/circle-check.svg" alt="Centang" width="18" height="18" />
+              Antrean FIFO Adil &amp; Transparan
+            </li>
+            <li class="trust-item">
+              <img src="./assets/images/circle-check.svg" alt="Centang" width="18" height="18" />
+              Dokumen Dihapus Otomatis (Privat)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="live-status-section container" aria-label="Informasi Status Loket">
+      <div class="status-strip-card">
+        <div class="status-metric-col">
+          <div class="metric-icon-bubble">
+            <img src="./assets/images/status-ready.svg" alt="Loket Buka" />
+          </div>
+          <div class="metric-content">
+            <span>Status Kios</span>
+            <strong>Gedung A | Buka</strong>
+          </div>
+        </div>
+
+        <div class="status-metric-col">
+          <div class="metric-icon-bubble">
+            <img src="./assets/images/timer.svg" alt="Waktu Antrean" />
+          </div>
+          <div class="metric-content">
+            <span>Estimasi Antrean</span>
+            <strong>±10 Menit (Cepat)</strong>
+          </div>
+        </div>
+
+        <div class="status-metric-col">
+          <div class="metric-icon-bubble">
+            <img src="./assets/images/printer-check.svg" alt="Mesin Siap" />
+          </div>
+          <div class="metric-content">
+            <span>Kecepatan Mesin</span>
+            <strong>35 Lembar / Menit</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cara-kerja" class="section-block" aria-labelledby="judul-cara-kerja">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-tag">Alur Penggunaan</span>
+          <h2 class="section-title" id="judul-cara-kerja">4 Langkah Cepat Cetak Dokumen</h2>
+          <p class="section-desc">Dari dokumen di perangkatmu hingga lembar cetak siap ambil di tanganmu.</p>
+        </header>
+
+        <div class="steps-grid">
+          <article class="step-card step-card--wide step-card--dark">
+            <span class="step-number">01</span>
+            <div class="step-icon-wrap">
+              <img src="./assets/images/step-upload.svg" alt="Ikon Unggah" />
+            </div>
+            <h3 class="step-card-title">Unggah Berkas</h3>
+            <p class="step-card-desc">
+              Pilih file PDF, DOCX, atau PPTX langsung dari memori ponsel atau Google Drive. Maksimal 50 MB.
+            </p>
+          </article>
+
+          <article class="step-card step-card--narrow">
+            <span class="step-number">02</span>
+            <div class="step-icon-wrap">
+              <img src="./assets/images/step-spec.svg" alt="Ikon Spesifikasi" />
+            </div>
+            <h3 class="step-card-title">Atur Spesifikasi</h3>
+            <p class="step-card-desc">
+              Tentukan ukuran kertas (A4/F4/A3), mode hitam-putih atau warna, serta jumlah salinan. Harga terhitung
+              otomatis.
+            </p>
+          </article>
+
+          <article class="step-card step-card--narrow">
+            <span class="step-number">03</span>
+            <div class="step-icon-wrap">
+              <img src="./assets/images/step-qris.svg" alt="Ikon QRIS" />
+            </div>
+            <h3 class="step-card-title">Bayar via QRIS</h3>
+            <p class="step-card-desc">
+              Scan kode QR dengan dompet digital (GoPay, OVO, Dana) atau m-Banking pilihanmu. Konfirmasi otomatis
+              seketika.
+            </p>
+          </article>
+
+          <article class="step-card step-card--wide step-card--mint">
+            <span class="step-number">04</span>
+            <div class="step-icon-wrap">
+              <img src="./assets/images/step-pickup.svg" alt="Ikon Ambil Dokumen" />
+            </div>
+            <h3 class="step-card-title">Ambil di Loket</h3>
+            <p class="step-card-desc">
+              Dapatkan tiket digital dengan nomor pesanan unik. Pantau status live dan ambil cetakanmu tanpa antre.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tarif" class="section-block" aria-labelledby="judul-tarif">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-tag">Daftar Harga</span>
+          <h2 class="section-title" id="judul-tarif">Tarif Bersahabat untuk Mahasiswa</h2>
+          <p class="section-desc">Harga pasti tertera sebelum bayar. Tanpa biaya admin atau biaya tersembunyi.</p>
+        </header>
+
+        <div class="pricing-grid">
+          <article class="pricing-card featured">
+            <span class="popular-badge">Paling Populer</span>
+            <h3 class="pricing-paper">Kertas A4 (75/80 gsm)</h3>
+            <p class="pricing-sub">Standar tugas kuliah, makalah, jurnal, dan skripsi.</p>
+
+            <div class="rate-box">
+              <div class="rate-label">Hitam &amp; Putih (B&amp;W)</div>
+              <div class="rate-price">Rp 500 <span>/ lembar</span></div>
+            </div>
+
+            <div class="rate-box">
+              <div class="rate-label">Full Color</div>
+              <div class="rate-price emerald">Rp 1.500 <span>/ lembar</span></div>
+            </div>
+
+            <div class="pricing-action">
+              <a href="unggah.html" class="btn-primary btn-block">Pilih Cetak A4</a>
+            </div>
+          </article>
+
+          <article class="pricing-card">
+            <h3 class="pricing-paper">Kertas F4 / Folio</h3>
+            <p class="pricing-sub">Format administrasi, berkas dinas, dan map dokumen.</p>
+
+            <div class="rate-box">
+              <div class="rate-label">Hitam &amp; Putih (B&amp;W)</div>
+              <div class="rate-price">Rp 700 <span>/ lembar</span></div>
+            </div>
+
+            <div class="rate-box">
+              <div class="rate-label">Full Color</div>
+              <div class="rate-price emerald">Rp 1.700 <span>/ lembar</span></div>
+            </div>
+
+            <div class="pricing-action">
+              <a href="unggah.html" class="btn-secondary btn-block">Pilih Cetak F4</a>
+            </div>
+          </article>
+
+          <article class="pricing-card">
+            <h3 class="pricing-paper">Kertas A3 (Format Besar)</h3>
+            <p class="pricing-sub">Poster ilmiah, denah arsitektur, dan gambar teknik.</p>
+
+            <div class="rate-box">
+              <div class="rate-label">Hitam &amp; Putih (B&amp;W)</div>
+              <div class="rate-price">Rp 1.500 <span>/ lembar</span></div>
+            </div>
+
+            <div class="rate-box">
+              <div class="rate-label">Full Color</div>
+              <div class="rate-price emerald">Rp 3.500 <span>/ lembar</span></div>
+            </div>
+
+            <div class="pricing-action">
+              <a href="unggah.html" class="btn-secondary btn-block">Pilih Cetak A3</a>
+            </div>
+          </article>
+        </div>
+
+        <aside class="duplex-tip-card">
+          <span class="duplex-tip-icon" aria-hidden="true">🍃</span>
+          <p>
+            <strong>Hemat Ramah Lingkungan:</strong> Dapatkan potongan harga otomatis dengan memilih opsi cetak
+            bolak-balik (Duplex) di halaman spesifikasi.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="lacak" class="section-block track-section" aria-labelledby="judul-lacak">
+      <div class="container">
+        <div class="track-order-card">
+          <h2 class="track-order-title" id="judul-lacak">Lacak Status Pesanan Anda</h2>
+          <p class="track-order-desc">
+            Halaman web sempat tertutup? Cukup masukkan nomor pesanan untuk membuka kembali tiket digital dan pantau
+            antreanmu.
+          </p>
+
+          <form action="tiket.html" method="get" class="track-form">
+            <label for="nomor-pesanan" class="sr-only">Nomor pesanan</label>
+            <input type="text" id="nomor-pesanan" name="nomor-pesanan" class="track-input"
+              placeholder="Masukkan nomor pesanan contoh: ORD-042" required />
+            <button type="submit" class="btn-track-submit">Lacak Status &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <a href="index.html" class="brand-link" aria-label="PrintShop POS Beranda">
+            <span class="brand-icon-box brand-icon-box--sm">
+              <img src="./assets/images/logo-operator.svg" alt="Logo" />
+            </span>
+            <span class="brand-name brand-name--sm">PrintShop POS</span>
+          </a>
+          <p class="footer-brand-desc">
+            Layanan cetak mandiri instan tanpa antre kasir &amp; bebas ribet.
+          </p>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="unggah.html">Mulai Cetak</a></li>
+          <li><a href="#tarif">Tarif Kertas</a></li>
+          <li><a href="#lacak">Lacak Tiket</a></li>
+          <li><a href="login.html" class="footer-link-badge">Login Operator &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <span>Privasi Terjamin | Berkas Dihapus Otomatis 24 Jam Pasca-Cetak</span>
+      </div>
+    </div>
+    </div>
+  </footer>
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (window.PrintShopAPI) {
+        try {
+          const orders = await window.PrintShopAPI.getOrders({ status: 'WAITING_IN_QUEUE,PRINTING' });
+          const count = orders.length;
+          const statusCol = document.querySelectorAll('.status-metric-col strong');
+          if (statusCol.length >= 2) {
+            statusCol[1].textContent = `±${Math.max(3, count * 3)} Menit (${count} Antrean)`;
+          }
+        } catch (e) {}
+      }
+    });
+  </script>
+</body>
+
+</html>
