@@ -1,16 +1,6 @@
 /**
- * ═══════════════════════════════════════════════════════
- *  PrintShop POS — Live Dynamic Price Calculator
- *  File   : assets/js/pricing-calc.js
- *  Author : Ryan Ramadhan (Kelompok 2 — Divisi Web UI/UX)
- * ═══════════════════════════════════════════════════════
- *
- *  Tarif:
- *    Ukuran Kertas : A4 = Rp 500, F4 = Rp 600, A3 = Rp 1.000
- *    Full Color    : +Rp 2.000 per lembar fisik
- *    Duplex        : +Rp 900 per lembar fisik
- *
- *  Lembar fisik duplex: Math.ceil(totalPages / 2)
+ * PrintShop POS — Dynamic Price Calculator & Specification Flow
+ * File   : assets/js/pricing-calc.js
  */
 
 ;(function () {
@@ -25,14 +15,15 @@
 
   // ── DOM References ─────────────────────────────────
   const form            = document.getElementById('form-spesifikasi');
+  const docFilenameEl   = document.getElementById('doc-filename');
   const docTotalEl      = document.getElementById('doc-total-pages');
-  const totalDocPages   = docTotalEl ? parseInt(docTotalEl.dataset.total, 10) || 24 : 24;
+  let totalDocPages     = docTotalEl ? parseInt(docTotalEl.dataset.total, 10) || 24 : 24;
 
   // Radio groups
-  const paperRadios     = form.querySelectorAll('input[name="ukuran-kertas"]');
-  const colorRadios     = form.querySelectorAll('input[name="mode-warna"]');
-  const sideRadios      = form.querySelectorAll('input[name="sisi-cetak"]');
-  const rangeRadios     = form.querySelectorAll('input[name="rentang-halaman"]');
+  const paperRadios     = form ? form.querySelectorAll('input[name="ukuran-kertas"]') : [];
+  const colorRadios     = form ? form.querySelectorAll('input[name="mode-warna"]') : [];
+  const sideRadios      = form ? form.querySelectorAll('input[name="sisi-cetak"]') : [];
+  const rangeRadios     = form ? form.querySelectorAll('input[name="rentang-halaman"]') : [];
 
   // Stepper
   const copiesInput     = document.getElementById('jumlah-salinan');
@@ -72,36 +63,42 @@
   const rangeAllLabel   = document.getElementById('range-all-label');
   const rangeMaxHint    = document.getElementById('range-max-hint');
 
+  let currentOrderId    = null;
+  let currentOrderData  = null;
+
   // ── Helpers ────────────────────────────────────────
 
-  /** Format number as Indonesian Rupiah string */
   function formatRupiah(num) {
     return 'Rp ' + num.toLocaleString('id-ID');
   }
 
-  /** Get the checked value of a radio group */
   function getRadioValue(name) {
+    if (!form) return null;
     const checked = form.querySelector('input[name="' + name + '"]:checked');
     return checked ? checked.value : null;
   }
 
-  /**
-   * Parse a page range string like "1-5, 8, 12-15"
-   * Returns { valid: boolean, pages: number[], error: string }
-   */
+  function showRangeError(msg) {
+    if (rangeErrorMsg) rangeErrorMsg.textContent = msg;
+    if (rangeError) rangeError.style.display = 'block';
+  }
+
+  function hideRangeError() {
+    if (rangeError) rangeError.style.display = 'none';
+    if (customRangeInput) customRangeInput.classList.remove('input-error');
+  }
+
   function parsePageRange(input, maxPage) {
     const trimmed = input.trim();
     if (!trimmed) {
       return { valid: false, pages: [], error: 'Silakan masukkan rentang halaman.' };
     }
 
-    // Validate characters: only digits, hyphens, commas, spaces allowed
     if (!/^[\d\s,\-–—]+$/.test(trimmed)) {
       return { valid: false, pages: [], error: 'Karakter tidak valid. Gunakan angka, tanda hubung (-), dan koma (,).' };
     }
 
     const pages = new Set();
-    // Normalize dashes (en-dash, em-dash → hyphen)
     const normalized = trimmed.replace(/[–—]/g, '-');
     const parts = normalized.split(',');
 
@@ -110,7 +107,7 @@
       if (!part) continue;
 
       if (part.includes('-')) {
-        const rangeParts = part.split('-').map(function (s) { return s.trim(); });
+        const rangeParts = part.split('-').map(s => s.trim());
         if (rangeParts.length !== 2) {
           return { valid: false, pages: [], error: 'Format rentang "' + part + '" tidak valid. Gunakan format: 1-5' };
         }
@@ -123,7 +120,7 @@
           return { valid: false, pages: [], error: 'Nomor halaman harus mulai dari 1.' };
         }
         if (start > end) {
-          return { valid: false, pages: [], error: 'Rentang "' + part + '" salah — angka awal harus ≤ angka akhir.' };
+          return { valid: false, pages: [], error: 'Rentang "' + part + '" salah — angka awal harus <= angka akhir.' };
         }
         if (end > maxPage) {
           return { valid: false, pages: [], error: 'Halaman ' + end + ' melebihi total halaman dokumen (' + maxPage + ').' };
@@ -132,7 +129,7 @@
           pages.add(p);
         }
       } else {
-        var pageNum = parseInt(part, 10);
+        const pageNum = parseInt(part, 10);
         if (isNaN(pageNum)) {
           return { valid: false, pages: [], error: 'Angka "' + part + '" tidak valid.' };
         }
@@ -150,218 +147,270 @@
       return { valid: false, pages: [], error: 'Tidak ada halaman yang dipilih.' };
     }
 
-    return { valid: true, pages: Array.from(pages).sort(function (a, b) { return a - b; }), error: '' };
+    return { valid: true, pages: Array.from(pages).sort((a, b) => a - b), error: null };
   }
 
-  // ── Core Calculator ────────────────────────────────
+  // ── Main Calculation ────────────────────────────────
 
   function calculate() {
-    // 1. Gather selections
-    var paperSize  = getRadioValue('ukuran-kertas') || 'A4';
-    var colorMode  = getRadioValue('mode-warna') || 'BW';
-    var printSide  = getRadioValue('sisi-cetak') || 'simplex';
-    var rangeMode  = getRadioValue('rentang-halaman') || 'all';
-    var copies     = parseInt(copiesInput.value, 10) || 1;
+    if (!form) return;
 
-    // Clamp copies
-    copies = Math.max(1, Math.min(50, copies));
-    copiesInput.value = copies;
+    const paperKey   = getRadioValue('ukuran-kertas') || 'A4';
+    const colorKey   = getRadioValue('mode-warna')    || 'bw';
+    const sideKey    = getRadioValue('sisi-cetak')     || 'simplex';
+    const rangeMode  = getRadioValue('rentang-halaman')|| 'all';
+    const copies     = parseInt(copiesInput ? copiesInput.value : 1, 10) || 1;
 
-    // 2. Determine pages to print
-    var pagesToPrint = totalDocPages;
-    var rangeValid = true;
+    let activePages = totalDocPages;
 
     if (rangeMode === 'custom') {
-      var parsed = parsePageRange(customRangeInput.value, totalDocPages);
+      if (customRangeWrap) customRangeWrap.classList.add('visible');
+      const parsed = parsePageRange(customRangeInput ? customRangeInput.value : '', totalDocPages);
       if (parsed.valid) {
-        pagesToPrint = parsed.pages.length;
+        activePages = parsed.pages.length;
         hideRangeError();
-        customRangeInput.classList.remove('input-error');
       } else {
-        // Show error but still calculate with last known value or all pages
-        showRangeError(parsed.error);
-        customRangeInput.classList.add('input-error');
-        rangeValid = false;
-        // Fall back to all pages for the calculation display
-        pagesToPrint = totalDocPages;
+        if (customRangeInput && customRangeInput.value.trim() !== '') {
+          showRangeError(parsed.error);
+        }
+        activePages = 0;
       }
     } else {
+      if (customRangeWrap) customRangeWrap.classList.remove('visible');
       hideRangeError();
-      customRangeInput.classList.remove('input-error');
+      activePages = totalDocPages;
     }
 
-    // 3. Calculate physical sheets
-    var isDuplex = (printSide === 'duplex');
-    var physicalSheets = isDuplex ? Math.ceil(pagesToPrint / 2) : pagesToPrint;
+    // Physical sheets calculation
+    let physicalSheets = activePages;
+    if (sideKey === 'duplex') {
+      physicalSheets = Math.ceil(activePages / 2);
+    }
 
-    // 4. Price per physical sheet
-    var basePricePerSheet = RATES.paper[paperSize] || 500;
-    var colorAddon = (colorMode === 'Color') ? RATES.color : 0;
-    var duplexAddon = isDuplex ? RATES.duplex : 0;
-    var pricePerSheet = basePricePerSheet + colorAddon + duplexAddon;
-
-    // 5. Total
-    var totalPrice = physicalSheets * pricePerSheet * copies;
-
-    // ── Update Summary UI ──
-
-    // Paper size labels
-    var paperLabels = { A4: 'A4', F4: 'F4 / Folio', A3: 'A3' };
-    sumPaper.textContent = paperLabels[paperSize] || paperSize;
-
-    // Color mode
-    sumColor.textContent = (colorMode === 'Color') ? 'Full Color' : 'Hitam & Putih';
-
-    // Side
-    sumSide.textContent = isDuplex ? 'Duplex (Bolak-balik)' : 'Simplex (Satu sisi)';
-
-    // Pages & sheets
-    sumPages.textContent = pagesToPrint + ' hal';
-    sumSheets.textContent = physicalSheets + ' lbr';
-
-    // Copies
-    sumCopies.textContent = copies + '×';
-
-    // Base price
-    sumBasePrice.textContent = formatRupiah(basePricePerSheet);
-
-    // Color addon row
-    if (colorMode === 'Color') {
-      sumColorRow.style.display = '';
-      sumColorPrice.textContent = formatRupiah(RATES.color);
+    // Eco badge
+    if (sideKey === 'duplex' && activePages > 1) {
+      if (ecoBadge) ecoBadge.style.display = 'flex';
+      if (ecoPagesInfo) ecoPagesInfo.textContent = activePages;
+      if (ecoSheetsInfo) ecoSheetsInfo.textContent = physicalSheets;
     } else {
-      sumColorRow.style.display = 'none';
+      if (ecoBadge) ecoBadge.style.display = 'none';
     }
 
-    // Duplex addon row
-    if (isDuplex) {
-      sumDuplexRow.style.display = '';
-      sumDuplexPrice.textContent = formatRupiah(RATES.duplex);
-    } else {
-      sumDuplexRow.style.display = 'none';
-    }
+    // Pricing rates
+    const baseRatePerSheet = RATES.paper[paperKey] || 500;
+    const isColor          = colorKey === 'color';
+    const isDuplex         = sideKey === 'duplex';
 
-    // Total
-    sumTotal.textContent = formatRupiah(totalPrice);
+    const colorRatePerSheet  = isColor ? RATES.color : 0;
+    const duplexRatePerSheet = isDuplex ? RATES.duplex : 0;
 
-    // ── Eco badge ──
-    if (isDuplex) {
-      ecoBadge.style.display = 'flex';
-      ecoPagesInfo.textContent = pagesToPrint + ' halaman';
-      ecoSheetsInfo.textContent = physicalSheets + ' lembar';
-    } else {
-      ecoBadge.style.display = 'none';
-    }
+    const pricePerSheet = baseRatePerSheet + colorRatePerSheet + duplexRatePerSheet;
+    const totalEstimate = physicalSheets * pricePerSheet * copies;
 
-    // ── Update stepper button states ──
-    btnMinus.disabled = copies <= 1;
-    btnPlus.disabled = copies >= 50;
-  }
+    // Sidebar Summary updates
+    if (sumPaper) sumPaper.textContent = paperKey;
+    if (sumColor) sumColor.textContent = isColor ? 'Full Color' : 'Hitam & Putih';
+    if (sumSide)  sumSide.textContent  = isDuplex ? 'Duplex (Bolak-balik)' : 'Simplex (Satu Sisi)';
+    if (sumPages) sumPages.textContent = activePages + ' halaman';
+    if (sumSheets)sumSheets.textContent= (physicalSheets * copies) + ' lbr fisik';
+    if (sumCopies)sumCopies.textContent= copies + 'x';
 
-  function showRangeError(msg) {
-    rangeError.classList.add('visible');
-    rangeErrorMsg.textContent = msg;
-  }
+    if (sumBasePrice) sumBasePrice.textContent = formatRupiah(baseRatePerSheet);
 
-  function hideRangeError() {
-    rangeError.classList.remove('visible');
-    rangeErrorMsg.textContent = '';
-  }
-
-  // ── Event Listeners ────────────────────────────────
-
-  // Radio cards: recalculate on change
-  paperRadios.forEach(function (r) { r.addEventListener('change', calculate); });
-  colorRadios.forEach(function (r) { r.addEventListener('change', calculate); });
-  sideRadios.forEach(function (r) { r.addEventListener('change', calculate); });
-
-  // Page range radio toggle
-  rangeRadios.forEach(function (r) {
-    r.addEventListener('change', function () {
-      var isCustom = (getRadioValue('rentang-halaman') === 'custom');
-      customRangeWrap.classList.toggle('visible', isCustom);
-      if (isCustom) {
-        customRangeInput.focus();
+    if (sumColorRow && sumColorPrice) {
+      if (isColor) {
+        sumColorRow.style.display = 'flex';
+        sumColorPrice.textContent = '+' + formatRupiah(colorRatePerSheet);
       } else {
-        hideRangeError();
-        customRangeInput.classList.remove('input-error');
+        sumColorRow.style.display = 'none';
       }
-      calculate();
-    });
-  });
-
-  // Custom page range input
-  customRangeInput.addEventListener('input', function () {
-    calculate();
-  });
-
-  // Stepper buttons
-  btnMinus.addEventListener('click', function () {
-    var val = parseInt(copiesInput.value, 10) || 1;
-    if (val > 1) {
-      copiesInput.value = val - 1;
-      calculate();
     }
-  });
 
-  btnPlus.addEventListener('click', function () {
-    var val = parseInt(copiesInput.value, 10) || 1;
-    if (val < 50) {
-      copiesInput.value = val + 1;
-      calculate();
+    if (sumDuplexRow && sumDuplexPrice) {
+      if (isDuplex) {
+        sumDuplexRow.style.display = 'flex';
+        sumDuplexPrice.textContent = '+' + formatRupiah(duplexRatePerSheet);
+      } else {
+        sumDuplexRow.style.display = 'none';
+      }
     }
-  });
 
-  // Direct input in stepper
-  copiesInput.addEventListener('input', function () {
-    var val = parseInt(copiesInput.value, 10);
-    if (isNaN(val) || val < 1) {
-      copiesInput.value = 1;
-    } else if (val > 50) {
-      copiesInput.value = 50;
-    }
-    calculate();
-  });
+    if (sumTotal) sumTotal.textContent = formatRupiah(totalEstimate);
 
-  copiesInput.addEventListener('blur', function () {
-    var val = parseInt(copiesInput.value, 10);
-    if (isNaN(val) || val < 1) copiesInput.value = 1;
-    else if (val > 50) copiesInput.value = 50;
-    calculate();
-  });
-
-  // Textarea character counter
-  if (notesTextarea && notesCounter) {
-    notesTextarea.addEventListener('input', function () {
-      var len = notesTextarea.value.length;
-      notesCounter.textContent = len + ' / 200 karakter';
-    });
+    return {
+      paperKey,
+      isColor,
+      isDuplex,
+      copies,
+      activePages,
+      physicalSheets,
+      totalEstimate
+    };
   }
 
-  // Form submit validation
-  form.addEventListener('submit', function (e) {
-    var rangeMode = getRadioValue('rentang-halaman');
-    if (rangeMode === 'custom') {
-      var parsed = parsePageRange(customRangeInput.value, totalDocPages);
-      if (!parsed.valid) {
-        e.preventDefault();
-        showRangeError(parsed.error);
-        customRangeInput.classList.add('input-error');
-        customRangeInput.focus();
+  // ── Load Dynamic Order Data ─────────────────────────
+
+  async function loadOrderContext() {
+    const params = new URLSearchParams(window.location.search);
+    currentOrderId = params.get('order_id') || params.get('id');
+
+    if (currentOrderId && window.PrintShopAPI) {
+      try {
+        currentOrderData = await window.PrintShopAPI.getOrder(currentOrderId);
+      } catch (e) {
+        console.warn('Could not load order by ID:', e);
+      }
+    }
+
+    // Fallback to sessionStorage
+    if (!currentOrderData) {
+      try {
+        const raw = sessionStorage.getItem('printshop_order');
+        if (raw) currentOrderData = JSON.parse(raw);
+      } catch (e) {}
+    }
+
+    if (currentOrderData) {
+      if (currentOrderData.id) currentOrderId = currentOrderData.id;
+      
+      const filename = currentOrderData.file_name || currentOrderData.filename || 'Dokumen.pdf';
+      const pages = Number(currentOrderData.total_pages || currentOrderData.pagesNum || currentOrderData.pages) || 24;
+
+      if (docFilenameEl) docFilenameEl.textContent = filename;
+      if (docTotalEl) {
+        docTotalEl.dataset.total = pages;
+        docTotalEl.textContent = `${pages} halaman`;
+      }
+      totalDocPages = pages;
+
+      if (rangeAllLabel) rangeAllLabel.textContent = `Halaman 1 – ${pages}`;
+      if (rangeMaxHint) rangeMaxHint.textContent = pages;
+    }
+
+    calculate();
+  }
+
+  // ── Event Listeners ─────────────────────────────────
+
+  if (form) {
+    [paperRadios, colorRadios, sideRadios, rangeRadios].forEach(group => {
+      group.forEach(radio => {
+        radio.addEventListener('change', calculate);
+      });
+    });
+
+    if (customRangeInput) {
+      customRangeInput.addEventListener('input', calculate);
+    }
+
+    if (btnMinus && copiesInput) {
+      btnMinus.addEventListener('click', function () {
+        let val = parseInt(copiesInput.value, 10) || 1;
+        if (val > 1) {
+          copiesInput.value = val - 1;
+          calculate();
+        }
+      });
+    }
+
+    if (btnPlus && copiesInput) {
+      btnPlus.addEventListener('click', function () {
+        let val = parseInt(copiesInput.value, 10) || 1;
+        if (val < 50) {
+          copiesInput.value = val + 1;
+          calculate();
+        }
+      });
+    }
+
+    if (copiesInput) {
+      copiesInput.addEventListener('input', function () {
+        let val = parseInt(copiesInput.value, 10);
+        if (isNaN(val) || val < 1) copiesInput.value = 1;
+        else if (val > 50) copiesInput.value = 50;
+        calculate();
+      });
+    }
+
+    if (notesTextarea && notesCounter) {
+      notesTextarea.addEventListener('input', function () {
+        notesCounter.textContent = notesTextarea.value.length + ' / 200 karakter';
+      });
+    }
+
+    // Submit handler: Save to database & transition to pembayaran.html
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const calcResult = calculate();
+      if (!calcResult || calcResult.activePages === 0) {
+        alert('Rentang halaman tidak valid.');
         return;
       }
-    }
-  });
 
-  // ── Initialize range labels ────────────────────────
-  if (rangeAllLabel) {
-    rangeAllLabel.textContent = 'Halaman 1 – ' + totalDocPages;
-  }
-  if (rangeMaxHint) {
-    rangeMaxHint.textContent = totalDocPages;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Menyimpan Spesifikasi...';
+      }
+
+      const paperVal = getRadioValue('ukuran-kertas') || 'A4';
+      const colorVal = getRadioValue('mode-warna') === 'color' ? 'Color' : 'B/W';
+      const sideVal  = getRadioValue('sisi-cetak') === 'duplex' ? 'Duplex' : 'Simplex';
+      const rangeVal = getRadioValue('rentang-halaman') === 'custom' ? (customRangeInput?.value || 'custom') : 'all';
+      const notesVal = notesTextarea?.value || '';
+
+      const specData = {
+        paper_size: paperVal,
+        color_mode: colorVal,
+        print_side: sideVal,
+        page_range: rangeVal,
+        sheets_count: calcResult.physicalSheets,
+        notes: notesVal
+      };
+
+      try {
+        let order = null;
+        if (currentOrderId && window.PrintShopAPI) {
+          order = await window.PrintShopAPI.updateOrder(currentOrderId, {
+            copies: calcResult.copies,
+            total_pages: calcResult.activePages,
+            total_price: calcResult.totalEstimate,
+            status: 'PENDING_PAYMENT',
+            specifications: specData
+          });
+        }
+
+        // Update sessionStorage
+        const sessionPayload = {
+          id: currentOrderId || order?.id || `ord-${Date.now()}`,
+          order_code: order?.order_code || currentOrderData?.order_code || 'ORD-042',
+          filename: docFilenameEl ? docFilenameEl.textContent : 'Dokumen.pdf',
+          paper: paperVal,
+          color: colorVal === 'Color' ? 'Full Color' : 'Hitam & Putih',
+          side: sideVal === 'Duplex' ? 'Duplex' : 'Simplex',
+          pages: `${calcResult.activePages} hal`,
+          sheets: `${calcResult.physicalSheets} lbr`,
+          copies: `${calcResult.copies}x`,
+          pricePer: formatRupiah(RATES.paper[paperVal] + (colorVal === 'Color' ? 2000 : 0) + (sideVal === 'Duplex' ? 900 : 0)),
+          total: formatRupiah(calcResult.totalEstimate),
+          totalNum: calcResult.totalEstimate
+        };
+        sessionStorage.setItem('printshop_order', JSON.stringify(sessionPayload));
+
+        const targetUrl = sessionPayload.id
+          ? `pembayaran.html?order_id=${encodeURIComponent(sessionPayload.id)}`
+          : 'pembayaran.html';
+
+        window.location.href = targetUrl;
+      } catch (err) {
+        console.error('Error saving specs:', err);
+        window.location.href = 'pembayaran.html';
+      }
+    });
   }
 
-  // ── Initial calculation on page load ───────────────
-  calculate();
+  // Initialize
+  document.addEventListener('DOMContentLoaded', loadOrderContext);
 
 })();
