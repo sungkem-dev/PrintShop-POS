@@ -220,17 +220,20 @@
     }
   }
 
+  // Export for external callers
+  window.reloadOrders = reloadOrders;
+
   // ── Cancel Modal Handling ─────────────────────────
 
   function openCancelModal(id, code) {
     pendingCancelOrder = { id, code };
-    const modal = document.getElementById('cancel-modal') || document.querySelector('.modal-overlay');
+    const modal = document.getElementById('cancel-modal');
     if (modal) {
       modal.hidden = false;
       modal.style.display = 'flex';
-      const orderCodeDisplay = modal.querySelector('.modal-subtitle strong') || modal.querySelector('#cancel-order-code');
-      if (orderCodeDisplay) orderCodeDisplay.textContent = code;
-      const reasonInput = modal.querySelector('textarea') || modal.querySelector('input[type="text"]');
+      const orderCodeDisplay = document.getElementById('cancel-order-code');
+      if (orderCodeDisplay) orderCodeDisplay.textContent = `#${code}`;
+      const reasonInput = document.getElementById('cancel-modal-reason');
       if (reasonInput) reasonInput.value = '';
     } else {
       const reason = prompt(`Masukkan alasan pembatalan pesanan ${code}:`, 'Kertas macet / file rusak');
@@ -244,7 +247,7 @@
   }
 
   function closeCancelModal() {
-    const modal = document.getElementById('cancel-modal') || document.querySelector('.modal-overlay');
+    const modal = document.getElementById('cancel-modal');
     if (modal) {
       modal.hidden = true;
       modal.style.display = 'none';
@@ -297,7 +300,7 @@
       });
     }
 
-    const searchInput = document.getElementById('search-input') || document.querySelector('input[type="search"]');
+    const searchInput = document.getElementById('cari-pesanan') || document.getElementById('search-input') || document.querySelector('input[type="search"]');
     if (searchInput) {
       searchInput.addEventListener('input', function () {
         searchQuery = this.value.trim();
@@ -305,31 +308,32 @@
       });
     }
 
-    // Cancel modal buttons
-    const modal = document.querySelector('.modal-overlay');
-    if (modal) {
-      const closeBtn = modal.querySelector('.modal-close-btn') || modal.querySelector('.btn-close-modal');
-      const cancelBtn = modal.querySelector('.btn-modal-cancel');
-      const confirmBtn = modal.querySelector('.btn-modal-confirm') || modal.querySelector('#btn-confirm-cancel');
+    // Dedicated Cancel modal buttons
+    const cancelModal = document.getElementById('cancel-modal');
+    if (cancelModal) {
+      const closeBtn = document.getElementById('btn-close-cancel-modal');
+      const dismissBtn = document.getElementById('btn-dismiss-cancel-modal');
+      const confirmBtn = document.getElementById('btn-confirm-cancel-modal');
 
-      if (closeBtn) closeBtn.addEventListener('click', closeCancelModal);
-      if (cancelBtn) cancelBtn.addEventListener('click', closeCancelModal);
-
+      if (closeBtn) closeBtn.onclick = closeCancelModal;
+      if (dismissBtn) dismissBtn.onclick = closeCancelModal;
       if (confirmBtn) {
-        confirmBtn.addEventListener('click', async function () {
+        confirmBtn.onclick = async function () {
           if (!pendingCancelOrder) return;
-          const reasonInput = modal.querySelector('textarea') || modal.querySelector('input[type="text"]');
+          const reasonInput = document.getElementById('cancel-modal-reason');
           const reason = (reasonInput && reasonInput.value.trim()) || 'Dibatalkan oleh operator';
 
           if (window.PrintShopAPI) {
+            confirmBtn.disabled = true;
             await window.PrintShopAPI.updateOrder(pendingCancelOrder.id, {
               status: 'CANCELLED',
               cancel_reason: reason
             });
+            confirmBtn.disabled = false;
             closeCancelModal();
             await reloadOrders();
           }
-        });
+        };
       }
     }
 

@@ -13,7 +13,7 @@
     async getOrders(params = {}) {
       try {
         const query = new URLSearchParams(params).toString();
-        const res = await fetch(`${API_BASE}/orders?${query}`);
+        const res = await fetch(`${API_BASE}/orders?${query}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         return data.data || [];
@@ -25,7 +25,7 @@
 
     async getOrder(idOrCode) {
       try {
-        const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(idOrCode)}`);
+        const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(idOrCode)}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         return data.data || null;
@@ -37,7 +37,7 @@
 
     async trackOrder(code) {
       try {
-        const res = await fetch(`${API_BASE}/orders/track?code=${encodeURIComponent(code)}`);
+        const res = await fetch(`${API_BASE}/orders/track?code=${encodeURIComponent(code)}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         return data.data || null;
@@ -131,37 +131,23 @@
       }
     },
 
-    // ── Midtrans Payment ────────────────────────────────
-    async createPayment(orderId) {
-      try {
-        const res = await fetch(`${API_BASE}/payment/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId })
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        return data.data;
-      } catch (err) {
-        console.warn('API createPayment fallback:', err.message);
-        return {
-          orderId,
-          orderCode: 'ORD-042',
-          payment: {
-            isSimulation: true,
-            midtransOrderId: `ORD-042-${Date.now()}`,
-            qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=MIDTRANS_DEMO_QRIS',
-            qrString: '00020101021226680016ID.CO.MIDTRANS',
-            grossAmount: 12000,
-            status: 'pending'
-          }
-        };
+    // ── Midtrans Payment (Strict Official QR — No Fake Fallback) ──
+    async createPayment(orderId, orderData = null) {
+      const res = await fetch(`${API_BASE}/payment/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, orderData })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || `Gagal membuat QRIS Midtrans (HTTP ${res.status})`);
       }
+      return data.data;
     },
 
     async checkPaymentStatus(orderId) {
       try {
-        const res = await fetch(`${API_BASE}/payment/status/${encodeURIComponent(orderId)}`);
+        const res = await fetch(`${API_BASE}/payment/status/${encodeURIComponent(orderId)}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         return data.data;
@@ -170,17 +156,17 @@
       }
     },
 
-    async simulatePaymentSuccess(orderId) {
-      try {
-        const res = await fetch(`${API_BASE}/payment/status/${encodeURIComponent(orderId)}`, {
-          method: 'POST'
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        return data.data;
-      } catch (err) {
-        return this.updateOrder(orderId, { status: 'WAITING_IN_QUEUE' });
+    async simulatePaymentSuccess(orderId, snapResult = null) {
+      const res = await fetch(`${API_BASE}/payment/status/${encodeURIComponent(orderId)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(snapResult || {})
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Gagal memproses konfirmasi pembayaran');
       }
+      return data.data;
     },
 
     // ── Auth ────────────────────────────────────────────
@@ -198,7 +184,6 @@
         }
         return data;
       } catch (err) {
-        // Fallback demo authentication
         if (email.toLowerCase().includes('operator') && pin === '123456') {
           const op = {
             id: 'op-01',
@@ -230,7 +215,7 @@
     // ── Dashboard Stats ─────────────────────────────────
     async getDashboardStats() {
       try {
-        const res = await fetch(`${API_BASE}/dashboard/stats`);
+        const res = await fetch(`${API_BASE}/dashboard/stats`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         return data.data;

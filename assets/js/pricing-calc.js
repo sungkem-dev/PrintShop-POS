@@ -183,12 +183,13 @@
 
     // Physical sheets calculation
     let physicalSheets = activePages;
-    if (sideKey === 'duplex') {
+    const isDuplex = (sideKey || '').toLowerCase() === 'duplex';
+    if (isDuplex) {
       physicalSheets = Math.ceil(activePages / 2);
     }
 
     // Eco badge
-    if (sideKey === 'duplex' && activePages > 1) {
+    if (isDuplex && activePages > 1) {
       if (ecoBadge) ecoBadge.style.display = 'flex';
       if (ecoPagesInfo) ecoPagesInfo.textContent = activePages;
       if (ecoSheetsInfo) ecoSheetsInfo.textContent = physicalSheets;
@@ -198,8 +199,7 @@
 
     // Pricing rates
     const baseRatePerSheet = RATES.paper[paperKey] || 500;
-    const isColor          = colorKey === 'color';
-    const isDuplex         = sideKey === 'duplex';
+    const isColor          = (colorKey || '').toLowerCase() === 'color';
 
     const colorRatePerSheet  = isColor ? RATES.color : 0;
     const duplexRatePerSheet = isDuplex ? RATES.duplex : 0;
@@ -272,9 +272,9 @@
 
     if (currentOrderData) {
       if (currentOrderData.id) currentOrderId = currentOrderData.id;
-      
+
       const filename = currentOrderData.file_name || currentOrderData.filename || 'Dokumen.pdf';
-      const pages = Number(currentOrderData.total_pages || currentOrderData.pagesNum || currentOrderData.pages) || 24;
+      const pages = Number(currentOrderData.total_pages || currentOrderData.pagesNum || parseInt(currentOrderData.pages, 10)) || 24;
 
       if (docFilenameEl) docFilenameEl.textContent = filename;
       if (docTotalEl) {
@@ -338,7 +338,7 @@
       });
     }
 
-    // Submit handler: Save to database & transition to pembayaran.html
+    // Submit handler: Save to Supabase database & transition to pembayaran.html
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -355,8 +355,8 @@
       }
 
       const paperVal = getRadioValue('ukuran-kertas') || 'A4';
-      const colorVal = getRadioValue('mode-warna') === 'color' ? 'Color' : 'B/W';
-      const sideVal  = getRadioValue('sisi-cetak') === 'duplex' ? 'Duplex' : 'Simplex';
+      const colorVal = (getRadioValue('mode-warna') || '').toLowerCase() === 'color' ? 'Color' : 'B/W';
+      const sideVal  = (getRadioValue('sisi-cetak') || '').toLowerCase() === 'duplex' ? 'Duplex' : 'Simplex';
       const rangeVal = getRadioValue('rentang-halaman') === 'custom' ? (customRangeInput?.value || 'custom') : 'all';
       const notesVal = notesTextarea?.value || '';
 
@@ -371,21 +371,39 @@
 
       try {
         let order = null;
-        if (currentOrderId && window.PrintShopAPI) {
-          order = await window.PrintShopAPI.updateOrder(currentOrderId, {
-            copies: calcResult.copies,
-            total_pages: calcResult.activePages,
-            total_price: calcResult.totalEstimate,
-            status: 'PENDING_PAYMENT',
-            specifications: specData
-          });
+        const isUuid = id => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id || ''));
+        const orderPayload = {
+          customer_name: currentOrderData?.customer_name || 'Mahasiswa',
+          customer_phone: currentOrderData?.customer_phone || null,
+          file_name: docFilenameEl ? docFilenameEl.textContent.trim() : (currentOrderData?.file_name || currentOrderData?.filename || 'Dokumen.pdf'),
+          copies: calcResult.copies,
+          total_pages: calcResult.activePages,
+          total_price: calcResult.totalEstimate,
+          status: 'PENDING_PAYMENT',
+          specifications: specData
+        };
+
+        if (window.PrintShopAPI) {
+          if (currentOrderId && isUuid(currentOrderId)) {
+            order = await window.PrintShopAPI.updateOrder(currentOrderId, orderPayload);
+          } else {
+            order = await window.PrintShopAPI.createOrder(orderPayload);
+          }
         }
+
+        const finalOrderId = order?.id || currentOrderId;
+        const finalOrderCode = order?.order_code || currentOrderData?.order_code || 'ORD-042';
 
         // Update sessionStorage
         const sessionPayload = {
-          id: currentOrderId || order?.id || `ord-${Date.now()}`,
-          order_code: order?.order_code || currentOrderData?.order_code || 'ORD-042',
-          filename: docFilenameEl ? docFilenameEl.textContent : 'Dokumen.pdf',
+          id: finalOrderId,
+          order_code: finalOrderCode,
+          customer_name: order?.customer_name || orderPayload.customer_name,
+          customer_phone: order?.customer_phone || orderPayload.customer_phone,
+          file_name: orderPayload.file_name,
+          filename: orderPayload.file_name,
+          total_pages: calcResult.activePages,
+          total_price: calcResult.totalEstimate,
           paper: paperVal,
           color: colorVal === 'Color' ? 'Full Color' : 'Hitam & Putih',
           side: sideVal === 'Duplex' ? 'Duplex' : 'Simplex',
@@ -394,12 +412,13 @@
           copies: `${calcResult.copies}x`,
           pricePer: formatRupiah(RATES.paper[paperVal] + (colorVal === 'Color' ? 2000 : 0) + (sideVal === 'Duplex' ? 900 : 0)),
           total: formatRupiah(calcResult.totalEstimate),
-          totalNum: calcResult.totalEstimate
+          totalNum: calcResult.totalEstimate,
+          specifications: specData
         };
         sessionStorage.setItem('printshop_order', JSON.stringify(sessionPayload));
 
-        const targetUrl = sessionPayload.id
-          ? `pembayaran.html?order_id=${encodeURIComponent(sessionPayload.id)}`
+        const targetUrl = finalOrderId
+          ? `pembayaran.html?order_id=${encodeURIComponent(finalOrderId)}`
           : 'pembayaran.html';
 
         window.location.href = targetUrl;

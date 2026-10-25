@@ -144,13 +144,13 @@
 
     if (toggleBtn && sidebar && backdrop) {
       toggleBtn.addEventListener('click', function () {
-        sidebar.classList.toggle('open');
-        backdrop.classList.toggle('visible');
+        sidebar.classList.toggle('is-open'); sidebar.classList.toggle('open');
+        backdrop.classList.toggle('is-open'); backdrop.classList.toggle('visible');
       });
 
       backdrop.addEventListener('click', function () {
-        sidebar.classList.remove('open');
-        backdrop.classList.remove('visible');
+        sidebar.classList.remove('is-open'); sidebar.classList.remove('open');
+        backdrop.classList.remove('is-open'); backdrop.classList.remove('visible');
       });
     }
 

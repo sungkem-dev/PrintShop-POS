@@ -325,6 +325,48 @@
     }
 
     /* ── Action Buttons ── */
+
+    .btn-snap-pay {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 24px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      line-height: 1.4;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+      box-shadow: 0 6px 20px -2px rgba(29, 78, 216, .42), inset 0 1px 0 rgba(255,255,255,.25);
+      transition: all .25s var(--ease);
+      font-family: var(--pay-font);
+    }
+
+    .btn-snap-pay:hover {
+      background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px -4px rgba(29, 78, 216, .52);
+    }
+
+    .btn-snap-pay:active {
+      transform: translateY(0) scale(.99);
+    }
+
+    .btn-snap-pay:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
     .pay-actions {
       display: flex;
       flex-direction: column;
@@ -581,13 +623,15 @@
     .pay-sidebar {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
+      position: static;
+      margin-top: 0;
     }
 
     /* Summary Card */
     .summary-card {
-      position: sticky;
-      top: calc(var(--header-h) + 62px);
+      position: static;
+      margin-top: 0;
       padding: 22px;
       background: var(--surface);
       border: 2px solid #bfdbfe;
@@ -1023,6 +1067,9 @@
           </div>
 
           <!-- Action Buttons -->
+          <button type="button" class="btn-snap-pay" id="btn-snap-pay" aria-label="Bayar dengan Metode Lain via Midtrans Snap">
+            💳 Bayar dengan Metode Lain (Virtual Account BCA/BRI/Mandiri, ShopeePay, GoPay, QRIS)
+          </button>
           <div class="pay-actions">
             <button type="button" class="btn-pay-action btn-save-qr" id="btn-save-qr" aria-label="Simpan gambar QR ke perangkat">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1030,7 +1077,7 @@
             </button>
             <button type="button" class="btn-pay-action btn-simulate" id="btn-simulate" aria-label="Simulasi pembayaran berhasil">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              Cek Status Bayar
+              Simulasi Bayar Lunas (Sandbox Test)
             </button>
             <button type="button" class="btn-pay-action btn-reload-qr" id="btn-reload-qr" aria-label="Muat ulang kode QRIS">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -1191,7 +1238,7 @@
   </div>
 
   <!-- Midtrans Snap JS SDK -->
-  <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-sandbox-demo-key"></script>
+  <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-haOnm_scvgYBfw1o"></script>
   <script src="./assets/js/config.js"></script>
   <script src="./assets/js/api.js"></script>
   <script src="./assets/js/qris-timer.js"></script>
