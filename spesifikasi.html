@@ -590,12 +590,14 @@
     .spec-sidebar {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
+      position: static;
+      margin-top: 0;
     }
 
     .summary-card {
-      position: sticky;
-      top: calc(var(--header-h) + 62px);
+      position: static;
+      margin-top: 0;
       padding: 22px;
       background: var(--surface);
       border: 2px solid #bfdbfe;
