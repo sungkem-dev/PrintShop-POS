@@ -65,7 +65,7 @@
               </a>
             </li>
             <li class="console-nav-item">
-              <a href="antrean.html#manual">
+              <a href="order-manual.html">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -185,14 +185,14 @@
             <time id="live-clock" datetime="2026-10-09T07:42:00+07:00">09 Okt 2026, 07:42 WIB</time>
           </span>
 
-          <button type="button" class="btn-export-outline" id="btn-add-manual" title="Tambah pesanan manual walk-in">
+          <a href="order-manual.html" class="btn-export-outline" id="btn-add-manual" title="Tambah pesanan manual walk-in">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
             <span>Add Manual Order</span>
-          </button>
+          </a>
 
           <a href="dasbor.html" class="btn-primary btn-console-queue">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -436,7 +436,7 @@
                     <th scope="col">Aksi</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="queue-table-tbody">
                   <!-- Baris 1: Printing -->
                   <tr>
                     <td>1</td>
@@ -901,7 +901,7 @@
                     <th scope="col">Aksi</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="history-table-tbody">
                   <tr>
                     <td><strong class="order-id">#ORD-034</strong></td>
                     <td><time datetime="2026-10-19T06:12:00+07:00">06:12 WIB</time></td>

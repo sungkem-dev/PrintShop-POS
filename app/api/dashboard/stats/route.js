@@ -52,7 +52,7 @@ export async function GET() {
 
       const pesananSelesai = ordersList.filter(o => o.status === 'COMPLETED').length;
       const antreanAktif = ordersList.filter(o =>
-        ['WAITING_IN_QUEUE', 'PROCESSING', 'PRINTING'].includes(o.status)
+        ['WAITING_IN_QUEUE', 'PROCESSING', 'PRINTING', 'READY_FOR_PICKUP'].includes(o.status)
       ).length;
 
       formattedKpi = {

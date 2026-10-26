@@ -61,7 +61,7 @@
               </a>
             </li>
             <li class="console-nav-item">
-              <a href="antrean.html#manual">
+              <a href="order-manual.html">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                   <circle cx="8.5" cy="7" r="4"></circle>
@@ -204,6 +204,14 @@
               <button type="button" class="date-filter-btn">Pekan Ini</button>
             </div>
 
+            <a href="order-manual.html" class="btn-export-outline" title="Tambah pesanan manual walk-in">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Order Manual</span>
+            </a>
+
             <button type="button" id="btn-export-csv-quick" class="btn-export-outline">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -237,7 +245,7 @@
                 <span class="badge-discrepancy">ZERO DISCREPANCY</span>
               </h3>
               <p>
-                Audit Realtime Spooler &amp; Bank Gateway: 100% Cocok &bull; Selisih Kas: <strong>Rp0</strong>. Sebanyak <strong>375 halaman</strong> tercetak hari ini sesuai dengan transaksi lunas terbitan loket.
+                Audit Realtime Spooler &amp; Bank Gateway: 100% Cocok &bull; Selisih Kas: <strong>Rp0</strong>. Sebanyak <strong id="audit-lembar-count">0 halaman</strong> tercetak hari ini sesuai dengan transaksi lunas terbitan loket.
               </p>
             </div>
           </div>
@@ -245,14 +253,14 @@
           <div class="audit-action-group">
             <span class="spooler-sync-pill">
               <span class="console-status-dot"></span>
-              Spooler Sync: 07:42 WIB
+              <span id="audit-spooler-sync">Spooler Sync: Sinkron</span>
             </span>
           </div>
         </aside>
 
         <!-- 4 KPI Utama Ringkasan Hari Ini -->
         <section aria-labelledby="kpi-heading">
-          <h2 id="kpi-heading" class="sr-only">Ringkasan Hari Ini - 09 Okt 2026</h2>
+          <h2 id="kpi-heading" class="sr-only">Ringkasan Hari Ini</h2>
 
           <div class="kpi-summary-grid">
             <article class="kpi-metric-card" aria-label="KPI Pendapatan Hari Ini">
@@ -265,11 +273,11 @@
                   </svg>
                 </span>
               </div>
-              <div class="kpi-metric-value">Rp 187.500</div>
+              <div class="kpi-metric-value" id="kpi-omzet">Rp 0</div>
               <div class="kpi-trend-badge positive">
-                <span>&uarr; +12% dibanding kemarin (Rp 167.200)</span>
+                <span>&bull; Real-time terverifikasi</span>
               </div>
-              <p class="kpi-card-sub">QRIS: Rp 145.000 &bull; Tunai: Rp 42.500</p>
+              <p class="kpi-card-sub" id="kpi-sub-omzet">QRIS: Rp 0 &bull; Tunai: Rp 0</p>
             </article>
 
             <article class="kpi-metric-card" aria-label="KPI Pesanan Aktif">
@@ -285,9 +293,9 @@
                   </svg>
                 </span>
               </div>
-              <div class="kpi-metric-value">8 Pesanan</div>
+              <div class="kpi-metric-value" id="kpi-antrean">0 Pesanan</div>
               <div class="kpi-trend-badge neutral">
-                <span>3 mencetak, 5 menunggu antrean</span>
+                <span id="kpi-sub-antrean">0 mencetak, 0 menunggu</span>
               </div>
               <p class="kpi-card-sub">
                 <a href="antrean.html" class="kpi-card-link">Lihat Antrean Masuk &rarr;</a>
@@ -305,11 +313,11 @@
                   </svg>
                 </span>
               </div>
-              <div class="kpi-metric-value">375 Lembar</div>
+              <div class="kpi-metric-value" id="kpi-lembar">0 Lembar</div>
               <div class="kpi-trend-badge neutral">
-                <span>48 lembar warna, 327 hitam-putih</span>
+                <span>Total akumulasi cetak</span>
               </div>
-              <p class="kpi-card-sub">Efisiensi Duplex (Bolak-balik): 62%</p>
+              <p class="kpi-card-sub">Efisiensi Duplex (Bolak-balik): Sinkron</p>
             </article>
 
             <article class="kpi-metric-card" aria-label="KPI Total Transaksi">
@@ -323,11 +331,13 @@
                   </svg>
                 </span>
               </div>
-              <div class="kpi-metric-value">27 Transaksi</div>
+              <div class="kpi-metric-value" id="kpi-transaksi">0 Selesai</div>
               <div class="kpi-trend-badge neutral">
-                <span>25 selesai, 2 dibatalkan/refund</span>
+                <span>Pesanan diserahkan</span>
               </div>
-              <p class="kpi-card-sub">Rata-rata Nilai: Rp 6.944 / transaksi</p>
+              <p class="kpi-card-sub">
+                <a href="antrean.html#riwayat" class="kpi-card-link">Lihat Riwayat Pesanan &rarr;</a>
+              </p>
             </article>
           </div>
         </section>
@@ -348,74 +358,35 @@
             </div>
 
             <div class="console-card-body">
-              <!-- Visual Interactive Bar Chart -->
-              <div class="bar-chart-visual" aria-hidden="true">
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 62%;">
-                    <span class="bar-tooltip">Rp 125.000</span>
-                  </div>
-                  <span class="bar-label">Rab<br><small>3 Okt</small></span>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 48%;">
-                    <span class="bar-tooltip">Rp 98.000</span>
-                  </div>
-                  <span class="bar-label">Kam<br><small>4 Okt</small></span>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 83%;">
-                    <span class="bar-tooltip">Rp 167.200</span>
-                  </div>
-                  <span class="bar-label">Jum<br><small>5 Okt</small></span>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 100%;">
-                    <span class="bar-tooltip">Rp 201.500 (Puncak)</span>
-                  </div>
-                  <span class="bar-label">Sab<br><small>6 Okt</small></span>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 44%;">
-                    <span class="bar-tooltip">Rp 88.000</span>
-                  </div>
-                  <span class="bar-label">Min<br><small>7 Okt</small></span>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-fill" style="height: 83%;">
-                    <span class="bar-tooltip">Rp 167.200</span>
-                  </div>
-                  <span class="bar-label">Sen<br><small>8 Okt</small></span>
-                </div>
-                <div class="bar-col active">
-                  <div class="bar-fill" style="height: 93%;">
-                    <span class="bar-tooltip">Rp 187.500 (Hari Ini)</span>
-                  </div>
-                  <span class="bar-label">Sel<br><small>9 Okt</small></span>
+              <!-- Visual Interactive Bar Chart (Dynamically rendered by dasbor.js) -->
+              <div class="bar-chart-visual" id="bar-chart-container" aria-hidden="true">
+                <div style="text-align: center; width: 100%; padding: 40px 0; color: var(--muted); font-size: 13px;">
+                  Memuat grafik pendapatan 7 hari...
                 </div>
               </div>
 
               <div class="chart-legend-strip">
                 <div class="legend-item">
                   <span class="legend-indicator today"></span>
-                  <span>Hari Ini (09 Okt): <strong>Rp 187.500</strong></span>
+                  <span>Hari Ini: <strong id="legend-today">Rp 0</strong></span>
                 </div>
                 <div class="legend-item">
                   <span class="legend-indicator past"></span>
-                  <span>Total 7 Hari: <strong>Rp 1.034.400</strong></span>
+                  <span>Total 7 Hari: <strong id="legend-total-7days">Rp 0</strong></span>
                 </div>
               </div>
 
               <!-- Figure Image Fallback Sesuai Semantik HTML Modul 6 -->
               <figure style="display: none; margin-top: 16px;" id="chart-image-container">
                 <img src="./assets/images/chart-pendapatan-7hari.png"
-                  alt="Grafik batang pendapatan 7 hari terakhir: Rab Rp125rb, Kam Rp98rb, Jum Rp167rb, Sab Rp201rb, Min Rp88rb, Sen Rp167rb, Sel Rp188rb"
+                  alt="Grafik batang pendapatan 7 hari terakhir toko PrintShop POS"
                   width="700" height="300" style="width: 100%; border-radius: 12px; border: 1px solid var(--line);" />
                 <figcaption style="font-size: 12px; color: var(--muted); margin-top: 6px; text-align: center;">
-                  Grafik pendapatan harian toko PrintShop POS (3 Okt - 9 Okt 2026)
+                  Grafik pendapatan harian toko PrintShop POS
                 </figcaption>
               </figure>
 
-              <!-- Tabel Pendapatan 7 Hari (Preserved Semantic Table) -->
+              <!-- Tabel Pendapatan 7 Hari (Dynamically rendered by dasbor.js) -->
               <div id="chart-table-wrap" class="table-responsive-container" style="display: none; margin-top: 16px;">
                 <table class="console-table">
                   <caption>Data pendapatan 7 hari terakhir dalam bentuk tabel</caption>
@@ -428,65 +399,12 @@
                       <th scope="col">Pendapatan</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="chart-table-tbody">
                     <tr>
-                      <td>03 Okt 2026</td>
-                      <td>Rabu</td>
-                      <td>18</td>
-                      <td>245</td>
-                      <td>Rp 125.000</td>
-                    </tr>
-                    <tr>
-                      <td>04 Okt 2026</td>
-                      <td>Kamis</td>
-                      <td>14</td>
-                      <td>190</td>
-                      <td>Rp 98.000</td>
-                    </tr>
-                    <tr>
-                      <td>05 Okt 2026</td>
-                      <td>Jumat</td>
-                      <td>25</td>
-                      <td>330</td>
-                      <td>Rp 167.200</td>
-                    </tr>
-                    <tr>
-                      <td>06 Okt 2026</td>
-                      <td>Sabtu</td>
-                      <td>31</td>
-                      <td>412</td>
-                      <td>Rp 201.500</td>
-                    </tr>
-                    <tr>
-                      <td>07 Okt 2026</td>
-                      <td>Minggu</td>
-                      <td>11</td>
-                      <td>148</td>
-                      <td>Rp 88.000</td>
-                    </tr>
-                    <tr>
-                      <td>08 Okt 2026</td>
-                      <td>Senin</td>
-                      <td>25</td>
-                      <td>327</td>
-                      <td>Rp 167.200</td>
-                    </tr>
-                    <tr style="background: #ecfdf5; font-weight: 700;">
-                      <td>09 Okt 2026</td>
-                      <td>Selasa (Hari Ini)</td>
-                      <td>27</td>
-                      <td>375</td>
-                      <td style="color: #065f46;">Rp 187.500</td>
+                      <td colspan="5" style="text-align: center; padding: 18px; color: var(--muted);">Memuat data pendapatan 7 hari...</td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <th scope="row" colspan="2">Total 7 Hari</th>
-                      <td>151 transaksi</td>
-                      <td>2.027 lembar</td>
-                      <td>Rp 1.034.400</td>
-                    </tr>
-                  </tfoot>
+                  <tfoot id="chart-table-tfoot"></tfoot>
                 </table>
               </div>
             </div>
@@ -496,53 +414,27 @@
           <section aria-label="Rincian pendapatan per kategori layanan" class="console-card">
             <div class="console-card-header">
               <div>
-                <h3>Pendapatan per Kategori Bulan Ini</h3>
-                <span class="header-meta">Oktober 2026 &bull; Distribusi Berdasarkan Format</span>
+                <h3>Pendapatan per Kategori Layanan</h3>
+                <span class="header-meta">Distribusi Real-Time Berdasarkan Format &amp; Warna</span>
               </div>
               <span class="badge-discrepancy" style="background: #ecfdf5; color: #065f46;">100% Terverifikasi</span>
             </div>
 
             <div class="console-card-body">
-              <div class="category-item-list">
-                <div>
-                  <div class="category-row-head">
-                    <strong>Cetak Hitam-Putih A4</strong>
-                    <span>Rp 710.000 (68%) &bull; 98 Pesanan</span>
-                  </div>
-                  <div class="progress-track" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill c-green" style="width: 68%;"></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="category-row-head">
-                    <strong>Cetak Warna A4</strong>
-                    <span>Rp 372.000 (25%) &bull; 28 Pesanan</span>
-                  </div>
-                  <div class="progress-track" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill c-blue" style="width: 25%;"></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="category-row-head">
-                    <strong>Cetak B/W F4 (Folio)</strong>
-                    <span>Rp 122.400 (7%) &bull; 17 Pesanan</span>
-                  </div>
-                  <div class="progress-track" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill c-amber" style="width: 7%;"></div>
-                  </div>
+              <div class="category-item-list" id="category-breakdown-list">
+                <div style="text-align:center; padding: 24px; color:var(--muted); font-size:13px;">
+                  Menganalisis distribusi layanan cetak...
                 </div>
               </div>
 
               <div class="category-total-badge">
                 <div>
-                  <div style="font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Total Omzet Bulan Ini</div>
-                  <strong style="font-size: 16px; color: var(--ink);">Rp 1.204.400</strong>
+                  <div style="font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Estimasi Total Omzet</div>
+                  <strong style="font-size: 16px; color: var(--ink);" id="category-total-omzet">Rp 0</strong>
                 </div>
                 <div style="text-align: right;">
                   <div style="font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Volume Cetak</div>
-                  <strong style="font-size: 14px; color: var(--primary-hover);">1.810 Lembar (143 Pesanan)</strong>
+                  <strong style="font-size: 14px; color: var(--primary-hover);" id="category-total-volume">0 Lembar</strong>
                 </div>
               </div>
             </div>
@@ -586,8 +478,8 @@
                   </div>
                 </div>
 
-                <div class="printer-task-row">
-                  <span>Tugas Aktif: <strong>Mencetak #ORD-042</strong></span>
+                <div class="printer-task-row" id="printer-1-task">
+                  <span>Tugas Aktif: <strong>Standby</strong></span>
                 </div>
               </div>
 
@@ -759,6 +651,44 @@
           </article>
         </section>
 
+        <!-- Section Pesanan & Transaksi Terbaru (Live Dynamic Sync) -->
+        <section aria-labelledby="recent-orders-heading" class="console-card" style="margin-bottom: 28px;">
+          <div class="console-card-header">
+            <div>
+              <h2 id="recent-orders-heading" style="font-size: 16px; font-weight: 800; color: var(--ink); margin: 0;">
+                Pesanan &amp; Transaksi Terbaru
+              </h2>
+              <span class="header-meta">Sinkronisasi real-time dengan antrean mesin &amp; loket kasir</span>
+            </div>
+            <a href="antrean.html" class="btn-export-outline" style="font-size: 12px; padding: 6px 14px;">
+              Buka Semua Antrean &rarr;
+            </a>
+          </div>
+          <div class="console-card-body console-card-body--flush">
+            <div class="table-responsive">
+              <table class="console-table" id="dashboard-recent-table" aria-label="Daftar transaksi terbaru">
+                <thead>
+                  <tr>
+                    <th scope="col">ID Pesanan</th>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Pelanggan &amp; Berkas</th>
+                    <th scope="col">Spesifikasi</th>
+                    <th scope="col">Total Biaya</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-tbody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; padding: 28px; color: var(--muted);">
+                      Memuat data transaksi terbaru...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         <!-- Aksi Cepat Konsol -->
         <section aria-labelledby="aksi-cepat-heading" style="margin-bottom: 24px;">
           <h2 id="aksi-cepat-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 12px;">
@@ -766,6 +696,20 @@
           </h2>
 
           <div class="quick-actions-grid">
+            <a href="order-manual.html" class="quick-action-card" style="border-color: #bfdbfe; background: #eff6ff;">
+              <div class="quick-action-icon" style="background: #dbeafe; color: #1d4ed8;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </div>
+              <div class="quick-action-text">
+                <strong style="color: #1e40af;">Order Manual POS</strong>
+                <span style="color: #3b82f6;">Input tamu walk-in kasir</span>
+              </div>
+              <span class="arrow-icon" style="color: #1d4ed8;">&rarr;</span>
+            </a>
+
             <a href="antrean.html" class="quick-action-card">
               <div class="quick-action-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -779,24 +723,23 @@
               </div>
               <div class="quick-action-text">
                 <strong>Antrean Aktif</strong>
-                <span>8 pesanan menunggu</span>
+                <span>Pantau antrean cetak</span>
               </div>
               <span class="arrow-icon">&rarr;</span>
             </a>
 
-            <a href="antrean.html#printer" class="quick-action-card">
-              <div class="quick-action-icon">
+            <a href="antrean.html#riwayat" class="quick-action-card">
+              <div class="quick-action-icon" style="background: #ecfdf5; color: #059669;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                  <rect x="6" y="14" width="12" height="8"></rect>
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Kelola Printer</strong>
-                <span>Periksa baki kertas</span>
+                <strong>Riwayat Pesanan</strong>
+                <span>Pesanan yang telah diserahkan</span>
               </div>
-              <span class="arrow-icon">&rarr;</span>
+              <span class="arrow-icon" style="color: #059669;">&rarr;</span>
             </a>
 
             <a href="#laporan" class="quick-action-card">
@@ -808,7 +751,7 @@
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Ekspor Hari Ini</strong>
+                <strong>Ekspor CSV</strong>
                 <span>Unduh laporan berkala</span>
               </div>
               <span class="arrow-icon">&rarr;</span>
@@ -837,12 +780,7 @@
       <footer class="console-site-footer">
         <p>
           <small>
-            PrintShop POS Konsol Operator: Data diperbarui otomatis setiap 30 detik.
-          </small>
-        </p>
-        <p>
-          <small>
-            Terakhir disinkronkan: <time datetime="2026-10-09T07:42:15+07:00">07:42:15 WIB</time> &bull; Loket A1
+            PrintShop POS Konsol Operator &bull; Data diperbarui secara real-time &bull; Gerai Kampus Utama
           </small>
         </p>
       </footer>
@@ -851,112 +789,6 @@
 
   </div>
 
-  <script>
-    // Interaktivitas Dasbor Operator (Andrew Wijaya - feat(analytics))
-    document.addEventListener('DOMContentLoaded', function () {
-      // 1. Mobile Sidebar Toggle
-      const sidebarToggleBtn = document.getElementById('btn-sidebar-toggle');
-      const sidebar = document.getElementById('console-sidebar');
-      const backdrop = document.getElementById('console-backdrop');
-
-      if (sidebarToggleBtn && sidebar && backdrop) {
-        sidebarToggleBtn.addEventListener('click', function () {
-          sidebar.classList.toggle('is-open');
-          backdrop.classList.toggle('is-open');
-        });
-
-        backdrop.addEventListener('click', function () {
-          sidebar.classList.remove('is-open');
-          backdrop.classList.remove('is-open');
-        });
-      }
-
-      // 2. Toggle Tampilkan / Sembunyikan Tabel Pendapatan 7 Hari
-      const toggleTableBtn = document.getElementById('toggle-table-btn');
-      const tableWrap = document.getElementById('chart-table-wrap');
-
-      if (toggleTableBtn && tableWrap) {
-        toggleTableBtn.addEventListener('click', function () {
-          const isHidden = tableWrap.style.display === 'none';
-          tableWrap.style.display = isHidden ? 'block' : 'none';
-          toggleTableBtn.textContent = isHidden ? 'Sembunyikan Tabel' : 'Tampilkan Tabel';
-        });
-      }
-
-      // 3. Filter Rentang Waktu Tombol Cepat
-      const filterBtns = document.querySelectorAll('.date-filter-btn');
-      filterBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          filterBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      // 4. Simulasi Ekspor CSV
-      function triggerCsvDownload(filename) {
-        const csvContent = "data:text/csv;charset=utf-8,"
-          + "Tanggal,Hari,Transaksi,Lembar,Pendapatan\n"
-          + "03 Okt 2026,Rabu,18,245,125000\n"
-          + "04 Okt 2026,Kamis,14,190,98000\n"
-          + "05 Okt 2026,Jumat,25,330,167200\n"
-          + "06 Okt 2026,Sabtu,31,412,201500\n"
-          + "07 Okt 2026,Minggu,11,148,88000\n"
-          + "08 Okt 2026,Senin,25,327,167200\n"
-          + "09 Okt 2026,Selasa,27,375,187500\n"
-          + "Total 7 Hari,,151,2027,1034400\n";
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", filename || "Laporan_PrintShop_POS_7Hari.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      const quickCsvBtn = document.getElementById('btn-export-csv-quick');
-      if (quickCsvBtn) {
-        quickCsvBtn.addEventListener('click', function () {
-          triggerCsvDownload("Laporan_Ringkas_PrintShop_POS.csv");
-        });
-      }
-
-      // 5. Form Ekspor Berkas
-      const exportForm = document.getElementById('form-ekspor');
-      const exportToast = document.getElementById('export-toast');
-
-      if (exportForm) {
-        exportForm.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const format = document.getElementById('format-ekspor').value;
-          const dari = document.getElementById('periode-dari').value;
-          const sampai = document.getElementById('periode-sampai').value;
-
-          if (format === 'csv') {
-            triggerCsvDownload(`Laporan_PrintShop_${dari}_sd_${sampai}.csv`);
-          }
-
-          if (exportToast) {
-            exportToast.style.display = 'block';
-            exportToast.textContent = `Laporan periode ${dari} s.d. ${sampai} (${format.toUpperCase()}) berhasil diproses dan diunduh.`;
-            setTimeout(function () {
-              exportToast.style.display = 'none';
-            }, 4000);
-          }
-        });
-      }
-
-      // 6. Live Clock Update
-      const clockEl = document.getElementById('live-clock');
-      function updateLiveClock() {
-        if (!clockEl) return;
-        const now = new Date();
-        const opts = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-        clockEl.textContent = now.toLocaleDateString('id-ID', opts) + ' WIB';
-      }
-      setInterval(updateLiveClock, 30000);
-    });
-  </script>
   <script src="./assets/js/config.js"></script>
   <script src="./assets/js/api.js"></script>
   <script src="./assets/js/dasbor.js"></script>
