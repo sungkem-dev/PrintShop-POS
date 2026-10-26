@@ -63,7 +63,7 @@
       }
     }
 
-        @media (max-width: 768px) {
+    @media (max-width: 768px) {
       .ticket-page-grid {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 20px;
@@ -227,6 +227,7 @@
       box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.08);
       animation: fadeInUp .4s ease both;
     }
+
     .not-found-icon-wrap {
       width: 64px;
       height: 64px;
@@ -237,6 +238,7 @@
       justify-content: center;
       margin: 0 auto 16px;
     }
+
     .not-found-title {
       font-size: 22px;
       font-weight: 800;
@@ -244,6 +246,7 @@
       margin-bottom: 8px;
       letter-spacing: -.02em;
     }
+
     .not-found-desc {
       font-size: 14.5px;
       color: #64748b;
@@ -251,9 +254,11 @@
       margin: 0 auto 20px;
       line-height: 1.6;
     }
+
     .not-found-desc strong {
       color: #ef4444;
     }
+
     .not-found-form {
       display: flex;
       gap: 10px;
@@ -263,6 +268,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+
     .not-found-input {
       flex: 1;
       min-width: 200px;
@@ -274,10 +280,12 @@
       outline: none;
       transition: border-color .2s ease;
     }
+
     .not-found-input:focus {
       border-color: #059669;
       box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
     }
+
     .not-found-btn {
       padding: 12px 20px;
       font-size: 14px;
@@ -286,15 +294,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
+
     .not-found-back {
       margin-top: 12px;
     }
+
     .not-found-back a {
       color: #059669;
       font-weight: 600;
       font-size: 13.5px;
       text-decoration: none;
     }
+
     .not-found-back a:hover {
       text-decoration: underline;
     }
@@ -1502,7 +1513,9 @@
   <style id="mobile-card-sync">
     /* ── Mobile Layout Exactly Matching unggah.html (<= 768px) ── */
     @media (max-width: 768px) {
-      html, body.page-ticket {
+
+      html,
+      body.page-ticket {
         width: 100% !important;
         max-width: 100vw !important;
         overflow-x: hidden !important;
@@ -1515,7 +1528,7 @@
         overflow-x: hidden !important;
       }
 
-      .ticket-main > .container {
+      .ticket-main>.container {
         width: 100% !important;
         max-width: 100vw !important;
         padding-left: 16px !important;
@@ -1800,12 +1813,14 @@
       <div class="ticket-page-grid">
 
         <!-- ═══ LEFT COLUMN: MAIN CONTENT ═══ -->
-                <div class="ticket-left-col">
+        <div class="ticket-left-col">
 
           <!-- 0. SECTION: NOT FOUND STATE (TERSEMBUNYI SECARA DEFAULT) -->
-          <section id="ticket-not-found-state" class="ticket-card not-found-card" style="display: none;" aria-live="assertive">
+          <section id="ticket-not-found-state" class="ticket-card not-found-card" style="display: none;"
+            aria-live="assertive">
             <div class="not-found-icon-wrap" aria-hidden="true">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
@@ -1813,10 +1828,12 @@
             </div>
             <h2 class="not-found-title">Pesanan Tidak Ditemukan</h2>
             <p class="not-found-desc">
-              Pesanan dengan kode <strong id="not-found-code-text">-</strong> tidak ditemukan dalam sistem. Pastikan nomor pesanan yang Anda masukkan sudah benar.
+              Pesanan dengan kode <strong id="not-found-code-text">-</strong> tidak ditemukan dalam sistem. Pastikan
+              nomor pesanan yang Anda masukkan sudah benar.
             </p>
             <form action="tiket.html" method="get" class="not-found-form">
-              <input type="text" name="nomor-pesanan" id="retry-search-input" placeholder="Masukkan nomor pesanan (contoh: ORD-042)" required class="not-found-input" />
+              <input type="text" name="nomor-pesanan" id="retry-search-input"
+                placeholder="Masukkan nomor pesanan (contoh: ORD-042)" required class="not-found-input" />
               <button type="submit" class="btn-primary not-found-btn">Lacak Ulang &rarr;</button>
             </form>
             <div class="not-found-back">
@@ -2088,13 +2105,6 @@
 
             <!-- Simulator Tracker (PRD Section 3 Requirement) -->
             <div class="simulator-panel">
-              <div class="simulator-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-                <span>Simulator Pelacakan Status Langsung (PRD Kelompok 2)</span>
-              </div>
               <div class="simulator-controls">
                 <button type="button" class="btn-simulator" id="btn-simulate-step">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -2116,107 +2126,105 @@
                   Segarkan Status
                 </button>
 
-                <!-- Link to Operator Queue Screen in the Hierarchy -->
-                <a href="antrean.html" class="link-operator-queue">
-                  Pantau di Antrean Toko (Operator) &rarr;
-                </a>
+                <!-- 4. PANDUAN PENGAMBILAN DOKUMEN -->
+                <article class="guide-card" aria-label="Panduan pengambilan dokumen">
+                  <h3 class="guide-card-title">
+                    <span class="guide-card-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    </span>
+                    Cara Mengambil Cetakan
+                  </h3>
+                  <ol class="pickup-steps-list">
+                    <li class="pickup-step-item">Tunggu notifikasi atau status berubah menjadi <strong>Ready for
+                        Pickup</strong>.</li>
+                    <li class="pickup-step-item">Datang ke loket toko dengan menunjukkan halaman tiket ini.</li>
+                    <li class="pickup-step-item">Sebutkan nomor pesanan: <strong>#ORD-042</strong> dan kode klaim:
+                      <strong>XK7-29F</strong>.
+                    </li>
+                    <li class="pickup-step-item">Terima cetakanmu dan nikmati hasilnya!</li>
+                  </ol>
+                </article>
+
+                <!-- 5. SECTION: BUTUH BANTUAN? -->
+                <section class="help-section" aria-labelledby="bantuan-heading">
+                  <h2 class="help-section-title" id="bantuan-heading">Butuh Bantuan?</h2>
+                  <ul class="help-list">
+                    <li>Jika terjadi kesalahan cetak, hubungi operator di loket secara langsung atau periksa antrean di
+                      <a href="antrean.html">Konsol Antrean</a>.
+                    </li>
+                    <li>Untuk pertanyaan pembayaran, operator dapat memeriksa riwayat transaksi Anda melalui <a
+                        href="pembayaran.html">Kasir QRIS</a>.</li>
+                    <li>File Anda akan otomatis dihapus dari server 2 jam setelah pesanan selesai demi keamanan dan
+                      privasi.
+                    </li>
+                  </ul>
+                  <p class="help-cta-wrap">
+                    <a href="unggah.html" class="btn-primary">Buat Pesanan Baru &rarr;</a>
+                    <a href="index.html" class="btn-ticket-action btn-ticket-outline">Kembali ke Beranda</a>
+                  </p>
+                </section>
+
               </div>
+
+
+              <!-- 2. GERAI & LOKET PENGAMBILAN -->
+              <div class="sidebar-card">
+                <h3 class="sidebar-card-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>Lokasi &amp; Gerai Toko</span>
+                </h3>
+                <div class="store-info-list">
+                  <div class="store-info-row">
+                    <span>📍</span>
+                    <div>
+                      <strong>PrintShop POS — Gerai Ruko Kampus</strong><br />
+                      <span class="text-muted">Jl. Kampus Timur No. 42 (Sebelah Kantin Pusat)</span>
+                    </div>
+                  </div>
+                  <div class="store-info-row">
+                    <span>⏰</span>
+                    <div>
+                      <strong>Jam Operasional Cetak:</strong><br />
+                      <span class="text-muted">07.00 – 21.00 WIB (Senin – Sabtu)</span>
+                    </div>
+                  </div>
+                  <div class="store-info-row">
+                    <span>🖨️</span>
+                    <div>
+                      <strong>Mesin Aktif:</strong><br />
+                      <span class="text-muted">Canon iR-ADV C3530 &amp; HP LaserJet Pro</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. PRIVASI & KEAMANAN BERKAS -->
+              <div class="sidebar-card"
+                style="background: linear-gradient(145deg, #ecfdf5, #ffffff); border-color: #a7f3d0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 22px;">🔒</span>
+                  <h3 style="font-size: 14px; font-weight: 700; color: #065f46; margin: 0;">Privasi &amp; Keamanan
+                    Berkas</h3>
+                </div>
+                <p style="font-size: 12.5px; color: var(--body); line-height: 1.55; margin-top: 8px; margin-bottom: 0;">
+                  Dokumen Anda telah dienkripsi dan akan otomatis dihapus permanen dari server 2 jam pasca pengambilan.
+                  Tanpa
+                  flashdisk, bebas risiko virus.
+                </p>
+              </div>
+
+              </aside>
+
             </div>
-          </section>
-
-          <!-- 4. PANDUAN PENGAMBILAN DOKUMEN -->
-          <article class="guide-card" aria-label="Panduan pengambilan dokumen">
-            <h3 class="guide-card-title">
-              <span class="guide-card-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="18" height="18" x="3" y="3" rx="2" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </span>
-              Cara Mengambil Cetakan
-            </h3>
-            <ol class="pickup-steps-list">
-              <li class="pickup-step-item">Tunggu notifikasi atau status berubah menjadi <strong>Ready for
-                  Pickup</strong>.</li>
-              <li class="pickup-step-item">Datang ke loket toko dengan menunjukkan halaman tiket ini.</li>
-              <li class="pickup-step-item">Sebutkan nomor pesanan: <strong>#ORD-042</strong> dan kode klaim:
-                <strong>XK7-29F</strong>.</li>
-              <li class="pickup-step-item">Terima cetakanmu dan nikmati hasilnya!</li>
-            </ol>
-          </article>
-
-          <!-- 5. SECTION: BUTUH BANTUAN? -->
-          <section class="help-section" aria-labelledby="bantuan-heading">
-            <h2 class="help-section-title" id="bantuan-heading">Butuh Bantuan?</h2>
-            <ul class="help-list">
-              <li>Jika terjadi kesalahan cetak, hubungi operator di loket secara langsung atau periksa antrean di <a
-                  href="antrean.html">Konsol Antrean</a>.</li>
-              <li>Untuk pertanyaan pembayaran, operator dapat memeriksa riwayat transaksi Anda melalui <a
-                  href="pembayaran.html">Kasir QRIS</a>.</li>
-              <li>File Anda akan otomatis dihapus dari server 2 jam setelah pesanan selesai demi keamanan dan privasi.
-              </li>
-            </ul>
-            <p class="help-cta-wrap">
-              <a href="unggah.html" class="btn-primary">Buat Pesanan Baru &rarr;</a>
-              <a href="index.html" class="btn-ticket-action btn-ticket-outline">Kembali ke Beranda</a>
-            </p>
-          </section>
-
         </div>
-
-
-        <!-- 2. GERAI & LOKET PENGAMBILAN -->
-        <div class="sidebar-card">
-          <h3 class="sidebar-card-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span>Lokasi &amp; Gerai Toko</span>
-          </h3>
-          <div class="store-info-list">
-            <div class="store-info-row">
-              <span>📍</span>
-              <div>
-                <strong>PrintShop POS — Gerai Ruko Kampus</strong><br />
-                <span class="text-muted">Jl. Kampus Timur No. 42 (Sebelah Kantin Pusat)</span>
-              </div>
-            </div>
-            <div class="store-info-row">
-              <span>⏰</span>
-              <div>
-                <strong>Jam Operasional Cetak:</strong><br />
-                <span class="text-muted">07.00 – 21.00 WIB (Senin – Sabtu)</span>
-              </div>
-            </div>
-            <div class="store-info-row">
-              <span>🖨️</span>
-              <div>
-                <strong>Mesin Aktif:</strong><br />
-                <span class="text-muted">Canon iR-ADV C3530 &amp; HP LaserJet Pro</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. PRIVASI & KEAMANAN BERKAS -->
-        <div class="sidebar-card" style="background: linear-gradient(145deg, #ecfdf5, #ffffff); border-color: #a7f3d0;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 22px;">🔒</span>
-            <h3 style="font-size: 14px; font-weight: 700; color: #065f46; margin: 0;">Privasi &amp; Keamanan Berkas</h3>
-          </div>
-          <p style="font-size: 12.5px; color: var(--body); line-height: 1.55; margin-top: 8px; margin-bottom: 0;">
-            Dokumen Anda telah dienkripsi dan akan otomatis dihapus permanen dari server 2 jam pasca pengambilan. Tanpa
-            flashdisk, bebas risiko virus.
-          </p>
-        </div>
-
-        </aside>
-
-      </div>
-    </div>
   </main>
 
   <!-- ═══ FOOTER ═══ -->

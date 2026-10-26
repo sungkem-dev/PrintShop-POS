@@ -141,23 +141,35 @@
 
     steps.forEach((step, idx) => {
       if (!step) return;
-      step.classList.remove('step-done', 'step-active', 'step-waiting');
+      step.classList.remove('step-done', 'step-current', 'step-upcoming');
+      step.removeAttribute('aria-current');
 
       if (idx < stage.index) {
         step.classList.add('step-done');
         if (metas[idx]) metas[idx].textContent = 'Selesai ✓';
       } else if (idx === stage.index) {
-        step.classList.add('step-active');
+        step.classList.add('step-current');
+        step.setAttribute('aria-current', 'step');
         if (metas[idx]) {
           if (idx === 0) metas[idx].textContent = queuePos + ' • ' + eta;
           else if (idx === 1) metas[idx].textContent = 'Sedang Berjalan • ±2 mnt';
           else metas[idx].textContent = 'Siap Diambil Sekarang';
         }
       } else {
-        step.classList.add('step-waiting');
+        step.classList.add('step-upcoming');
         if (metas[idx]) metas[idx].textContent = 'Menunggu';
       }
     });
+
+    // Show/hide the ready-for-pickup celebration banner
+    const readyAlertBanner = document.getElementById('ready-alert-banner');
+    if (readyAlertBanner) {
+      if (statusKey === 'READY_FOR_PICKUP' || statusKey === 'COMPLETED') {
+        readyAlertBanner.classList.add('visible');
+      } else {
+        readyAlertBanner.classList.remove('visible');
+      }
+    }
   }
 
   // ── Load Order Data (Strict Database / ORD-042 / Active Checkout) ──
