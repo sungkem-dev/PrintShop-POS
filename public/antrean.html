@@ -2161,8 +2161,33 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .console-main-area {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+      }
+
+      .console-content {
+        padding: 16px 12px 48px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+
       .stats-card-row {
         grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .table-responsive {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
       }
 
       .stat-card-value {
@@ -2206,6 +2231,23 @@
     @media (max-width: 480px) {
       .stats-card-row {
         grid-template-columns: 1fr;
+      }
+
+      .console-top-header {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .console-head-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .console-head-actions .btn-export-outline,
+      .console-head-actions .badge-audit-sync {
+        width: 100%;
+        justify-content: center;
       }
     }
 

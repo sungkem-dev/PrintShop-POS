@@ -47,6 +47,8 @@
       max-width: 1140px;
       margin: 32px auto 52px;
       align-items: start;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     @media (min-width: 1024px) {
@@ -56,14 +58,31 @@
       }
     }
 
+    @media (max-width: 768px) {
+      .pay-page-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+        margin: 20px auto 40px;
+        width: 100%;
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+    }
+
     /* ── QRIS Main Card ── */
     .pay-card {
       width: 100%;
-      padding: 24px 20px;
+      max-width: 100%;
+      min-width: 0;
+      padding: 24px 18px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--r-xl);
       box-shadow: var(--sh-md);
+      box-sizing: border-box;
     }
 
     @media (min-width: 640px) {
@@ -626,17 +645,33 @@
       gap: 20px;
       position: static;
       margin-top: 0;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    @media (min-width: 1024px) {
+      .pay-sidebar {
+        position: sticky;
+        top: 90px;
+        align-self: start;
+      }
     }
 
     /* Summary Card */
     .summary-card {
       position: static;
       margin-top: 0;
-      padding: 22px;
+      padding: 22px 18px;
       background: var(--surface);
       border: 2px solid #bfdbfe;
       border-radius: var(--r-xl);
       box-shadow: 0 8px 28px -4px var(--pay-primary-ring);
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .summary-card-header {
@@ -682,18 +717,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
       font-size: 13.5px;
+      box-sizing: border-box;
     }
 
     .summary-row .s-label {
       color: var(--muted);
       font-weight: 500;
+      flex-shrink: 0;
     }
 
     .summary-row .s-value {
       font-weight: 700;
       color: var(--ink);
       text-align: right;
+      word-break: break-word;
     }
 
     .summary-divider {
@@ -706,16 +747,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
       padding: 14px 16px;
       background: linear-gradient(135deg, var(--pay-primary-light) 0%, #dbeafe 100%);
       border-radius: 12px;
       margin-bottom: 12px;
+      box-sizing: border-box;
     }
 
     .summary-total-label {
       font-size: 14px;
       font-weight: 700;
       color: var(--pay-primary-hover);
+      flex-shrink: 0;
     }
 
     .summary-total-value {
@@ -723,6 +769,8 @@
       font-weight: 800;
       color: var(--pay-primary);
       letter-spacing: -.03em;
+      text-align: right;
+      word-break: break-word;
     }
 
     .summary-note {
@@ -894,13 +942,28 @@
     /* ── Responsive ── */
     @media (max-width: 767px) {
       .pay-page-grid {
+        grid-template-columns: 1fr !important;
         gap: 20px;
         margin: 20px auto 40px;
+        width: 100%;
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+
+      .pay-card {
+        padding: 20px 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .qr-image-wrap {
         width: 200px;
         height: 200px;
+        max-width: 100%;
       }
 
       .timer-display {
@@ -909,10 +972,22 @@
 
       .summary-card {
         position: static;
+        padding: 18px 16px;
       }
 
       .pay-actions {
         gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .pay-actions .btn-pay-action,
+      .pay-actions .btn-snap-method {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        white-space: normal;
+        text-align: center;
       }
     }
 
@@ -926,6 +1001,115 @@
         width: auto;
         flex: 1;
         min-width: 180px;
+      }
+    }
+  </style>
+  <style id="mobile-card-sync">
+    /* ── Mobile Layout Exactly Matching unggah.html (<= 768px) ── */
+    @media (max-width: 768px) {
+      html, body.page-pay {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
+
+      .pay-main {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding-bottom: 24px !important;
+        overflow-x: hidden !important;
+      }
+
+      .pay-main > .container {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+
+      .pay-page-grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: 16px auto 24px !important;
+        gap: 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+
+      .pay-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+      }
+
+      .pay-card-title {
+        font-size: clamp(20px, 5.5vw, 26px) !important;
+        word-break: break-word !important;
+      }
+
+      .qr-showcase-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 14px !important;
+        border-radius: 14px !important;
+        box-sizing: border-box !important;
+      }
+
+      .pay-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        box-sizing: border-box !important;
+      }
+
+      .summary-card {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+      }
+
+      .sidebar-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+      }
+
+      .pay-actions {
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 10px !important;
+        box-sizing: border-box !important;
+      }
+
+      .btn-pay-action, .btn-snap-method {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
       }
     }
   </style>

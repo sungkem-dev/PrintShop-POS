@@ -79,7 +79,6 @@
 
   // DOM References
   const trackerStatusBadge = document.getElementById('tracker-status-badge');
-  const trackerStatusDot   = document.getElementById('tracker-status-dot');
   const trackerStatusText  = document.getElementById('tracker-status-text');
   const trackerProgressBar = document.getElementById('tracker-progress-bar');
   const trackerCountdown   = document.getElementById('tracker-countdown');
@@ -123,24 +122,20 @@
   }
 
   // ── Render Tracker State ──────────────────────────
-
   function applyStageUI(statusKey, queuePos = 'No. 2', eta = '±6 menit') {
     const stage = STAGES[statusKey] || STAGES.WAITING_IN_QUEUE;
 
-    // Progress bar
     if (trackerProgressBar) {
       trackerProgressBar.style.width = stage.progressPct + '%';
       const wrap = trackerProgressBar.parentElement;
       if (wrap) wrap.setAttribute('aria-valuenow', stage.progressPct);
     }
 
-    // Status Badge
     if (trackerStatusBadge && trackerStatusText) {
       trackerStatusBadge.className = 'live-status-pill ' + stage.badgeClass;
       trackerStatusText.textContent = stage.label;
     }
 
-    // Tracker steps styling
     const steps = [stepWaiting, stepPrinting, stepReady];
     const metas = [stepWaitingMeta, stepPrintingMeta, stepReadyMeta];
 
@@ -154,7 +149,7 @@
       } else if (idx === stage.index) {
         step.classList.add('step-active');
         if (metas[idx]) {
-          if (idx === 0) metas[idx].textContent = `${queuePos} • ${eta}`;
+          if (idx === 0) metas[idx].textContent = queuePos + ' • ' + eta;
           else if (idx === 1) metas[idx].textContent = 'Sedang Berjalan • ±2 mnt';
           else metas[idx].textContent = 'Siap Diambil Sekarang';
         }
@@ -165,12 +160,11 @@
     });
   }
 
-  // ── Load Order Data ───────────────────────────────
-
+  // ── Load Order Data (Strict Database / ORD-042 / Active Checkout) ──
   async function loadOrder() {
     const params = new URLSearchParams(window.location.search);
-    const codeParam = params.get('code') || params.get('nomor-pesanan');
-    const idParam = params.get('order_id') || params.get('id');
+    const codeParam = (params.get('code') || params.get('nomor-pesanan') || params.get('order') || '').trim();
+    const idParam = (params.get('order_id') || params.get('id') || '').trim();
 
     let order = null;
 
@@ -186,16 +180,14 @@
       }
     }
 
-    // Fallback to sessionStorage
-    if (!order) {
-      try {
-        const raw = sessionStorage.getItem('printshop_order');
-        if (raw) order = JSON.parse(raw);
-      } catch (e) {}
+    // Explicitly reject any dummy codes that might linger in client cache
+    const forbiddenDummies = ['ORD-041', 'ORD-040', 'ORD-043', 'ORD-039', '#ORD-041', '#ORD-040', '#ORD-043', '#ORD-039'];
+    if (order && forbiddenDummies.includes(order.order_code)) {
+      order = null;
     }
 
-    if (!order) {
-      // Default sample fallback
+    // Special allowance ONLY for ORD-042 simulation test
+    if (!order && (codeParam.toUpperCase() === 'ORD-042' || codeParam.toUpperCase() === '#ORD-042')) {
       order = {
         order_code: 'ORD-042',
         customer_name: 'Budi Santoso',
@@ -213,54 +205,164 @@
       };
     }
 
+    // Fallback to active checkout session ONLY if user didn't enter a query parameter
+    if (!order && !codeParam && !idParam) {
+      try {
+        const raw = sessionStorage.getItem('printshop_order');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && !forbiddenDummies.includes(parsed.order_code)) {
+            order = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Default visit to ticket page with NO query params -> default demo ORD-042
+    if (!order && !codeParam && !idParam) {
+      order = {
+        order_code: 'ORD-042',
+        customer_name: 'Budi Santoso',
+        file_name: 'Makalah_Tugas_Akhir_Kelompok2.pdf',
+        total_price: 12000,
+        status: 'WAITING_IN_QUEUE',
+        specifications: {
+          paper_size: 'A4',
+          color_mode: 'B/W',
+          print_side: 'Simplex',
+          sheets_count: 24
+        },
+        queuePosition: 2,
+        estimatedMinutes: 6
+      };
+    }
+
+    const notFoundEl = document.getElementById('ticket-not-found-state');
+    const notFoundCode = document.getElementById('not-found-code-text');
+    const successBanner = document.querySelector('.success-banner');
+    const ticketCard = document.querySelector('.ticket-card:not(#ticket-not-found-state)');
+    const trackerCard = document.querySelector('.tracker-card');
+    const guideCard = document.querySelector('.guide-card');
+    const helpSection = document.querySelector('.help-section');
+    const simulatorPanel = document.querySelector('.simulator-panel');
+
+    // ── Handle Order Not Found (STRICT 404) ────────────────
+    if (!order) {
+      const queryTerm = (codeParam || idParam || 'yang dicari').trim();
+      
+      // Hide all ticket sections completely!
+      if (successBanner) successBanner.style.setProperty('display', 'none', 'important');
+      if (ticketCard) ticketCard.style.setProperty('display', 'none', 'important');
+      if (trackerCard) trackerCard.style.setProperty('display', 'none', 'important');
+      if (guideCard) guideCard.style.setProperty('display', 'none', 'important');
+      if (helpSection) helpSection.style.setProperty('display', 'none', 'important');
+      if (simulatorPanel) simulatorPanel.style.setProperty('display', 'none', 'important');
+
+      // Show ONLY the clean Not Found State card
+      if (notFoundEl) {
+        notFoundEl.style.setProperty('display', 'block', 'important');
+        if (notFoundCode) notFoundCode.textContent = queryTerm;
+        const retryInput = document.getElementById('retry-search-input');
+        if (retryInput) retryInput.value = queryTerm;
+      }
+      showToast('Pesanan dengan kode "' + queryTerm + '" tidak ditemukan!', 4000);
+      return;
+    }
+
+    // ── Order Found: Show Normal Ticket Sections ────
+    if (notFoundEl) notFoundEl.style.setProperty('display', 'none', 'important');
+    if (successBanner) successBanner.style.setProperty('display', '', '');
+    if (ticketCard) ticketCard.style.setProperty('display', '', '');
+    if (trackerCard) trackerCard.style.setProperty('display', '', '');
+    if (guideCard) guideCard.style.setProperty('display', '', '');
+    if (helpSection) helpSection.style.setProperty('display', '', '');
+    if (simulatorPanel) simulatorPanel.style.setProperty('display', '', '');
+
     currentOrder = order;
     currentOrderId = order.id || idParam;
-    orderCode = order.order_code || 'ORD-042';
+    let cleanCode = order.order_code || (codeParam || 'ORD-042');
+    if (cleanCode.startsWith('#')) cleanCode = cleanCode.substring(1);
+    orderCode = cleanCode;
+    const claimCodeVal = order.claim_code || cleanCode;
 
-    // Populate UI
-    if (claimCodeEl) claimCodeEl.textContent = orderCode;
+    // 1. Success Banner Sync
+    const bannerDescCode = document.querySelector('.success-desc strong');
+    if (bannerDescCode) bannerDescCode.textContent = '#' + cleanCode;
 
-    // Chips
     const orderCodeChips = document.querySelectorAll('.success-banner-chips .chip-item strong');
-    if (orderCodeChips.length > 0) orderCodeChips[0].textContent = `#${orderCode}`;
-    if (orderCodeChips.length > 1) orderCodeChips[1].textContent = orderCode;
+    if (orderCodeChips.length > 0) orderCodeChips[0].textContent = '#' + cleanCode;
+    if (orderCodeChips.length > 1) orderCodeChips[1].textContent = claimCodeVal;
 
     const totalStr = order.total_price ? formatRupiah(order.total_price) : (order.total || 'Rp 12.000');
     if (bannerTotal) bannerTotal.textContent = totalStr;
     if (orderTotal) orderTotal.textContent = totalStr;
 
+    // 2. Ticket Card Sync
+    if (claimCodeEl) claimCodeEl.textContent = claimCodeVal;
+
+    const orderIdHighlight = document.querySelector('.order-id-highlight');
+    if (orderIdHighlight) orderIdHighlight.textContent = '#' + cleanCode;
+
+    const specCaption = document.querySelector('.ticket-spec-table caption');
+    if (specCaption) specCaption.textContent = 'Rincian spesifikasi cetak untuk pesanan #' + cleanCode;
+
     const fn = order.file_name || order.filename || 'Dokumen.pdf';
     const spec = order.specifications || {};
     const paper = spec.paper_size || order.paper || 'A4';
-    const color = spec.color_mode || order.color || 'Hitam & Putih';
-    const side = spec.print_side || order.side || 'Simplex';
-    const pages = order.total_pages || order.pages || '24 hal';
-    const copies = order.copies || order.copies || 1;
+    let color = spec.color_mode || order.color || 'Hitam & Putih';
+    if (color === 'B/W' || color.toLowerCase().includes('black') || color.toLowerCase().includes('hitam')) {
+      color = 'Hitam & Putih';
+    } else if (color.toLowerCase().includes('color') || color.toLowerCase().includes('warna')) {
+      color = 'Full Color';
+    }
+    const side = (spec.print_side || order.side || 'Simplex').includes('Duplex') ? 'Dua Sisi (Duplex)' : 'Satu Sisi (Simplex)';
+    const pages = order.total_pages || order.pages || spec.sheets_count || 24;
+    const copies = order.copies || 1;
 
     if (orderFilename) orderFilename.textContent = fn;
     if (orderPaper) orderPaper.textContent = paper;
-    if (orderColor) orderColor.textContent = color.includes('Color') ? 'Full Color' : 'Hitam & Putih';
-    if (orderSide) orderSide.textContent = side.includes('Duplex') ? 'Duplex' : 'Simplex';
-    if (orderPages) orderPages.textContent = typeof pages === 'number' ? `${pages} hal` : pages;
-    if (orderCopies) orderCopies.textContent = `${copies}x`;
+    if (orderColor) orderColor.textContent = color;
+    if (orderSide) orderSide.textContent = side;
+    if (orderPages) orderPages.textContent = typeof pages === 'number' ? (pages + ' lembar') : pages;
+    if (orderCopies) orderCopies.textContent = copies + ' salinan';
 
-    const qPos = order.queuePosition ? `No. ${order.queuePosition} Antrean` : 'No. 2 Antrean';
-    const eta = order.estimatedMinutes ? `±${order.estimatedMinutes} menit` : '±6 menit';
+    // Download ticket action sync
+    const btnDownloadTicket = document.querySelector('.ticket-actions-bar a[download]');
+    if (btnDownloadTicket) {
+      btnDownloadTicket.setAttribute('download', 'tiket-' + cleanCode + '.png');
+    }
+
+    // 3. Ready Alert Sync
+    const readyAlert = document.querySelector('.tracker-ready-alert');
+    if (readyAlert) {
+      const readyStrong = readyAlert.querySelectorAll('strong');
+      if (readyStrong.length > 0) readyStrong[0].textContent = '#' + cleanCode;
+      if (readyStrong.length > 1) readyStrong[1].textContent = claimCodeVal;
+    }
+
+    // 4. Pickup Guide Step 3 Sync
+    const pickupItems = document.querySelectorAll('.pickup-step-item');
+    if (pickupItems.length >= 2) {
+      const pStrong = pickupItems[1].querySelectorAll('strong');
+      if (pStrong.length > 0) pStrong[0].textContent = '#' + cleanCode;
+      if (pStrong.length > 1) pStrong[1].textContent = claimCodeVal;
+    }
+
+    const qPos = order.queuePosition ? ('No. ' + order.queuePosition + ' Antrean') : 'No. 2 Antrean';
+    const eta = order.estimatedMinutes ? ('±' + order.estimatedMinutes + ' menit') : '±6 menit';
 
     applyStageUI(order.status || 'WAITING_IN_QUEUE', qPos, eta);
   }
 
   // ── Polling & Real-time Sync ──────────────────────
-
   function startAutoRefresh() {
     refreshSeconds = 5;
-
     if (refreshInterval) clearInterval(refreshInterval);
 
     refreshInterval = setInterval(async () => {
       refreshSeconds--;
       if (trackerCountdown) {
-        trackerCountdown.textContent = `Memperbarui dalam ${refreshSeconds} dtk`;
+        trackerCountdown.textContent = 'Memperbarui dalam ' + refreshSeconds + ' dtk';
       }
 
       if (refreshSeconds <= 0) {
@@ -269,10 +371,9 @@
           try {
             const updated = await window.PrintShopAPI.getOrder(currentOrderId);
             if (updated && updated.status !== currentOrder?.status) {
-              const oldStatus = currentOrder?.status;
               currentOrder = updated;
               applyStageUI(updated.status);
-              showToast(`Status pesanan diperbarui: ${updated.status}`);
+              showToast('Status pesanan diperbarui: ' + updated.status);
             }
           } catch (e) {}
         }
@@ -281,14 +382,13 @@
   }
 
   // ── Interactive Buttons ───────────────────────────
-
   if (btnCopyClaim) {
     btnCopyClaim.addEventListener('click', function () {
       const code = claimCodeEl ? claimCodeEl.textContent.trim() : orderCode;
       navigator.clipboard.writeText(code).then(() => {
-        showToast(`Kode klaim ${code} berhasil disalin!`);
+        showToast('Kode klaim ' + code + ' berhasil disalin!');
       }).catch(() => {
-        showToast(`Kode klaim: ${code}`);
+        showToast('Kode klaim: ' + code);
       });
     });
   }
@@ -327,7 +427,7 @@
 
       if (currentOrder) currentOrder.status = nextStatus;
       applyStageUI(nextStatus);
-      showToast(`Simulasi: status berubah menjadi "${STAGES[nextStatus].label}"`);
+      showToast('Simulasi: status berubah menjadi "' + STAGES[nextStatus].label + '"');
     });
   }
 
