@@ -177,6 +177,8 @@
         if (!res.ok) throw new Error(data.error || 'Login gagal');
         if (data.operator) {
           localStorage.setItem('printshop_operator', JSON.stringify(data.operator));
+          localStorage.setItem('printshop_auth_token', data.token || `auth_${Date.now()}`);
+          localStorage.setItem('printshop_session_expiry', String(Date.now() + 8 * 60 * 60 * 1000));
         }
         return data;
       } catch (err) {
@@ -185,9 +187,11 @@
             id: 'op-01',
             name: 'Ahmad Hidayat',
             email: 'operator@printshop.com',
-            role: 'Kasir Loket A1'
+            role: 'admin'
           };
           localStorage.setItem('printshop_operator', JSON.stringify(op));
+          localStorage.setItem('printshop_auth_token', `auth_fallback_${Date.now()}`);
+          localStorage.setItem('printshop_session_expiry', String(Date.now() + 8 * 60 * 60 * 1000));
           return { success: true, operator: op };
         }
         throw err;
@@ -204,8 +208,115 @@
     },
 
     logoutOperator() {
-      localStorage.removeItem('printshop_operator');
+      try {
+        localStorage.removeItem('printshop_operator');
+        localStorage.removeItem('printshop_auth_token');
+        localStorage.removeItem('printshop_session_expiry');
+      } catch (e) {}
       window.location.href = 'login.html';
+    },
+
+    // ── Refunds ──────────────────────────────────────────
+    async getRefunds() {
+      try {
+        const res = await fetch(`${API_BASE}/refunds`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return data.data || [];
+      } catch (err) {
+        console.warn('API getRefunds fallback to localStorage/cache:', err.message);
+        try {
+          const cached = localStorage.getItem('printshop_refunds_cache');
+          if (cached) return JSON.parse(cached);
+        } catch (e) {}
+        return [
+          { id: 'ref-01', order_code: 'ORD-021', refund_amount: 8500, refund_method: 'qris_reversal', reason: 'Permintaan pelanggan via tiket', source: 'user_report', status: 'completed', created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString() },
+          { id: 'ref-02', order_code: 'ORD-019', refund_amount: 15000, refund_method: 'cash', reason: 'Kertas macet di mesin printer', source: 'admin', status: 'completed', created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
+          { id: 'ref-03', order_code: 'ORD-015', refund_amount: 24000, refund_method: 'store_credit', reason: 'Double charge transaksi pembayaran', source: 'user_report', status: 'completed', created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString() }
+        ];
+      }
+    },
+
+    async createRefund(payload) {
+      try {
+        const res = await fetch(`${API_BASE}/refunds`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Gagal memproses refund');
+        }
+        this.cacheRefund(data.data);
+        return data.data;
+      } catch (err) {
+        console.warn('API createRefund fallback:', err.message);
+        const fallbackRefund = {
+          id: 'ref-' + Date.now(),
+          order_id: payload.order_id || null,
+          order_code: payload.order_code || payload.order_id || 'ORD-MANUAL',
+          refund_amount: Number(payload.refund_amount) || 0,
+          refund_method: payload.refund_method || 'qris_reversal',
+          reason: payload.reason || 'Pembatalan pesanan',
+          source: payload.source || 'admin',
+          status: 'completed',
+          notes: payload.notes || '',
+          created_at: new Date().toISOString()
+        };
+        this.cacheRefund(fallbackRefund);
+        return fallbackRefund;
+      }
+    },
+
+    cacheRefund(refund) {
+      try {
+        const raw = localStorage.getItem('printshop_refunds_cache');
+        let list = raw ? JSON.parse(raw) : [];
+        list.unshift(refund);
+        localStorage.setItem('printshop_refunds_cache', JSON.stringify(list));
+      } catch (e) {}
+    },
+
+    // ── Admin Registration ──────────────────────────────
+    async getOperators() {
+      try {
+        const res = await fetch(`${API_BASE}/auth/register`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return data.data || [];
+      } catch (err) {
+        try {
+          const cached = localStorage.getItem('printshop_operators_cache');
+          if (cached) return JSON.parse(cached);
+        } catch (e) {}
+        return [
+          { id: 'op-01', name: 'Ahmad Hidayat', email: 'operator@printshop.com', role: 'admin', status: 'Aktif' },
+          { id: 'op-02', name: 'Siti Rahma', email: 'siti@printshop.com', role: 'operator', status: 'Aktif' }
+        ];
+      }
+    },
+
+    async registerAdmin(payload) {
+      const res = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Gagal mendaftarkan admin baru');
+      }
+      try {
+        const cached = localStorage.getItem('printshop_operators_cache');
+        let list = cached ? JSON.parse(cached) : [
+          { id: 'op-01', name: 'Ahmad Hidayat', email: 'operator@printshop.com', role: 'admin', status: 'Aktif' },
+          { id: 'op-02', name: 'Siti Rahma', email: 'siti@printshop.com', role: 'operator', status: 'Aktif' }
+        ];
+        list.push(data.operator);
+        localStorage.setItem('printshop_operators_cache', JSON.stringify(list));
+      } catch (e) {}
+      return data;
     },
 
     // ── Dashboard Stats ─────────────────────────────────

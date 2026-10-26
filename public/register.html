@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrasi Operator &amp; Admin - PrintShop POS</title>
+  <meta name="description"
+    content="Pendaftaran akun operator dan administrator baru untuk sistem terminal kasir PrintShop POS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./assets/css/global.css" />
+  <style>
+    /* Styling select dropdown agar serasi dengan input login */
+    .login-select {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px 0 46px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      font-family: var(--font);
+      font-size: 14.5px;
+      color: var(--ink);
+      background-color: #ffffff;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .login-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+  </style>
+</head>
+
+<body class="login-body">
+
+  <div class="login-split-container">
+
+    <!-- Sisi Kiri: Branding & Panduan Alur Pendaftaran (Serasi dengan login.html) -->
+    <aside class="login-hero-panel" aria-label="Branding Registrasi Operator">
+      <div class="login-hero-top">
+        <div class="login-hero-tag">Pendaftaran Staf Konsol</div>
+        <h2 class="login-hero-title">Sistem Manajemen Antrean PrintShop POS</h2>
+        <p class="login-hero-desc">
+          Daftarkan akun operator atau administrator baru untuk mulai mengelola pencetakan, transaksi loket, dan antrean real-time.
+        </p>
+
+        <div class="login-hero-divider" role="presentation"></div>
+
+        <p class="login-hero-subtitle">3 Langkah Mudah Pendaftaran Akun</p>
+
+        <ul class="login-steps-list">
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              01
+            </span>
+            <span class="login-step-title">Isi data staf</span>
+          </li>
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              02
+            </span>
+            <span class="login-step-title">Tentukan peran</span>
+          </li>
+          <li class="login-step-item">
+            <span class="login-step-num">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              03
+            </span>
+            <span class="login-step-title">Pasang PIN akses</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="login-hero-footer">
+        <span>&copy; 2026 Express Print</span>
+        <span>Sistem POS Fotokopi</span>
+      </div>
+    </aside>
+
+    <!-- Sisi Kanan: Formulir Registrasi Operator (Layout identik dengan login.html) -->
+    <div class="login-form-panel">
+      <header>
+        <div class="login-top-nav">
+          <nav aria-label="Navigasi autentikasi">
+            <a href="login.html" class="back-home-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span>Kembali ke Halaman Login</span>
+            </a>
+          </nav>
+
+          <span class="console-status-pill">
+            <span class="console-status-dot"></span>
+            Online
+          </span>
+        </div>
+      </header>
+
+      <main class="login-form-wrapper">
+        <section aria-labelledby="register-heading">
+          <div class="login-badge-header">
+            <figure style="margin: 0;">
+              <span class="brand-icon-box">
+                <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS untuk konsol operator" width="24"
+                  height="24" />
+              </span>
+            </figure>
+            <div class="login-header-text">
+              <div class="brand-title">PrintShop POS</div>
+              <div class="brand-sub">Campus Console</div>
+            </div>
+          </div>
+
+          <p class="login-access-tag">Registrasi Pegawai Baru &bull; Akses Konsol</p>
+          <h1 id="register-heading" class="login-title-h1">Daftar Akun Baru</h1>
+          <p class="login-subtitle">Lengkapi formulir di bawah ini untuk membuat akun operator atau admin gerai.</p>
+
+          <article aria-label="Formulir registrasi operator">
+            <h3 class="sr-only">Registrasi Akun Baru Konsol Operator</h3>
+
+            <form id="form-register" action="#" method="post" novalidate>
+              <fieldset class="login-fieldset">
+                <legend class="sr-only">Kredensial Pendaftaran Operator</legend>
+
+                <!-- 1. Nama Lengkap -->
+                <div class="login-input-group">
+                  <label for="name-operator" class="login-label">Nama Lengkap Operator</label>
+                  <div class="input-icon-container">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </span>
+                    <input type="text" id="name-operator" name="name-operator" placeholder="Contoh: Budi Santoso"
+                      required autocomplete="name" />
+                  </div>
+                </div>
+
+                <!-- 2. Alamat Email -->
+                <div class="login-input-group">
+                  <label for="email-operator" class="login-label">Alamat Email Kantor / Pegawai</label>
+                  <div class="input-icon-container">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </span>
+                    <input type="email" id="email-operator" name="email-operator" placeholder="budi@printshop.com"
+                      required autocomplete="email" />
+                  </div>
+                </div>
+
+                <!-- 3. Peran / Hak Akses -->
+                <div class="login-input-group">
+                  <label for="role-operator" class="login-label">Peran &amp; Hak Akses</label>
+                  <div class="input-icon-container">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </span>
+                    <select id="role-operator" name="role-operator" class="login-select" required>
+                      <option value="admin">Administrator (Akses Penuh: Dasbor, Antrean, Refund)</option>
+                      <option value="operator">Operator Mesin Cetak (Antrean &amp; Eksekusi Cetak)</option>
+                      <option value="cashier">Kasir Loket (Input Pesanan Walk-in &amp; Pembayaran)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- 4. PIN Operator (6 digit) -->
+                <div class="login-input-group">
+                  <label for="pin-operator" class="login-label">PIN Operator (6 digit angka)</label>
+                  <div class="input-icon-container has-toggle">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </span>
+                    <input type="password" id="pin-operator" name="pin-operator" placeholder="Masukkan PIN 6 digit"
+                      minlength="6" maxlength="6" pattern="[0-9]{6}" required autocomplete="new-password"
+                      inputmode="numeric" />
+                    <button type="button" id="btn-toggle-pin" class="btn-toggle-pin"
+                      aria-label="Tampilkan atau sembunyikan PIN">
+                      <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 5. Konfirmasi PIN (6 digit) -->
+                <div class="login-input-group">
+                  <label for="pin-confirm" class="login-label">Konfirmasi PIN (Ulangi 6 digit)</label>
+                  <div class="input-icon-container has-toggle">
+                    <span class="input-icon-lead" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <input type="password" id="pin-confirm" name="pin-confirm" placeholder="Ulangi 6 digit PIN"
+                      minlength="6" maxlength="6" pattern="[0-9]{6}" required autocomplete="new-password"
+                      inputmode="numeric" />
+                    <button type="button" id="btn-toggle-confirm" class="btn-toggle-pin"
+                      aria-label="Tampilkan atau sembunyikan Konfirmasi PIN">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <p style="margin: 0; margin-top: 8px;">
+                  <button type="submit" id="btn-submit-register" class="btn-primary btn-login-submit">
+                    <span>Daftarkan Akun Baru</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </p>
+
+                <!-- Tombol Kembali ke Login -->
+                <div style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed #cbd5e1; text-align: center;">
+                  <span style="font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px;">Sudah memiliki akun operator atau admin?</span>
+                  <a href="login.html" class="btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 42px; border-radius: 10px; font-weight: 700; font-size: 13.5px; text-decoration: none; border: 1.5px solid var(--line); color: var(--ink); background: #ffffff;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                      <polyline points="10 17 15 12 10 7"></polyline>
+                      <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    <span>Masuk ke Konsol Login</span>
+                  </a>
+                </div>
+              </fieldset>
+            </form>
+
+            <!-- Alert Notifikasi Registrasi -->
+            <section id="alert-container" aria-labelledby="alert-heading" aria-live="assertive" role="alert"
+              style="display: none; margin-top: 16px;">
+              <div id="register-alert-box" class="login-alert-box alert-error">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                  <h3 id="alert-heading" style="font-size: 14px; font-weight: 700; margin-bottom: 2px;">Pendaftaran Gagal</h3>
+                  <p id="alert-desc" style="font-size: 13px; margin: 0;"></p>
+                </div>
+              </div>
+            </section>
+          </article>
+        </section>
+
+        <!-- Informasi Protokol Akun Baru -->
+        <section aria-labelledby="info-akun-heading" class="security-info-box" style="margin-top: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <h2 id="info-akun-heading"
+              style="font-size: 13.5px; font-weight: 700; color: var(--ink); margin: 0; display: flex; align-items: center; gap: 6px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Ketentuan Akun Operator
+            </h2>
+          </div>
+          <ul>
+            <li>Gunakan alamat email dinas yang aktif untuk menerima notifikasi sistem.</li>
+            <li>PIN 6 digit angka digunakan untuk otorisasi cepat cetak &amp; transaksi kasir.</li>
+            <li>Akun Administrator memiliki hak istimewa untuk persetujuan refund pelanggan.</li>
+            <li>Semua aktivitas operasional akan tercatat otomatis pada sistem audit log.</li>
+          </ul>
+        </section>
+
+        <div class="login-security-strip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Pendaftaran Akun Khusus Pegawai Express Print &bull; Enkripsi TLS 256-bit</span>
+        </div>
+      </main>
+
+      <footer class="login-bottom-footer">
+        <p><small>PrintShop POS: Konsol Operator. Akses tidak sah dilarang dan dapat dipidanakan sesuai hukum yang
+            berlaku.</small></p>
+      </footer>
+    </div>
+
+  </div>
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('form-register');
+      const nameInput = document.getElementById('name-operator');
+      const emailInput = document.getElementById('email-operator');
+      const roleSelect = document.getElementById('role-operator');
+      const pinInput = document.getElementById('pin-operator');
+      const pinConfirmInput = document.getElementById('pin-confirm');
+      const togglePinBtn = document.getElementById('btn-toggle-pin');
+      const toggleConfirmBtn = document.getElementById('btn-toggle-confirm');
+      const alertContainer = document.getElementById('alert-container');
+      const alertBox = document.getElementById('register-alert-box');
+      const alertHeading = document.getElementById('alert-heading');
+      const alertDesc = document.getElementById('alert-desc');
+      const submitBtn = document.getElementById('btn-submit-register');
+
+      // 1. Toggle visibility PIN
+      function setupToggle(btn, input) {
+        if (!btn || !input) return;
+        btn.addEventListener('click', function () {
+          const isPwd = input.getAttribute('type') === 'password';
+          input.setAttribute('type', isPwd ? 'text' : 'password');
+          btn.innerHTML = isPwd
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        });
+      }
+      setupToggle(togglePinBtn, pinInput);
+      setupToggle(toggleConfirmBtn, pinConfirmInput);
+
+      // 2. Batasi input PIN hanya angka maks 6 digit
+      [pinInput, pinConfirmInput].forEach(inp => {
+        if (!inp) return;
+        inp.addEventListener('input', function () {
+          this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+        });
+      });
+
+      // 3. Helper Alert
+      function showAlert(msg, isError, title) {
+        alertContainer.style.display = 'block';
+        alertBox.className = 'login-alert-box ' + (isError ? 'alert-error' : 'alert-success');
+        alertHeading.textContent = title || (isError ? 'Pendaftaran Gagal' : 'Pendaftaran Berhasil');
+        alertDesc.innerHTML = msg;
+      }
+
+      // 4. Form Submit
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const role = roleSelect.value;
+        const pin = pinInput.value.trim();
+        const pinConfirm = pinConfirmInput.value.trim();
+
+        if (!name) {
+          showAlert('Harap isi nama lengkap operator.', true);
+          nameInput.focus();
+          return;
+        }
+
+        if (!email || !email.includes('@')) {
+          showAlert('Harap masukkan alamat email kantor yang valid.', true);
+          emailInput.focus();
+          return;
+        }
+
+        if (pin.length !== 6) {
+          showAlert('PIN operator harus terdiri dari tepat 6 angka.', true);
+          pinInput.focus();
+          return;
+        }
+
+        if (pin !== pinConfirm) {
+          showAlert('Konfirmasi PIN tidak cocok dengan PIN yang dimasukkan.', true);
+          pinConfirmInput.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>Mendaftarkan akun...</span>';
+
+        try {
+          if (window.PrintShopAPI && window.PrintShopAPI.registerAdmin) {
+            const res = await window.PrintShopAPI.registerAdmin({ name, email, pin, role });
+            const roleName = role === 'admin' ? 'Administrator' : (role === 'cashier' ? 'Kasir' : 'Operator');
+            showAlert(`Akun <strong>${res.operator?.name || name}</strong> (${roleName}) berhasil didaftarkan! Mengarahkan ke halaman login...`, false, 'Registrasi Berhasil');
+          } else {
+            showAlert(`Akun <strong>${name}</strong> berhasil didaftarkan! Mengarahkan ke halaman login...`, false, 'Registrasi Berhasil');
+          }
+
+          form.reset();
+          setTimeout(function () {
+            window.location.href = 'login.html';
+          }, 1800);
+        } catch (err) {
+          showAlert(err.message || 'Gagal mendaftarkan akun baru. Silakan coba lagi.', true);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
