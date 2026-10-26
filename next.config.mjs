@@ -10,7 +10,9 @@ const nextConfig = {
       { source: '/tiket', destination: '/tiket.html' },
       { source: '/login', destination: '/login.html' },
       { source: '/dasbor', destination: '/dasbor.html' },
-      { source: '/antrean', destination: '/antrean.html' }
+      { source: '/antrean', destination: '/antrean.html' },
+      { source: '/order-manual', destination: '/order-manual.html' },
+      { source: '/register', destination: '/register.html' }
     ];
   }
 };

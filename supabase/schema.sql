@@ -88,6 +88,36 @@ CREATE TABLE IF NOT EXISTS public.transactions (
 CREATE INDEX IF NOT EXISTS idx_transactions_order_id ON public.transactions(order_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_midtrans_id ON public.transactions(midtrans_order_id);
 
+-- 6b. Create Refunds Table (Riwayat Pengembalian)
+CREATE TABLE IF NOT EXISTS public.refunds (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID NOT NULL REFERENCES public.orders(id) ON DELETE CASCADE,
+  operator_id UUID REFERENCES public.operators(id) ON DELETE SET NULL,
+  refund_amount NUMERIC(12, 2) NOT NULL,
+  refund_method VARCHAR(50) NOT NULL DEFAULT 'qris_reversal', -- 'qris_reversal', 'store_credit', 'cash'
+  reason TEXT NOT NULL,
+  source VARCHAR(50) NOT NULL DEFAULT 'admin', -- 'admin', 'user_report'
+  status VARCHAR(30) NOT NULL DEFAULT 'completed', -- 'pending', 'completed', 'rejected'
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_refunds_order_id ON public.refunds(order_id);
+CREATE INDEX IF NOT EXISTS idx_refunds_created_at ON public.refunds(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_refunds_status ON public.refunds(status);
+
+-- 6c. Create Auth Sessions Table (Proper session management)
+CREATE TABLE IF NOT EXISTS public.auth_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  operator_id UUID NOT NULL REFERENCES public.operators(id) ON DELETE CASCADE,
+  token VARCHAR(255) NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_token ON public.auth_sessions(token);
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_operator_id ON public.auth_sessions(operator_id);
+
 -- ==============================================================================
 -- 7. TABEL & STRUKTUR KHUSUS DASBOR (DASHBOARD)
 -- ==============================================================================
@@ -276,6 +306,8 @@ ALTER TABLE public.operators ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.printers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.queue_audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.refunds ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.auth_sessions ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Public can view and create orders" ON public.orders;
 CREATE POLICY "Public can view and create orders" ON public.orders
@@ -285,9 +317,9 @@ DROP POLICY IF EXISTS "Public can view and create specifications" ON public.prin
 CREATE POLICY "Public can view and create specifications" ON public.print_specifications
 FOR ALL USING (true) WITH CHECK (true);
 
-DROP POLICY IF EXISTS "Public can view operators" ON public.operators;
-CREATE POLICY "Public can view operators" ON public.operators
-FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Public can manage operators" ON public.operators;
+CREATE POLICY "Public can manage operators" ON public.operators
+FOR ALL USING (true) WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Public can view and manage transactions" ON public.transactions;
 CREATE POLICY "Public can view and manage transactions" ON public.transactions
@@ -299,6 +331,14 @@ FOR ALL USING (true) WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Public can view and create audit logs" ON public.queue_audit_logs;
 CREATE POLICY "Public can view and create audit logs" ON public.queue_audit_logs
+FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can manage refunds" ON public.refunds;
+CREATE POLICY "Public can manage refunds" ON public.refunds
+FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can manage auth sessions" ON public.auth_sessions;
+CREATE POLICY "Public can manage auth sessions" ON public.auth_sessions
 FOR ALL USING (true) WITH CHECK (true);
 
 -- ==============================================================================
@@ -321,6 +361,9 @@ BEGIN
   BEGIN
     ALTER PUBLICATION supabase_realtime ADD TABLE public.queue_audit_logs;
   EXCEPTION WHEN OTHERS THEN END;
+  BEGIN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.refunds;
+  EXCEPTION WHEN OTHERS THEN END;
 END $$;
 
 -- ==============================================================================
@@ -330,8 +373,8 @@ END $$;
 -- 12.1 Data Operator Toko
 INSERT INTO public.operators (name, email, pin_hash, role)
 VALUES 
-  ('Ahmad Hidayat', 'operator@printshop.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Kasir Loket A1'),
-  ('Siti Rahma', 'siti@printshop.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Operator Mesin B1')
+  ('Ahmad Hidayat', 'operator@printshop.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'admin'),
+  ('Siti Rahma', 'siti@printshop.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'operator')
 ON CONFLICT (email) DO NOTHING;
 
 -- 12.2 Data Mesin Printer Toko (Dasbor)

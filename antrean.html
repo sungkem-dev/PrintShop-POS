@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="./assets/css/global.css" />
+  <script src="./assets/js/auth-guard.js"></script>
 </head>
 
 <body class="console-body">
@@ -118,6 +119,16 @@
                   <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
                 <span>Status Mesin Printer</span>
+              </a>
+            </li>
+            <li class="console-nav-item">
+              <a href="antrean.html#refund-log-heading">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 10h10a5 5 0 0 1 5 5v2"></path>
+                  <polyline points="7 6 3 10 7 14"></polyline>
+                </svg>
+                <span>Riwayat Pengembalian</span>
               </a>
             </li>
             <li class="console-nav-item">
@@ -1386,11 +1397,11 @@
                 </div>
               </div>
 
-              <!-- Refund history log -->
-              <div class="console-card refund-panel" aria-labelledby="refund-log-heading">
+              <!-- Refund history log (Riwayat Pengembalian) -->
+              <div id="riwayat-pengembalian" class="console-card refund-panel" aria-labelledby="refund-log-heading">
                 <div class="console-card-header">
                   <h3 id="refund-log-heading" class="console-card-title">
-                    Log Refund Hari Ini
+                    Riwayat Pengembalian &amp; Log Refund
                     <span class="badge-count">8</span>
                   </h3>
                 </div>
@@ -3162,26 +3173,139 @@
         });
       }
 
+      // Helper to append/prepend to Riwayat Pengembalian list
+      function prependRefundLog(refund) {
+        const list = document.getElementById('refund-log-list');
+        if (!list) return;
+
+        const li = document.createElement('li');
+        li.className = 'refund-log-item';
+        li.style.animation = 'fadeIn 0.3s ease';
+
+        const method = refund.refund_method || 'qris_reversal';
+        const methodBadgeClass = method === 'cash' ? 'refund-log-method--cash' :
+                                 method === 'store_credit' ? 'refund-log-method--credit' : 'refund-log-method--qris';
+        const methodLabel = method === 'cash' ? 'Tunai' :
+                            method === 'store_credit' ? 'Kredit' : 'QRIS';
+
+        const date = refund.created_at ? new Date(refund.created_at) : new Date();
+        const timeStr = String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0');
+        const code = (refund.order_code || refund.order_id || 'ORD-000').replace(/^#/, '');
+
+        li.innerHTML = `
+          <div class="refund-log-left">
+            <strong class="order-id">#${code}</strong>
+            <span class="refund-log-method ${methodBadgeClass}">${methodLabel}</span>
+          </div>
+          <div class="refund-log-right">
+            <span class="refund-log-amount">Rp${(Number(refund.refund_amount) || 0).toLocaleString('id-ID')}</span>
+            <span class="refund-log-time"><time datetime="${date.toISOString()}">${timeStr} WIB</time></span>
+            <span class="status-badge status-badge--ready" style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+          </div>
+        `;
+        list.insertBefore(li, list.firstChild);
+
+        // Update badge count
+        const badge = document.querySelector('#refund-log-heading .badge-count');
+        if (badge) {
+          badge.textContent = String((Number(badge.textContent) || 0) + 1);
+        }
+
+        // Update chip count
+        const chipDone = document.querySelector('.refund-chip--done span:last-child');
+        if (chipDone) {
+          const current = parseInt(chipDone.textContent) || 8;
+          chipDone.textContent = `${current + 1} Diproses Hari Ini`;
+        }
+      }
+
+      // Load initial refunds from API / local store
+      if (window.PrintShopAPI && window.PrintShopAPI.getRefunds) {
+        window.PrintShopAPI.getRefunds().then(function (refunds) {
+          if (!refunds || !refunds.length) return;
+          const list = document.getElementById('refund-log-list');
+          if (!list) return;
+          list.innerHTML = '';
+          refunds.forEach(function (ref) {
+            const li = document.createElement('li');
+            li.className = 'refund-log-item';
+            const method = ref.refund_method || 'qris_reversal';
+            const methodBadgeClass = method === 'cash' ? 'refund-log-method--cash' :
+                                     method === 'store_credit' ? 'refund-log-method--credit' : 'refund-log-method--qris';
+            const methodLabel = method === 'cash' ? 'Tunai' :
+                                method === 'store_credit' ? 'Kredit' : 'QRIS';
+            const date = ref.created_at ? new Date(ref.created_at) : new Date();
+            const timeStr = String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0');
+            const code = (ref.order_code || ref.order_id || 'ORD-000').replace(/^#/, '');
+
+            li.innerHTML = `
+              <div class="refund-log-left">
+                <strong class="order-id">#${code}</strong>
+                <span class="refund-log-method ${methodBadgeClass}">${methodLabel}</span>
+              </div>
+              <div class="refund-log-right">
+                <span class="refund-log-amount">Rp${(Number(ref.refund_amount) || 0).toLocaleString('id-ID')}</span>
+                <span class="refund-log-time"><time datetime="${date.toISOString()}">${timeStr} WIB</time></span>
+                <span class="status-badge status-badge--ready" style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+              </div>
+            `;
+            list.appendChild(li);
+          });
+          const badge = document.querySelector('#refund-log-heading .badge-count');
+          if (badge) badge.textContent = String(refunds.length);
+        }).catch(function (e) {
+          console.warn('Could not load refunds:', e);
+        });
+      }
+
       // ── 9. Admin Cancel form submission ───────────────────────────
       const cancelForm = document.getElementById('form-admin-cancel');
       const cancelFeedback = document.getElementById('admin-cancel-feedback');
 
       if (cancelForm && cancelFeedback) {
-        cancelForm.addEventListener('submit', function (e) {
+        cancelForm.addEventListener('submit', async function (e) {
           e.preventDefault();
           const orderId = (cancelInput ? cancelInput.value.trim() : '');
-          const reason = document.getElementById('cancel-reason-select');
+          const reasonSelect = document.getElementById('cancel-reason-select');
+          const notes = document.getElementById('cancel-notes')?.value || '';
+          const method = cancelForm.querySelector('input[name="refund_method"]:checked')?.value || 'qris_reversal';
+
           if (!orderId) {
             showFeedback(cancelFeedback, 'error', 'Masukkan ID pesanan terlebih dahulu.');
             return;
           }
-          if (reason && !reason.value) {
+          if (reasonSelect && !reasonSelect.value) {
             showFeedback(cancelFeedback, 'error', 'Pilih alasan pembatalan sebelum melanjutkan.');
             return;
           }
-          showFeedback(cancelFeedback, 'success', 'Pembatalan #' + orderId.toUpperCase() + ' berhasil diproses. Refund sedang diteruskan.');
-          cancelForm.reset();
-          if (previewEl) previewEl.hidden = true;
+
+          const rawTotal = document.getElementById('preview-total')?.textContent || 'Rp12.000';
+          const amount = Number(rawTotal.replace(/[^0-9]/g, '')) || 12000;
+          const reasonText = reasonSelect.options[reasonSelect.selectedIndex]?.text || reasonSelect.value;
+
+          try {
+            if (window.PrintShopAPI && window.PrintShopAPI.createRefund) {
+              await window.PrintShopAPI.createRefund({
+                order_code: orderId,
+                refund_amount: amount,
+                refund_method: method,
+                reason: reasonText,
+                notes: notes,
+                source: 'admin'
+              });
+            }
+            prependRefundLog({
+              order_code: orderId,
+              refund_amount: amount,
+              refund_method: method,
+              created_at: new Date().toISOString()
+            });
+            showFeedback(cancelFeedback, 'success', `Pembatalan #${orderId.toUpperCase()} berhasil diproses dan dicatat dalam Riwayat Pengembalian.`);
+            cancelForm.reset();
+            if (previewEl) previewEl.hidden = true;
+          } catch (err) {
+            showFeedback(cancelFeedback, 'error', 'Gagal memproses refund: ' + err.message);
+          }
         });
       }
 
@@ -3195,16 +3319,17 @@
       // ── 10. Approve Refund Modal ──────────────────────────────────
       const modal = document.getElementById('modal-refund-confirm');
       let pendingOrderId = null;
+      let pendingAmount = 0;
       let pendingItem = null;
 
       document.querySelectorAll('.btn-approve-refund').forEach(function (btn) {
         btn.addEventListener('click', function () {
           pendingOrderId = this.dataset.orderId;
           pendingItem = this.closest('.refund-request-item');
-          const amount = Number(this.dataset.amount || 0);
+          pendingAmount = Number(this.dataset.amount || 0);
           document.getElementById('modal-refund-order-id').textContent = '#' + pendingOrderId;
           document.getElementById('modal-refund-amount').textContent =
-            'Rp' + amount.toLocaleString('id-ID');
+            'Rp' + pendingAmount.toLocaleString('id-ID');
           const pin = document.getElementById('modal-admin-pin');
           if (pin) pin.value = '';
           modal.hidden = false;
@@ -3215,6 +3340,7 @@
         if (modal) modal.hidden = true;
         pendingOrderId = null;
         pendingItem = null;
+        pendingAmount = 0;
       }
 
       const closeBtn = document.getElementById('modal-close-refund');
@@ -3227,20 +3353,64 @@
 
       const confirmBtn = document.getElementById('modal-confirm-refund-btn');
       if (confirmBtn) {
-        confirmBtn.addEventListener('click', function () {
+        confirmBtn.addEventListener('click', async function () {
           const pin = document.getElementById('modal-admin-pin');
           if (!pin || pin.value.length < 4) {
             pin && (pin.style.borderColor = '#ef4444');
             setTimeout(function () { if (pin) pin.style.borderColor = ''; }, 1200);
             return;
           }
-          if (pendingItem) {
-            pendingItem.style.transition = 'opacity 0.3s, transform 0.3s';
-            pendingItem.style.opacity = '0';
-            pendingItem.style.transform = 'translateX(20px)';
-            setTimeout(function () { pendingItem && pendingItem.remove(); }, 320);
+
+          const orderIdToRefund = pendingOrderId;
+          const amountToRefund = pendingAmount;
+          const reasonText = pendingItem ? (pendingItem.querySelector('.refund-reason')?.innerText || 'Disetujui admin') : 'Disetujui admin';
+
+          try {
+            confirmBtn.disabled = true;
+            if (window.PrintShopAPI && window.PrintShopAPI.createRefund) {
+              await window.PrintShopAPI.createRefund({
+                order_code: orderIdToRefund,
+                refund_amount: amountToRefund,
+                refund_method: 'qris_reversal',
+                reason: reasonText,
+                source: 'user_report'
+              });
+            }
+
+            // Prepend to Riwayat Pengembalian log
+            prependRefundLog({
+              order_code: orderIdToRefund,
+              refund_amount: amountToRefund,
+              refund_method: 'qris_reversal',
+              created_at: new Date().toISOString()
+            });
+
+            // Update user report count
+            const chipPending = document.querySelector('.refund-chip--pending span:last-child');
+            if (chipPending) {
+              const current = parseInt(chipPending.textContent) || 3;
+              chipPending.textContent = `${Math.max(0, current - 1)} Menunggu Persetujuan`;
+            }
+            const badgePending = document.querySelector('#user-report-heading .badge-count');
+            if (badgePending) {
+              const current = parseInt(badgePending.textContent) || 3;
+              badgePending.textContent = String(Math.max(0, current - 1));
+            }
+
+            if (pendingItem) {
+              pendingItem.style.transition = 'opacity 0.3s, transform 0.3s';
+              pendingItem.style.opacity = '0';
+              pendingItem.style.transform = 'translateX(20px)';
+              setTimeout(function () { pendingItem && pendingItem.remove(); }, 320);
+            }
+
+            alert(`Refund untuk #${orderIdToRefund} sebesar Rp${amountToRefund.toLocaleString('id-ID')} berhasil disetujui dan dicatat dalam Riwayat Pengembalian.`);
+          } catch (err) {
+            alert('Gagal menyetujui refund: ' + err.message);
+          } finally {
+            confirmBtn.disabled = false;
+            closeModal();
           }
-          closeModal();
         });
       }
 
