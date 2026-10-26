@@ -165,10 +165,12 @@
     const params = new URLSearchParams(window.location.search);
     const codeParam = (params.get('code') || params.get('nomor-pesanan') || params.get('order') || '').trim();
     const idParam = (params.get('order_id') || params.get('id') || '').trim();
+    const statusParam = (params.get('status') || params.get('error') || '').trim().toLowerCase();
+    const isExplicitNotFound = (statusParam === 'not-found' || statusParam === 'not_found' || statusParam === 'error');
 
     let order = null;
 
-    if (window.PrintShopAPI) {
+    if (window.PrintShopAPI && !isExplicitNotFound) {
       try {
         if (codeParam) {
           order = await window.PrintShopAPI.trackOrder(codeParam);
@@ -265,7 +267,10 @@
         const retryInput = document.getElementById('retry-search-input');
         if (retryInput) retryInput.value = queryTerm;
       }
-      showToast('Pesanan dengan kode "' + queryTerm + '" tidak ditemukan!', 4000);
+      if (toastEl) toastEl.classList.remove('visible');
+      if (!isExplicitNotFound && window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', 'tiket.html?nomor-pesanan=' + encodeURIComponent(queryTerm) + '&status=not-found');
+      }
       return;
     }
 

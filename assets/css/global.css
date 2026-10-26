@@ -1198,6 +1198,8 @@ h3 {
     line-height: 1.4;
 }
 
+#tarif.section-block { padding-bottom: 16px; }
+.track-section.section-block { padding-top: 8px; }
 .track-order-card {
     position: relative;
     overflow: hidden;
@@ -1278,7 +1280,9 @@ h3 {
         align-items: center;
     }
 
-    .track-order-card {
+    #tarif.section-block { padding-bottom: 16px; }
+.track-section.section-block { padding-top: 8px; }
+.track-order-card {
         padding: 44px 32px;
     }
 }
