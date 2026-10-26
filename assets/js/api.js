@@ -26,30 +26,26 @@
     async getOrder(idOrCode) {
       try {
         const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(idOrCode)}`, { cache: 'no-store' });
+        if (res.status === 404) return null;
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        return data.data || null;
+        return (data && data.success && data.data) ? data.data : null;
       } catch (err) {
-        console.warn('API getOrder failed, fallback to local storage:', err.message);
-        return this.getLocalOrder(idOrCode);
+        console.warn('API getOrder failed:', err.message);
+        return null;
       }
     },
 
     async trackOrder(code) {
       try {
         const res = await fetch(`${API_BASE}/orders/track?code=${encodeURIComponent(code)}`, { cache: 'no-store' });
+        if (res.status === 404) return null;
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        return data.data || null;
+        return (data && data.success && data.data) ? data.data : null;
       } catch (err) {
-        console.warn('API trackOrder failed, fallback to local:', err.message);
-        const order = this.getLocalOrder(code);
-        if (!order) return null;
-        return {
-          ...order,
-          queuePosition: 2,
-          estimatedMinutes: 8
-        };
+        console.warn('API trackOrder failed:', err.message);
+        return null;
       }
     },
 
@@ -272,33 +268,21 @@
     getLocalOrders(filters = {}) {
       try {
         const raw = localStorage.getItem('printshop_orders_cache');
-        let list = raw ? JSON.parse(raw) : [];
-        if (!list || list.length === 0) {
-          list = this.getDefaultSeedOrders();
-          localStorage.setItem('printshop_orders_cache', JSON.stringify(list));
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.filter(o => o && o.order_code !== 'ORD-040' && o.order_code !== 'ORD-041' && o.order_code !== 'ORD-043' && o.order_code !== 'ORD-039');
+          }
         }
-
-        if (filters.status) {
-          const statuses = filters.status.split(',').map(s => s.trim());
-          list = list.filter(o => statuses.includes(o.status));
-        }
-        if (filters.search) {
-          const q = filters.search.toLowerCase();
-          list = list.filter(o =>
-            (o.order_code && o.order_code.toLowerCase().includes(q)) ||
-            (o.customer_name && o.customer_name.toLowerCase().includes(q)) ||
-            (o.file_name && o.file_name.toLowerCase().includes(q))
-          );
-        }
-        return list;
-      } catch (e) {
-        return this.getDefaultSeedOrders();
-      }
+      } catch (e) {}
+      return this.getDefaultSeedOrders();
     },
 
     getLocalOrder(idOrCode) {
+      if (!idOrCode) return null;
+      const clean = idOrCode.startsWith('#') ? idOrCode.slice(1) : idOrCode;
       const list = this.getLocalOrders();
-      return list.find(o => o.id === idOrCode || o.order_code === idOrCode || o.order_code === `#${idOrCode}`) || null;
+      return list.find(o => o.id === idOrCode || o.order_code === clean || o.order_code === idOrCode || o.order_code === '#' + clean) || null;
     },
 
     saveLocalOrder(order) {
@@ -317,34 +301,6 @@
     getDefaultSeedOrders() {
       return [
         {
-          id: 'a1b2c3d4-0001-4000-8000-000000000001',
-          order_code: 'ORD-040',
-          customer_name: 'Dewi Lestari',
-          customer_phone: '081234567891',
-          file_name: 'Laporan_PKL_Dewi.pdf',
-          file_size: 3145728,
-          total_pages: 18,
-          copies: 1,
-          total_price: 9000,
-          status: 'READY_FOR_PICKUP',
-          created_at: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
-          specifications: { paper_size: 'A4', color_mode: 'B/W', print_side: 'Simplex', sheets_count: 18, notes: 'Jilid mika bening' }
-        },
-        {
-          id: 'a1b2c3d4-0002-4000-8000-000000000002',
-          order_code: 'ORD-041',
-          customer_name: 'Rian Pratama',
-          customer_phone: '085712345678',
-          file_name: 'Modul_Praktikum_Fisika.pdf',
-          file_size: 5242880,
-          total_pages: 32,
-          copies: 2,
-          total_price: 32000,
-          status: 'PRINTING',
-          created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-          specifications: { paper_size: 'A4', color_mode: 'B/W', print_side: 'Duplex', sheets_count: 16, notes: 'Cetak rapi rangkap 2' }
-        },
-        {
           id: 'a1b2c3d4-0003-4000-8000-000000000003',
           order_code: 'ORD-042',
           customer_name: 'Budi Santoso',
@@ -357,34 +313,6 @@
           status: 'WAITING_IN_QUEUE',
           created_at: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
           specifications: { paper_size: 'A4', color_mode: 'B/W', print_side: 'Simplex', sheets_count: 24, notes: 'Kertas 80 gsm' }
-        },
-        {
-          id: 'a1b2c3d4-0004-4000-8000-000000000004',
-          order_code: 'ORD-043',
-          customer_name: 'Anisa Rahmawati',
-          customer_phone: '081345678901',
-          file_name: 'Proposal_Skripsi_Anisa.pdf',
-          file_size: 2097152,
-          total_pages: 15,
-          copies: 1,
-          total_price: 7500,
-          status: 'WAITING_IN_QUEUE',
-          created_at: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-          specifications: { paper_size: 'A4', color_mode: 'B/W', print_side: 'Simplex', sheets_count: 15, notes: '' }
-        },
-        {
-          id: 'a1b2c3d4-0005-4000-8000-000000000005',
-          order_code: 'ORD-039',
-          customer_name: 'Farhan Maulana',
-          customer_phone: '087812345678',
-          file_name: 'Jurnal_Teknik_Farhan.pdf',
-          file_size: 1572864,
-          total_pages: 10,
-          copies: 1,
-          total_price: 5000,
-          status: 'COMPLETED',
-          created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          specifications: { paper_size: 'A4', color_mode: 'B/W', print_side: 'Simplex', sheets_count: 10, notes: 'Sudah diambil' }
         }
       ];
     }

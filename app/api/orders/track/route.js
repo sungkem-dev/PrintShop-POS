@@ -14,7 +14,7 @@ export async function GET(request) {
 
     const order = await DataService.getOrderById(code.trim());
     if (!order) {
-      return NextResponse.json({ success: false, error: 'Nomor pesanan tidak ditemukan' }, { status: 404 });
+      return NextResponse.json({ success: false, error: 'Pesanan tidak ditemukan' }, { status: 404 });
     }
 
     // Also calculate current queue position

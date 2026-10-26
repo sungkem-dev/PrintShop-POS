@@ -8,6 +8,249 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="./assets/css/global.css" />
+  <style>
+    /* ── Mobile Layout & Responsiveness Overrides (<= 768px) ── */
+    @media (max-width: 768px) {
+      html, body.page-upload {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
+
+      .upload-main {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding-bottom: 0 !important;
+        overflow-x: hidden !important;
+      }
+
+      .upload-main > .container {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+
+      .upload-page-grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 16px auto 24px !important;
+        gap: 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+
+      .upload-card-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 16px !important;
+        box-sizing: border-box !important;
+      }
+
+      .upload-card-title {
+        font-size: clamp(20px, 5.5vw, 26px) !important;
+        word-break: break-word !important;
+      }
+
+      .upload-card-sub {
+        font-size: 13.5px !important;
+        word-break: break-word !important;
+      }
+
+      .dropzone-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 22px 14px !important;
+        box-sizing: border-box !important;
+      }
+
+      .dropzone-title {
+        font-size: 16px !important;
+        word-break: break-word !important;
+      }
+
+      .dropzone-desc {
+        font-size: 13px !important;
+        word-break: break-word !important;
+      }
+
+      .btn-browse {
+        max-width: 100% !important;
+        white-space: normal !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+      }
+
+      .dropzone-hint-badge {
+        white-space: normal !important;
+        text-align: center !important;
+        font-size: 11.5px !important;
+      }
+
+      .form-group-grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        gap: 14px !important;
+        box-sizing: border-box !important;
+      }
+
+      .input-field-wrap {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      .input-field-wrap input {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Ready Doc Card: prevent horizontal stretching */
+      .ready-doc-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding: 14px 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      .ready-doc-info {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .ready-doc-info > div:last-child {
+        min-width: 0 !important;
+        max-width: calc(100% - 56px) !important;
+      }
+
+      .doc-name {
+        word-break: break-all !important;
+        overflow-wrap: anywhere !important;
+        white-space: normal !important;
+        max-width: 100% !important;
+      }
+
+      .doc-meta {
+        font-size: 12px !important;
+        word-break: break-word !important;
+      }
+
+      .doc-replace {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        align-self: flex-start !important;
+        padding: 8px 18px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        border-radius: 999px !important;
+        min-height: 36px !important;
+        width: auto !important;
+        margin-top: 4px !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Make submit button static (NOT fixed/sticky floating over inputs) */
+      .sticky-upload-bar {
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 18px !important;
+        margin-bottom: 8px !important;
+        padding: 0 !important;
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      .btn-submit-action {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 48px !important;
+        font-size: 14.5px !important;
+        white-space: normal !important;
+      }
+
+      .privacy-strip {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        padding: 14px 16px !important;
+        font-size: 13px !important;
+        word-break: break-word !important;
+      }
+
+      /* Sidebar Cards */
+      .upload-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        gap: 14px !important;
+        margin-bottom: 0 !important;
+      }
+
+      .sidebar-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 18px 16px !important;
+        box-sizing: border-box !important;
+      }
+
+      .sidebar-card-title {
+        font-size: 16px !important;
+      }
+
+      .sidebar-meta-row {
+        flex-wrap: wrap !important;
+        gap: 4px 8px !important;
+      }
+
+      .sidebar-tips-list li {
+        word-break: break-word !important;
+      }
+
+      .sidebar-card--trust {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      .trust-badge-desc {
+        word-break: break-word !important;
+      }
+
+      .page-upload main {
+        padding-bottom: 0 !important;
+      }
+    }
+  </style>
 </head>
 
 <body class="page-upload">
