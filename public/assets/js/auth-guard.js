@@ -4,7 +4,7 @@
  * It synchronously verifies operator authentication before DOM renders.
  * 
  * Strictly Protected pages: dasbor.html, antrean.html, order-manual.html
- * Public pages (Open for everyone): index.html, login.html, register.html, lacak.html, tiket.html, unggah.html, spesifikasi.html, pembayaran.html
+ * Public pages (Open for everyone): index.html, login.html, register.html, tiket.html, unggah.html, spesifikasi.html, pembayaran.html
  */
 
 ;(function () {
