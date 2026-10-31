@@ -3,6 +3,9 @@
  */
 const PrintShopConfig = {
   apiBase: '/api',
+  clarityId: typeof window !== 'undefined' && window.__ENV_CLARITY_ID
+    ? window.__ENV_CLARITY_ID
+    : 'z66p3x0k2q',
   supabase: {
     url: typeof window !== 'undefined' && window.__ENV_SUPABASE_URL
       ? window.__ENV_SUPABASE_URL
