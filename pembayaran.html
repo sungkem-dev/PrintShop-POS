@@ -5,7 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pembayaran QRIS - PrintShop POS</title>
-  <meta name="description" content="Bayar pesanan cetak Anda via QRIS. Scan kode QR dengan GoPay, OVO, Dana, atau m-Banking. Konfirmasi otomatis." />
+  <!-- Microsoft Clarity -->
+  <script src="./assets/js/clarity.js"></script>
+  <meta name="description"
+    content="Bayar pesanan cetak Anda via QRIS. Scan kode QR dengan GoPay, OVO, Dana, atau m-Banking. Konfirmasi otomatis." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -172,8 +175,15 @@
     }
 
     @keyframes pulse-pending {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
-      50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, .15); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(251, 191, 36, .15);
+      }
     }
 
     /* ── Timer Section ── */
@@ -262,7 +272,7 @@
       border-radius: 16px;
       overflow: hidden;
       background: #fff;
-      box-shadow: 0 4px 16px -4px rgba(0,0,0,.08);
+      box-shadow: 0 4px 16px -4px rgba(0, 0, 0, .08);
       border: 3px solid #fff;
     }
 
@@ -364,7 +374,7 @@
       cursor: pointer;
       color: #fff;
       background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
-      box-shadow: 0 6px 20px -2px rgba(29, 78, 216, .42), inset 0 1px 0 rgba(255,255,255,.25);
+      box-shadow: 0 6px 20px -2px rgba(29, 78, 216, .42), inset 0 1px 0 rgba(255, 255, 255, .25);
       transition: all .25s var(--ease);
       font-family: var(--pay-font);
     }
@@ -433,7 +443,7 @@
     .btn-simulate {
       color: #fff;
       background: linear-gradient(180deg, #10b981 0%, #059669 100%);
-      box-shadow: 0 4px 16px -2px rgba(16, 185, 129, .35), inset 0 1px 0 rgba(255,255,255,.2);
+      box-shadow: 0 4px 16px -2px rgba(16, 185, 129, .35), inset 0 1px 0 rgba(255, 255, 255, .2);
     }
 
     .btn-simulate:hover {
@@ -880,7 +890,7 @@
       font-size: 14px;
       font-weight: 600;
       font-family: var(--pay-font);
-      box-shadow: 0 12px 32px -4px rgba(0,0,0,.3);
+      box-shadow: 0 12px 32px -4px rgba(0, 0, 0, .3);
       z-index: 999;
       opacity: 0;
       transition: all .4s var(--ease);
@@ -909,7 +919,7 @@
       box-shadow: 0 4px 14px -3px var(--pay-primary-glow);
     }
 
-    .page-pay .step-badge-indicator.active > span:first-child {
+    .page-pay .step-badge-indicator.active>span:first-child {
       background: var(--pay-primary);
       box-shadow: 0 2px 6px var(--pay-primary-glow);
     }
@@ -920,15 +930,22 @@
       background: #ecfdf5;
     }
 
-    .page-pay .step-badge-indicator.done > span:first-child {
+    .page-pay .step-badge-indicator.done>span:first-child {
       background: #10b981;
       color: #fff;
     }
 
     /* ── Animations ── */
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .pay-card {
@@ -1007,7 +1024,9 @@
   <style id="mobile-card-sync">
     /* ── Mobile Layout Exactly Matching unggah.html (<= 768px) ── */
     @media (max-width: 768px) {
-      html, body.page-pay {
+
+      html,
+      body.page-pay {
         width: 100% !important;
         max-width: 100vw !important;
         overflow-x: hidden !important;
@@ -1020,7 +1039,7 @@
         overflow-x: hidden !important;
       }
 
-      .pay-main > .container {
+      .pay-main>.container {
         width: 100% !important;
         max-width: 100vw !important;
         padding-left: 16px !important;
@@ -1106,7 +1125,8 @@
         box-sizing: border-box !important;
       }
 
-      .btn-pay-action, .btn-snap-method {
+      .btn-pay-action,
+      .btn-snap-method {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -1141,7 +1161,8 @@
 
         <input type="checkbox" id="nav-toggle" class="mobile-nav-toggle" aria-label="Buka atau tutup menu" />
         <label for="nav-toggle" class="mobile-menu-btn" aria-label="Menu navigasi">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2"
+            stroke-linecap="round" aria-hidden="true">
             <line x1="4" y1="7" x2="20" y2="7"></line>
             <line x1="4" y1="12" x2="20" y2="12"></line>
             <line x1="4" y1="17" x2="20" y2="17"></line>
@@ -1185,7 +1206,8 @@
         <section class="pay-card" aria-labelledby="pay-heading">
           <header class="pay-card-header">
             <h1 class="pay-card-title" id="pay-heading">Pembayaran QRIS</h1>
-            <p class="pay-card-sub">Scan kode QR di bawah menggunakan aplikasi e-wallet atau m-Banking Anda. Konfirmasi pembayaran otomatis.</p>
+            <p class="pay-card-sub">Scan kode QR di bawah menggunakan aplikasi e-wallet atau m-Banking Anda. Konfirmasi
+              pembayaran otomatis.</p>
           </header>
 
           <!-- Status Badge -->
@@ -1200,7 +1222,8 @@
           <div class="timer-section" aria-label="Hitungan mundur batas waktu pembayaran">
             <p class="timer-label">Batas Waktu Pembayaran</p>
             <p class="timer-display" id="countdown" aria-live="polite">05:00</p>
-            <div class="progress-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Sisa waktu pembayaran">
+            <div class="progress-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+              aria-label="Sisa waktu pembayaran">
               <div class="progress-bar-fill" id="progress-bar" style="width: 100%;"></div>
             </div>
           </div>
@@ -1208,40 +1231,61 @@
           <!-- Expired Alert -->
           <div class="expired-alert" id="expired-alert" role="alert">
             <div class="expired-alert-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
             </div>
             <div class="expired-alert-text">
               <p class="expired-alert-title">Kode QRIS Kedaluwarsa</p>
-              <p class="expired-alert-desc">Batas waktu pembayaran telah habis. Silakan muat ulang untuk mendapatkan kode QR baru.</p>
+              <p class="expired-alert-desc">Batas waktu pembayaran telah habis. Silakan muat ulang untuk mendapatkan
+                kode QR baru.</p>
             </div>
           </div>
 
           <!-- Paid Success Alert -->
           <div class="paid-alert" id="paid-alert" role="alert">
             <div class="paid-alert-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
             </div>
             <div class="paid-alert-text">
               <p class="paid-alert-title">Pembayaran Berhasil! ✅</p>
-              <p class="paid-alert-desc">Transaksi lunas. Anda akan dialihkan ke halaman tiket dalam beberapa detik...</p>
+              <p class="paid-alert-desc">Transaksi lunas. Anda akan dialihkan ke halaman tiket dalam beberapa detik...
+              </p>
             </div>
           </div>
 
           <!-- QR Panel -->
           <div class="qr-panel" id="qr-panel">
             <div class="qr-image-wrap" id="qr-image-wrap">
-              <img src="./assets/images/qris-dynamic.jpg" alt="Kode QR QRIS untuk pembayaran PrintShop POS" id="qr-image" />
+              <img src="./assets/images/qris-dynamic.jpg" alt="Kode QR QRIS untuk pembayaran PrintShop POS"
+                id="qr-image" />
               <!-- Expired overlay -->
               <div class="qr-overlay" id="qr-overlay-expired">
                 <div class="qr-overlay-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" />
+                  </svg>
                 </div>
                 <p class="qr-overlay-text">QR Kedaluwarsa</p>
               </div>
               <!-- Paid overlay -->
               <div class="qr-overlay qr-overlay--paid" id="qr-overlay-paid">
                 <div class="qr-overlay-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
                 </div>
                 <p class="qr-overlay-text">Pembayaran Diterima</p>
               </div>
@@ -1251,20 +1295,37 @@
           </div>
 
           <!-- Action Buttons -->
-          <button type="button" class="btn-snap-pay" id="btn-snap-pay" aria-label="Bayar dengan Metode Lain via Midtrans Snap">
+          <button type="button" class="btn-snap-pay" id="btn-snap-pay"
+            aria-label="Bayar dengan Metode Lain via Midtrans Snap">
             💳 Bayar dengan Metode Lain (Virtual Account BCA/BRI/Mandiri, ShopeePay, GoPay, QRIS)
           </button>
           <div class="pay-actions">
-            <button type="button" class="btn-pay-action btn-save-qr" id="btn-save-qr" aria-label="Simpan gambar QR ke perangkat">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <button type="button" class="btn-pay-action btn-save-qr" id="btn-save-qr"
+              aria-label="Simpan gambar QR ke perangkat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
               Simpan Gambar QR
             </button>
-            <button type="button" class="btn-pay-action btn-simulate" id="btn-simulate" aria-label="Simulasi pembayaran berhasil">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              Simulasi Bayar Lunas (Sandbox Test)
+            <button type="button" class="btn-pay-action btn-simulate" id="btn-simulate"
+              aria-label="Simulasi pembayaran berhasil">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              Refresh Status
             </button>
-            <button type="button" class="btn-pay-action btn-reload-qr" id="btn-reload-qr" aria-label="Muat ulang kode QRIS">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <button type="button" class="btn-pay-action btn-reload-qr" id="btn-reload-qr"
+              aria-label="Muat ulang kode QRIS">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10" />
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+              </svg>
               Muat Ulang QRIS
             </button>
           </div>
@@ -1273,7 +1334,12 @@
           <div class="guide-section">
             <h2 class="guide-title">
               <span class="guide-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
               </span>
               Cara Membayar
             </h2>
@@ -1281,7 +1347,8 @@
               <p class="guide-step">Buka aplikasi dompet digital (GoPay, OVO, Dana, ShopeePay) atau m-Banking Anda.</p>
               <p class="guide-step">Pilih menu <strong>Scan QR</strong> atau <strong>Bayar dengan QR</strong>.</p>
               <p class="guide-step">Arahkan kamera ke kode QR di atas. Pastikan nominal sesuai.</p>
-              <p class="guide-step">Konfirmasi pembayaran. Status akan otomatis berubah menjadi <strong>Lunas</strong>.</p>
+              <p class="guide-step">Konfirmasi pembayaran. Status akan otomatis berubah menjadi <strong>Lunas</strong>.
+              </p>
             </div>
           </div>
 
@@ -1300,7 +1367,13 @@
           <div class="summary-card" aria-live="polite" aria-label="Rincian pesanan dan biaya">
             <div class="summary-card-header">
               <span class="summary-card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
               </span>
               <h2 class="summary-card-title">Rincian Pesanan</h2>
             </div>
@@ -1366,13 +1439,16 @@
           </div>
 
           <!-- Privacy Badge -->
-          <div class="troubleshoot-card" style="background: linear-gradient(145deg, #eff6ff, #fff); border-color: #bfdbfe;">
+          <div class="troubleshoot-card"
+            style="background: linear-gradient(145deg, #eff6ff, #fff); border-color: #bfdbfe;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 22px;">🔒</span>
-              <h3 style="font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em;">Privasi &amp; Keamanan</h3>
+              <h3 style="font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em;">Privasi &amp;
+                Keamanan</h3>
             </div>
             <p style="font-size: 12.5px; color: var(--body); line-height: 1.55; margin-top: 8px;">
-              Pembayaran diproses aman melalui QRIS. Dokumen kamu dienkripsi dan dihapus permanen 24 jam setelah cetak selesai.
+              Pembayaran diproses aman melalui QRIS. Dokumen kamu dienkripsi dan dihapus permanen 24 jam setelah cetak
+              selesai.
             </p>
           </div>
         </aside>
@@ -1417,12 +1493,17 @@
 
   <!-- Toast Notification -->
   <div class="toast-notification" id="toast" aria-live="assertive" role="alert">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
     <span id="toast-text">Gambar QR berhasil disimpan!</span>
   </div>
 
   <!-- Midtrans Snap JS SDK -->
-  <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-haOnm_scvgYBfw1o"></script>
+  <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="Mid-client-haOnm_scvgYBfw1o"></script>
   <script src="./assets/js/config.js"></script>
   <script src="./assets/js/api.js"></script>
   <script src="./assets/js/qris-timer.js"></script>
