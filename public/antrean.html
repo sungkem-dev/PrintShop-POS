@@ -9,7 +9,7 @@
     content="Halaman antrean cetak aktif PrintShop POS Staff Console. Kelola dan pantau pesanan cetak secara real-time." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css?v=rev25" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev22" />
   <script src="./assets/js/auth-guard.js"></script>
 </head>
 
@@ -22,8 +22,7 @@
 
     <!-- Sidebar Konsol Operator -->
     <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
-      <div>
-        <div class="console-sidebar-header">
+      <div class="console-sidebar-header">
           <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
             <span class="brand-icon-box">
               <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
@@ -144,7 +143,6 @@
             </li>
           </ul>
         </nav>
-      </div>
 
       <div class="console-user-footer">
         <div class="console-user-card">
@@ -425,9 +423,9 @@
             </h2>
             <p class="console-card-subtitle" aria-live="polite" role="status">
               <span class="pulse-dot"></span>
-              Data diperbarui otomatis setiap 10 detik &bull; Terakhir: <strong id="last-update-time">07:42:15
+              Data diperbarui otomatis setiap 10 detik | Terakhir: <strong id="last-update-time">07:42:15
                 WIB</strong>
-              &bull; Urutan FIFO
+              | Urutan FIFO
             </p>
           </div>
           <div class="console-card-body console-card-body--flush">
@@ -878,15 +876,15 @@
           <!-- Summary strip -->
           <div class="console-card-body history-summary-strip">
             <div class="history-kpi-row">
-              <div class="history-kpi-card filter-status-card active" data-filter="ALL" data-history-status="ALL" role="button" tabindex="0" title="Klik untuk menampilkan semua riwayat transaksi">
+              <div class="history-kpi-card">
                 <span class="history-kpi-label">Total Transaksi</span>
                 <strong class="history-kpi-value">47</strong>
               </div>
-              <div class="history-kpi-card history-kpi-card--success filter-status-card" data-filter="COMPLETED" data-history-status="COMPLETED" role="button" tabindex="0" title="Klik untuk menyaring riwayat pesanan selesai">
+              <div class="history-kpi-card history-kpi-card--success">
                 <span class="history-kpi-label">Selesai</span>
                 <strong class="history-kpi-value">43</strong>
               </div>
-              <div class="history-kpi-card history-kpi-card--danger filter-status-card" data-filter="CANCELLED" data-history-status="CANCELLED" role="button" tabindex="0" title="Klik untuk menyaring riwayat pesanan dibatalkan">
+              <div class="history-kpi-card history-kpi-card--danger">
                 <span class="history-kpi-label">Dibatalkan</span>
                 <strong class="history-kpi-value">4</strong>
               </div>
@@ -913,7 +911,7 @@
                   </tr>
                 </thead>
                 <tbody id="history-table-tbody">
-                  <tr class="history-table-row" data-status="COMPLETED">
+                  <tr>
                     <td><strong class="order-id">#ORD-034</strong></td>
                     <td><time datetime="2026-10-19T06:12:00+07:00">06:12 WIB</time></td>
                     <td>
@@ -930,7 +928,7 @@
                     <td><strong>Rp6.000</strong></td>
                     <td><span class="status-badge status-badge--ready">Selesai</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-034" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-034">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -940,7 +938,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr class="history-table-row" data-status="COMPLETED">
+                  <tr>
                     <td><strong class="order-id">#ORD-035</strong></td>
                     <td><time datetime="2026-10-19T06:28:00+07:00">06:28 WIB</time></td>
                     <td>
@@ -957,7 +955,7 @@
                     <td><strong>Rp9.000</strong></td>
                     <td><span class="status-badge status-badge--ready">Selesai</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-035" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-035">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -967,7 +965,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr class="history-table-row row-cancelled" data-status="CANCELLED">
+                  <tr class="row-cancelled">
                     <td><strong class="order-id">#ORD-036</strong></td>
                     <td><time datetime="2026-10-19T06:45:00+07:00">06:45 WIB</time></td>
                     <td>
@@ -984,7 +982,7 @@
                     <td><strong class="text-cancelled">Rp20.000</strong></td>
                     <td><span class="status-badge status-badge--cancelled">Dibatalkan</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-036" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-036">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -994,7 +992,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr class="history-table-row" data-status="COMPLETED">
+                  <tr>
                     <td><strong class="order-id">#ORD-037</strong></td>
                     <td><time datetime="2026-10-19T07:03:00+07:00">07:03 WIB</time></td>
                     <td>
@@ -1011,7 +1009,7 @@
                     <td><strong>Rp56.000</strong></td>
                     <td><span class="status-badge status-badge--ready">Selesai</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-037" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-037">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1021,7 +1019,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr class="history-table-row" data-status="COMPLETED">
+                  <tr>
                     <td><strong class="order-id">#ORD-038</strong></td>
                     <td><time datetime="2026-10-19T07:15:00+07:00">07:15 WIB</time></td>
                     <td>
@@ -1038,7 +1036,7 @@
                     <td><strong>Rp3.000</strong></td>
                     <td><span class="status-badge status-badge--ready">Selesai</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-038" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-038">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1048,7 +1046,7 @@
                       </button>
                     </td>
                   </tr>
-                  <tr class="history-table-row" data-status="COMPLETED">
+                  <tr>
                     <td><strong class="order-id">#ORD-039</strong></td>
                     <td><time datetime="2026-10-19T07:22:00+07:00">07:22 WIB</time></td>
                     <td>
@@ -1065,7 +1063,7 @@
                     <td><strong>Rp27.000</strong></td>
                     <td><span class="status-badge status-badge--ready">Selesai</span></td>
                     <td>
-                      <button type="button" class="btn-action-icon btn-view-receipt" data-id="ORD-039" title="Lihat detail pesanan"
+                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
                         aria-label="Detail #ORD-039">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1491,7 +1489,7 @@
       <footer class="console-site-footer">
         <p>
           <small>
-            PrintShop POS Konsol Operator &bull; Data diperbarui secara real-time &bull; Gerai Kampus Utama
+            PrintShop POS Konsol Operator | Data diperbarui secara real-time | Gerai Kampus Utama
           </small>
         </p>
       </footer>
@@ -1613,11 +1611,72 @@
       display: flex !important;
       flex-direction: column !important;
     }
+    .console-sidebar {
+      height: 100vh !important;
+      position: sticky !important;
+      top: 0 !important;
+      overflow-y: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      flex-shrink: 0 !important;
+    }
+    .console-sidebar-header {
+      padding: 18px 20px !important;
+      border-bottom: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    .console-user-footer {
+      margin-top: auto !important;
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 10 !important;
+    }
     .console-content {
       flex: 0 0 auto !important;
       height: auto !important;
       min-height: 0 !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      padding: 18px 24px 36px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-content > section,
+    .console-content > .console-card,
+    .console-content > .stats-card-row,
+    .console-content > .console-page-head,
+    .console-card,
+    .stat-card,
+    .stats-card-row {
       margin-bottom: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-card {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 18px 22px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+    }
+    .console-card .console-card-header {
+      padding: 0 0 12px 0 !important;
+      margin-bottom: 14px !important;
+      border-bottom: 1px solid #E4F5D4 !important;
+    }
+    .console-card-header h2,
+    .console-card-header h3 {
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: #152B11 !important;
+      margin: 0 !important;
     }
     .audit-footer-note {
       margin-top: 16px !important;
@@ -1631,23 +1690,32 @@
 
     /* Stat Cards Row */
     .stats-card-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      display: grid !important;
+      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      margin-bottom: 0 !important;
+      width: 100% !important;
+    }
+
+    @media (max-width: 1100px) {
+      .stats-card-row {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+      }
     }
 
     .stat-card {
-      background: #fff;
-      border: 1px solid var(--border-color, #e5e7eb);
-      border-radius: 12px;
-      padding: 20px;
-      transition: box-shadow 0.2s ease, transform 0.15s ease;
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 16px 18px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+      transition: box-shadow 0.2s ease, transform 0.15s ease !important;
     }
 
     .stat-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(67, 142, 56, 0.12) !important;
+      transform: translateY(-2px) !important;
     }
 
     .stat-card-body {
@@ -1672,10 +1740,10 @@
     }
 
     .stat-card-value {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: #111827;
+      font-size: 26px !important;
+      font-weight: 800 !important;
+      line-height: 1.1 !important;
+      color: #152B11 !important;
     }
 
     .stat-card-value--warning {
@@ -1701,13 +1769,13 @@
     }
 
     .stat-card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 10px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
     }
 
     .stat-card-icon--primary {
@@ -2036,6 +2104,18 @@
       gap: 16px !important;
     }
 
+    @media (max-width: 1024px) and (min-width: 641px) {
+      .legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .legend-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
     .legend-item {
       display: flex;
       align-items: center;
@@ -2251,7 +2331,7 @@
       }
 
       .legend-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-columns: 1fr;
       }
 
       .console-header-user-chip {
@@ -2265,9 +2345,6 @@
     }
 
     @media (max-width: 480px) {
-      .legend-grid {
-        grid-template-columns: 1fr !important;
-      }
       .stats-card-row {
         grid-template-columns: 1fr;
       }
@@ -2412,6 +2489,16 @@
     .status-badge--cancelled {
       background: #fee2e2;
       color: #991b1b;
+    }
+
+    .console-table th,
+    .console-table td {
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+    }
+    .console-table thead th {
+      padding: 10px 14px !important;
+      font-size: 11px !important;
     }
 
     .console-table tfoot tr {
@@ -2941,97 +3028,12 @@
       }
     }
 
-    .modal-header,
-    .receipt-modal-header,
-    .detail-modal-header {
+    .modal-header {
       display: flex;
       align-items: flex-start;
       gap: 14px;
       padding: 22px 24px 18px;
-      background-color: #1F3D17 !important;
-      background: #1F3D17 !important;
-      color: #FFFFFF !important;
-      border-bottom: 1px solid #438E38 !important;
-    }
-
-    .modal-header h2,
-    .modal-header h3,
-    .modal-header span,
-    .modal-header strong,
-    .modal-header .modal-title,
-    .receipt-modal-header h3,
-    .detail-modal-header h3 {
-      color: #FFFFFF !important;
-    }
-
-    .modal-header .modal-subtitle,
-    .receipt-modal-header span,
-    .detail-modal-header span {
-      color: #E4F5D4 !important;
-    }
-
-    .modal-close-btn,
-    #btn-close-receipt {
-      color: #FFFFFF !important;
-    }
-
-    .modal-close-btn svg {
-      stroke: #FFFFFF !important;
-    }
-
-    /* Tombol konfirmasi tutup/cetak dalam modal */
-    .modal-btn-primary,
-    .btn-modal-action {
-      background-color: #438E38 !important;
-      background: #438E38 !important;
-      color: #FFFFFF !important;
-      border: 1.5px solid #326B25 !important;
-    }
-
-    .modal-btn-primary:hover,
-    .btn-modal-action:hover {
-      background-color: #326B25 !important;
-    }
-
-    /* History KPI Card Filter Styles */
-    .history-kpi-card[data-filter],
-    .history-kpi-card[data-history-status],
-    .filter-status-card {
-      cursor: pointer !important;
-      user-select: none !important;
-      transition: all 0.2s ease !important;
-      border: 1.5px solid transparent !important;
-    }
-
-    .history-kpi-card[data-filter]:hover,
-    .history-kpi-card[data-history-status]:hover,
-    .filter-status-card:hover {
-      transform: translateY(-2px) !important;
-      box-shadow: 0 4px 12px rgba(67, 142, 56, 0.15) !important;
-    }
-
-    .history-kpi-card[data-filter="ALL"].active,
-    .history-kpi-card[data-history-status="ALL"].active,
-    .history-kpi-card.active:not(.history-kpi-card--danger):not(.history-kpi-card--success) {
-      border-color: #438E38 !important;
-      background-color: #E4F5D4 !important;
-      box-shadow: 0 0 0 2px rgba(67, 142, 56, 0.25) !important;
-    }
-
-    .history-kpi-card--success.active,
-    .history-kpi-card[data-filter="COMPLETED"].active,
-    .history-kpi-card[data-history-status="COMPLETED"].active {
-      border-color: #438E38 !important;
-      background-color: #E4F5D4 !important;
-      box-shadow: 0 0 0 2px rgba(67, 142, 56, 0.25) !important;
-    }
-
-    .history-kpi-card--danger.active,
-    .history-kpi-card[data-filter="CANCELLED"].active,
-    .history-kpi-card[data-history-status="CANCELLED"].active {
-      border-color: #dc2626 !important;
-      background-color: #fee2e2 !important;
-      box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25) !important;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
     }
 
     .modal-icon {
@@ -3255,33 +3257,6 @@
             b.classList.remove('active');
           });
           this.classList.add('active');
-        });
-      });
-
-      // ── 7b. Riwayat status KPI card filter ────────────────────────
-      document.querySelectorAll('.filter-status-card, .history-kpi-card[data-filter], .history-kpi-card[data-history-status]').forEach(function (card) {
-        card.addEventListener('click', function () {
-          const filter = (this.getAttribute('data-filter') || this.getAttribute('data-history-status') || 'ALL').toUpperCase();
-          document.querySelectorAll('.filter-status-card, .history-kpi-card[data-filter], .history-kpi-card[data-history-status]').forEach(function (c) {
-            c.classList.remove('active');
-          });
-          this.classList.add('active');
-
-          if (typeof window.setHistoryStatusFilter === 'function') {
-            window.setHistoryStatusFilter(filter);
-          } else {
-            const rows = document.querySelectorAll('#history-table-tbody tr.history-table-row, #history-table-tbody tr');
-            rows.forEach(function (row) {
-              const status = (row.getAttribute('data-status') || '').toUpperCase();
-              if (filter === 'ALL') {
-                row.style.display = '';
-              } else if (filter === 'COMPLETED') {
-                row.style.display = (status === 'COMPLETED' || status.includes('READY') || status.includes('SELESAI')) ? '' : 'none';
-              } else if (filter === 'CANCELLED') {
-                row.style.display = (status === 'CANCELLED' || status.includes('BATAL') || row.classList.contains('row-cancelled')) ? '' : 'none';
-              }
-            });
-          }
         });
       });
 

@@ -9,7 +9,7 @@
   <script src="./assets/js/clarity.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
+  <link rel="stylesheet" href="./assets/css/global.css" />
 </head>
 
 <body class="login-body">
@@ -267,7 +267,7 @@
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <span>Akses khusus pegawai Express Print | Enkripsi TLS 256-bit</span>
+          <span>Akses khusus pegawai Express Print &bull; Enkripsi TLS 256-bit</span>
         </div>
       </main>
 
@@ -283,22 +283,12 @@
   <script src="./assets/js/api.js"></script>
   <script>
     // Interaktivitas Login: Toggle PIN & Validasi Sesuai PRD Modul 7
-    // =========================================================================
-    // TESTING & DEMO MODE SWITCH FLAG (Instruksi Tim & Topan)
-    // Set to `true`: Testing mode aktif. Memperbolehkan bypass PIN 123456 untuk
-    // semua email tanpa pembatasan approval admin agar pengujian UI & Clarity lancar.
-    // Set to `false`: Demo mode aktif. Autentikasi ketat via database & sesi terisolasi.
-    // =========================================================================
-    const IS_TESTING_MODE = true;
-    window.IS_TESTING_MODE = IS_TESTING_MODE;
-
     document.addEventListener('DOMContentLoaded', function () {
       // Clear any prior operator session so visiting protected pages requires login
       try {
         localStorage.removeItem('printshop_operator');
         localStorage.removeItem('printshop_auth_token');
         localStorage.removeItem('printshop_session_expiry');
-        localStorage.removeItem('printshop_active_station');
       } catch (e) {}
 
       const pinInput = document.getElementById('pin-operator');
@@ -352,33 +342,6 @@
 
       // 5. Validasi Login Form
       let attempts = 0;
-
-      function grantSession(operatorData) {
-        const op = operatorData || {
-          id: 'OP-01',
-          name: emailInput.value.trim().split('@')[0] ? (emailInput.value.trim().split('@')[0].charAt(0).toUpperCase() + emailInput.value.trim().split('@')[0].slice(1)) : 'Ahmad Hidayat',
-          email: emailInput.value.trim() || 'operator@printshop.com',
-          role: 'admin',
-          loket_id: 'LOKET-1',
-          station_id: 'LOKET-1',
-          station_name: 'Loket 1 (Kasir Utama)'
-        };
-        try {
-          localStorage.setItem('printshop_operator', JSON.stringify(op));
-          localStorage.setItem('printshop_auth_token', 'token_auth_' + Date.now());
-          localStorage.setItem('printshop_session_expiry', String(Date.now() + 8 * 60 * 60 * 1000));
-          localStorage.setItem('printshop_active_station', op.station_id || op.loket_id || 'LOKET-1');
-        } catch (e) {}
-
-        alertContainer.style.display = 'block';
-        alertBox.className = 'login-alert-box alert-success';
-        alertBox.querySelector('h3').textContent = 'Login Berhasil';
-        alertDesc.innerHTML = `Selamat datang, <strong>${op.name || 'Operator'}</strong>! Mengarahkan ke Dasbor...`;
-        setTimeout(function () {
-          window.location.href = 'dasbor.html';
-        }, 500);
-      }
-
       formLogin.addEventListener('submit', function (e) {
         e.preventDefault();
         const email = emailInput.value.trim();
@@ -396,31 +359,16 @@
           return;
         }
 
-        // Mode Testing: Bypass instan dengan PIN 123456 (atau 654321) agar testing lancar
-        if (IS_TESTING_MODE && (pin === '123456' || pin === '654321')) {
-          const isSiti = email.toLowerCase().includes('siti');
-          grantSession({
-            id: isSiti ? 'OP-02' : 'OP-01',
-            name: isSiti ? 'Siti Rahma' : (email.toLowerCase().includes('ahmad') ? 'Ahmad Hidayat' : (email.split('@')[0] || 'Operator Kasir')),
-            email: email,
-            role: isSiti ? 'operator' : 'admin',
-            loket_id: isSiti ? 'LOKET-2' : 'LOKET-1',
-            station_id: isSiti ? 'LOKET-2' : 'LOKET-1',
-            station_name: isSiti ? 'Loket 2 (Operator Mesin)' : 'Loket 1 (Kasir Utama)'
-          });
-          return;
-        }
-
-        // Standard Database API Authentication
-        if (window.PrintShopAPI && typeof window.PrintShopAPI.loginOperator === 'function') {
+        if (window.PrintShopAPI) {
           window.PrintShopAPI.loginOperator(email, pin).then(function (res) {
-            grantSession(res.operator);
+            alertContainer.style.display = 'block';
+            alertBox.className = 'login-alert-box alert-success';
+            alertBox.querySelector('h3').textContent = 'Login Berhasil';
+            alertDesc.innerHTML = `Selamat datang, <strong>${res.operator?.name || 'Operator'}</strong>! Mengarahkan ke Dasbor...`;
+            setTimeout(function () {
+              window.location.href = 'dasbor.html';
+            }, 600);
           }).catch(function (err) {
-            if (IS_TESTING_MODE) {
-              console.warn('[Mode Testing] Bypass kegagalan backend API:', err.message);
-              grantSession();
-              return;
-            }
             attempts++;
             const remaining = 5 - attempts;
             if (remaining > 0) {
@@ -431,11 +379,7 @@
             }
           });
         } else {
-          if (IS_TESTING_MODE) {
-            grantSession();
-          } else {
-            showAlert('Layanan autentikasi database sedang tidak tersedia.', true);
-          }
+          window.location.href = 'dasbor.html';
         }
       });
 

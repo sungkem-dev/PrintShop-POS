@@ -7,35 +7,8 @@
   <title>Dasbor Operator - PrintShop POS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev26" />
   <style>
-    .console-sidebar {
-      width: 270px !important;
-      background: #ffffff !important;
-      border-right: 1.5px solid #CEE9BA !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: space-between !important;
-      flex-shrink: 0 !important;
-      position: sticky !important;
-      top: 0 !important;
-      height: 100vh !important;
-      max-height: 100vh !important;
-      overflow-y: auto !important;
-      z-index: 40 !important;
-      box-sizing: border-box !important;
-    }
-    .console-user-footer {
-      margin-top: auto !important;
-      position: relative !important;
-      bottom: auto !important;
-      background: #F8FAF6 !important;
-      border-top: 1.5px solid #CEE9BA !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-      flex-shrink: 0 !important;
-    }
-
     .console-container {
       display: flex !important;
       min-height: 100vh !important;
@@ -53,7 +26,107 @@
       flex: 0 0 auto !important;
       height: auto !important;
       min-height: 0 !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      padding: 18px 24px 36px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-content > section,
+    .console-content > .console-card,
+    .console-content > .stats-card-row,
+    .console-content > .console-page-head,
+    .console-card,
+    .kpi-metric-card,
+    .audit-reconcile-card,
+    .analytics-two-col-grid {
       margin-bottom: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-card {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 18px 22px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+    }
+    .console-card .console-card-header {
+      padding: 0 0 12px 0 !important;
+      margin-bottom: 14px !important;
+      border-bottom: 1px solid #E4F5D4 !important;
+    }
+    .console-card-header h2,
+    .console-card-header h3 {
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: #152B11 !important;
+      margin: 0 !important;
+    }
+    .kpi-summary-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 14px !important;
+      width: 100% !important;
+    }
+    @media (max-width: 1024px) {
+      .kpi-summary-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .kpi-summary-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    .kpi-metric-card {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 16px 20px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+    }
+    .kpi-card-top {
+      margin-bottom: 8px !important;
+    }
+    .kpi-card-title {
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+    }
+    .kpi-metric-value {
+      font-size: 24px !important;
+      font-weight: 800 !important;
+      margin-bottom: 4px !important;
+    }
+    .kpi-card-sub {
+      font-size: 11.5px !important;
+      margin-top: 4px !important;
+    }
+    .audit-reconcile-card {
+      padding: 14px 20px !important;
+      border-radius: 14px !important;
+      margin-bottom: 0 !important;
+      width: 100% !important;
+    }
+    .analytics-two-col-grid {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr !important;
+      gap: 16px !important;
+      width: 100% !important;
+    }
+    @media (max-width: 960px) {
+      .analytics-two-col-grid {
+        grid-template-columns: 1fr !important;
+      }
     }
     .quick-actions-grid,
     .quick-actions-section {
@@ -97,6 +170,51 @@
     .quick-action-text span {
       font-size: 12.5px !important;
       color: #35522B !important;
+    }
+   /* Header Actions 1 Baris Horizontal */
+    .console-page-head {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: nowrap !important;
+      gap: 16px !important;
+    }
+    .console-head-actions {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex-shrink: 0 !important;
+    }
+    .console-head-actions .date-filter-btn-group,
+    .console-head-actions .btn-export-outline,
+    .console-head-actions .btn-console-queue {
+      flex-shrink: 0 !important;
+      white-space: nowrap !important;
+    }
+    /* Sidebar Sticky Flex-Start */
+    .console-sidebar {
+      height: 100vh !important;
+      position: sticky !important;
+      top: 0 !important;
+      overflow-y: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      flex-shrink: 0 !important;
+    }
+    .console-sidebar-header {
+      padding: 18px 20px !important;
+      border-bottom: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    .console-user-footer {
+      margin-top: auto !important;
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 10 !important;
     }
   </style>
   <script src="./assets/js/auth-guard.js"></script>
@@ -296,7 +414,7 @@
             <p id="dasbor-operator-session-info">Operator: <strong>Ahmad Hidayat</strong> | Sesi Aktif: Loket A1 (Shift Pagi)</p>
           </div>
 
-          <div class="console-head-actions">
+          <div class="console-head-actions" style="display: flex !important; flex-wrap: nowrap !important; align-items: center !important; gap: 8px !important;">
             <div class="date-filter-btn-group" role="group" aria-label="Filter cepat rentang waktu">
               <button type="button" class="date-filter-btn active">Hari Ini</button>
               <button type="button" class="date-filter-btn">Kemarin</button>
@@ -344,7 +462,7 @@
                 <span class="badge-discrepancy">ZERO DISCREPANCY</span>
               </h3>
               <p>
-                Audit Realtime Spooler &amp; Bank Gateway: 100% Cocok &bull; Selisih Kas: <strong>Rp0</strong>. Sebanyak <strong id="audit-lembar-count">0 halaman</strong> tercetak hari ini sesuai dengan transaksi lunas terbitan loket.
+                Audit Realtime Spooler &amp; Bank Gateway: 100% Cocok | Selisih Kas: <strong>Rp0</strong>. Sebanyak <strong id="audit-lembar-count">0 halaman</strong> tercetak hari ini sesuai dengan transaksi lunas terbitan loket.
               </p>
             </div>
           </div>

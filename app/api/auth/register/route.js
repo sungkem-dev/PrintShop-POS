@@ -39,7 +39,7 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Pendaftaran akun berhasil diajukan. Akun baru memerlukan verifikasi dan persetujuan dari Administrator sebelum dapat digunakan untuk login.',
+      message: 'Operator / Admin baru berhasil didaftarkan ke sistem',
       operator: newOperator
     });
   } catch (err) {

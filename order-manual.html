@@ -306,10 +306,60 @@
     .pos-btn-secondary:hover {
       background: #ecfdf5;
     }
+   /* Clean, Compact POS Main Area & Grid Padding */
+    .console-container {
+      display: flex !important;
+      min-height: 100vh !important;
+      height: auto !important;
+      align-items: flex-start !important;
+    }
+    .console-main-area {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .console-content {
+      padding: 18px 24px 36px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      gap: 12px !important;
+      flex: 0 0 auto !important;
+    }
+    .console-page-head {
+      margin-bottom: 14px !important;
+    }
+    /* Sidebar Sticky Flex-Start */
+    .console-sidebar {
+      height: 100vh !important;
+      position: sticky !important;
+      top: 0 !important;
+      overflow-y: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      flex-shrink: 0 !important;
+    }
+    .console-sidebar-header {
+      padding: 18px 20px !important;
+      border-bottom: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    .console-user-footer {
+      margin-top: auto !important;
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 10 !important;
+    }
   </style>
 </head>
 
-<body class="console-body">
+<body class="console-body page-order-manual">
 
   <div class="console-container">
 
