@@ -55,17 +55,7 @@
               return;
             }
           }
-          // Default fallback
-          if (pin === '123456') {
-            localStorage.setItem('printshop_operator', JSON.stringify({
-              name: 'Ahmad Hidayat',
-              email: email,
-              role: 'Kasir Loket A1'
-            }));
-            window.location.href = 'dasbor.html';
-            return;
-          }
-          alert('PIN salah atau tidak terdaftar. Coba PIN default: 123456');
+          alert('Gagal memverifikasi akun. Pastikan koneksi ke server dan database aktif.');
         } catch (err) {
           alert(err.message || 'Login gagal. Periksa kembali email dan PIN.');
         } finally {

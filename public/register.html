@@ -5,13 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrasi Operator &amp; Admin - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
   <meta name="description"
     content="Pendaftaran akun operator dan administrator baru untuk sistem terminal kasir PrintShop POS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev19" />
   <style>
     /* Styling select dropdown agar serasi dengan input login */
     .login-select {
@@ -308,6 +306,7 @@
           <ul>
             <li>Gunakan alamat email dinas yang aktif untuk menerima notifikasi sistem.</li>
             <li>PIN 6 digit angka digunakan untuk otorisasi cepat cetak &amp; transaksi kasir.</li>
+            <li><strong>Verifikasi Admin:</strong> Setiap akun baru berstatus <em>Menunggu Persetujuan</em> dan wajib diverifikasi oleh Administrator sebelum dapat digunakan untuk masuk ke konsol.</li>
             <li>Akun Administrator memiliki hak istimewa untuk persetujuan refund pelanggan.</li>
             <li>Semua aktivitas operasional akan tercatat otomatis pada sistem audit log.</li>
           </ul>
@@ -318,7 +317,7 @@
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <span>Pendaftaran Akun Khusus Pegawai Express Print &bull; Enkripsi TLS 256-bit</span>
+          <span>Pendaftaran Akun Khusus Pegawai Express Print |Enkripsi TLS 256-bit</span>
         </div>
       </main>
 
@@ -419,15 +418,15 @@
           if (window.PrintShopAPI && window.PrintShopAPI.registerAdmin) {
             const res = await window.PrintShopAPI.registerAdmin({ name, email, pin, role });
             const roleName = role === 'admin' ? 'Administrator' : (role === 'cashier' ? 'Kasir' : 'Operator');
-            showAlert(`Akun <strong>${res.operator?.name || name}</strong> (${roleName}) berhasil didaftarkan! Mengarahkan ke halaman login...`, false, 'Registrasi Berhasil');
+            showAlert(`Pendaftaran akun <strong>${res.operator?.name || name}</strong> (${roleName}) berhasil diajukan!<br/><br/><strong>Status: Menunggu Persetujuan Admin</strong><br/>Akun Anda sedang menunggu verifikasi dari Administrator sebelum dapat digunakan untuk login.`, false, 'Pendaftaran Berhasil Diajukan');
           } else {
-            showAlert(`Akun <strong>${name}</strong> berhasil didaftarkan! Mengarahkan ke halaman login...`, false, 'Registrasi Berhasil');
+            showAlert(`Pendaftaran akun <strong>${name}</strong> berhasil diajukan! Akun memerlukan verifikasi dan persetujuan Administrator sebelum dapat login.`, false, 'Pendaftaran Berhasil Diajukan');
           }
 
           form.reset();
           setTimeout(function () {
             window.location.href = 'login.html';
-          }, 1800);
+          }, 3500);
         } catch (err) {
           showAlert(err.message || 'Gagal mendaftarkan akun baru. Silakan coba lagi.', true);
           submitBtn.disabled = false;

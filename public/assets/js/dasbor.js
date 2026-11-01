@@ -371,15 +371,20 @@
       return;
     }
 
-    // 2. Set Operator Info
+    // 2. Set Operator Info & Isolated Station
     const userNameEl = document.querySelector('.console-user-name');
     const userRoleEl = document.querySelector('.console-user-role');
     const userAvatarEl = document.querySelector('.console-user-avatar');
+    const sessionInfoEl = document.getElementById('dasbor-operator-session-info');
 
+    const stationLabel = session.station_name || session.loket_id || 'Loket 1';
     if (userNameEl) userNameEl.textContent = session.name || 'Ahmad Hidayat';
-    if (userRoleEl) userRoleEl.innerHTML = `${session.role || 'Kasir Loket A1'} &bull; Online`;
+    if (userRoleEl) userRoleEl.innerHTML = `${stationLabel} | Online`;
     if (userAvatarEl && session.name) {
       userAvatarEl.textContent = session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    }
+    if (sessionInfoEl) {
+      sessionInfoEl.innerHTML = `Operator: <strong>${session.name || 'Operator'}</strong> &bull; Sesi Aktif: <strong>${stationLabel}</strong>`;
     }
 
     // Logout handler

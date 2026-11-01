@@ -11,7 +11,7 @@
     content="Konsol kasir operator PrintShop POS untuk input pesanan cetak manual pelanggan walk-in di meja kasir." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
   <script src="./assets/js/auth-guard.js"></script>
   <style>
     /* Dedicated POS Cashier Styles */
@@ -139,10 +139,10 @@
     }
 
     .pill-radio-card input:checked + .pill-radio-label {
-      border-color: #2563eb;
-      background: #eff6ff;
-      color: #1d4ed8;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      border-color: #438E38;
+      background: #E4F5D4;
+      color: #152B11;
+      box-shadow: 0 0 0 2px rgba(67, 142, 56, 0.22);
     }
 
     /* Sticky Receipt Summary */
@@ -151,13 +151,14 @@
       top: 24px;
       background: #ffffff;
       border-radius: 16px;
-      border: 1px solid #cbd5e1;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid #CEE9BA;
+      box-shadow: 0 10px 25px -5px rgba(21, 43, 17, 0.08);
       overflow: hidden;
     }
 
     .receipt-header {
-      background: #1e293b;
+      background: #244A1B;
+      border-bottom: 1px solid #438E38;
       color: #ffffff;
       padding: 20px 22px;
     }
@@ -166,12 +167,13 @@
       margin: 0 0 4px 0;
       font-size: 16px;
       font-weight: 800;
+      color: #ffffff !important;
     }
 
     .receipt-header p {
       margin: 0;
       font-size: 12px;
-      color: #94a3b8;
+      color: #D2F2BA !important;
     }
 
     .receipt-body {
@@ -316,8 +318,7 @@
 
     <!-- Sidebar Konsol Operator -->
     <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
-      <div>
-        <div class="console-sidebar-header">
+      <div class="console-sidebar-header">
           <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
             <span class="brand-icon-box">
               <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
@@ -434,14 +435,13 @@
             </li>
           </ul>
         </nav>
-      </div>
 
       <div class="console-user-footer">
         <div class="console-user-card">
           <div class="console-user-avatar" aria-hidden="true">AH</div>
           <div class="console-user-info">
             <div class="console-user-name">Ahmad Hidayat</div>
-            <div class="console-user-role">Kasir Loket A1 &bull; Mandiri</div>
+            <div class="console-user-role">Kasir Loket A1 | Mandiri</div>
           </div>
           <a href="login.html" class="console-logout-btn" title="Logout dari Konsol" aria-label="Logout dari Konsol">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -746,7 +746,7 @@
                   </div>
                   <div class="receipt-line">
                     <span>Format Kertas:</span>
-                    <span id="summary-format">A4 &bull; B/W</span>
+                    <span id="summary-format">A4 | B/W</span>
                   </div>
                   <div class="receipt-line">
                     <span>Volume Cetak:</span>
@@ -805,18 +805,25 @@
 
       </main>
 
-      <!-- Footer Konsol -->
-      <footer class="console-site-footer">
-        <p>
-          <small>
-            PrintShop POS Konsol Kasir Operator &bull; Kampus Gedung A (Lt. 1)
-          </small>
-        </p>
-      </footer>
+      <!-- Catatan Footer Audit Hash (Paling Bawah setelah Penutup Kartu Terakhir) -->
+     <div id="audit-hash-note" class="audit-footer-note">
+       <div class="audit-footer-left">
+         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+         </svg>
+         <span>Semua data tercatat secara permanen di basis data PostgreSQL POS Central untuk kepatuhan audit kasir.</span>
+       </div>
+       <div class="audit-footer-right">
+         <span>Hash Audit: <strong>#SHA-256</strong></span>
+         <span>ID Sesi Kasir: <strong>REG-01-SHIFT1</strong></span>
+       </div>
+     </div>
 
-    </div>
-
-  </div>
+     <!-- Footer Konsol Operator -->
+     <footer class="console-site-footer">
+       <p><small>PrintShop POS Konsol Operator | Data diperbarui secara real-time | Gerai Kampus Utama</small></p>
+     </footer>
 
   <!-- Modal Sukses Struk Pesanan Manual -->
   <div id="modal-order-success" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; z-index:99999; padding:20px;">

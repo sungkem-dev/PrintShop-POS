@@ -5,15 +5,104 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dasbor Operator - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
+  <style>
+    .console-sidebar {
+      width: 270px !important;
+      background: #ffffff !important;
+      border-right: 1.5px solid #CEE9BA !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      flex-shrink: 0 !important;
+      position: sticky !important;
+      top: 0 !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      overflow-y: auto !important;
+      z-index: 40 !important;
+      box-sizing: border-box !important;
+    }
+    .console-user-footer {
+      margin-top: auto !important;
+      position: relative !important;
+      bottom: auto !important;
+      background: #F8FAF6 !important;
+      border-top: 1.5px solid #CEE9BA !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+
+    .console-container {
+      display: flex !important;
+      min-height: 100vh !important;
+      height: auto !important;
+      align-items: flex-start !important;
+    }
+    .console-main-area {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .console-content {
+      flex: 0 0 auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .quick-actions-grid,
+    .quick-actions-section {
+      margin-bottom: 40px !important; 
+    }
+
+    .audit-footer-note {
+      margin-top: 24px !important;
+      margin-bottom: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    .console-site-footer {
+      margin-top: 0 !important;
+      padding: 14px 24px !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* 1. Berikan margin-bottom yang pas pada judul Aksi Cepat agar ada space balance */
+    .quick-actions-section h2,
+    .quick-actions-title,
+    h2:has(+ .quick-actions-grid),
+    #aksi-cepat-heading {
+      font-size: clamp(20px, 2.5vw, 24px) !important;
+      font-weight: 800 !important;
+      color: #152B11 !important;
+      margin-top: 36px !important;
+      margin-bottom: 16px !important; 
+    }
+
+    /* 2. Sesuaikan ukuran font di dalam kartu Aksi Cepat agar setara dengan Status Printer */
+    .quick-action-card strong,
+    .quick-action-card .action-title,
+    .quick-action-text strong {
+      font-size: 14.5px !important;
+      font-weight: 700 !important;
+      color: #152B11 !important;
+    }
+
+    .quick-action-card span,
+    .quick-action-card .action-sub,
+    .quick-action-text span {
+      font-size: 12.5px !important;
+      color: #35522B !important;
+    }
+  </style>
   <script src="./assets/js/auth-guard.js"></script>
 </head>
 
-<body class="console-body">
+<body class="console-body page-dasbor">
 
   <div class="console-container">
 
@@ -22,8 +111,7 @@
 
     <!-- Sidebar Konsol Operator (Referensi Kelompok2_modul5/images/image1.png & image5.png) -->
     <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
-      <div>
-        <div class="console-sidebar-header">
+      <div class="console-sidebar-header">
           <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
             <span class="brand-icon-box">
               <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
@@ -135,14 +223,13 @@
             </li>
           </ul>
         </nav>
-      </div>
 
       <div class="console-user-footer">
         <div class="console-user-card">
           <div class="console-user-avatar" aria-hidden="true">AH</div>
           <div class="console-user-info">
             <div class="console-user-name">Ahmad Hidayat</div>
-            <div class="console-user-role">Kasir Loket A1 &bull; Mandiri</div>
+            <div class="console-user-role">Kasir Loket A1 | Mandiri</div>
           </div>
           <a href="login.html" class="console-logout-btn" title="Logout dari Konsol" aria-label="Logout dari Konsol">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -206,7 +293,7 @@
         <div class="console-page-head">
           <div class="console-title-group">
             <h1>Dasbor &amp; Laporan Keuangan</h1>
-            <p>Operator: <strong>Ahmad Hidayat</strong> &bull; Sesi Aktif: Loket A1 (Shift Pagi)</p>
+            <p id="dasbor-operator-session-info">Operator: <strong>Ahmad Hidayat</strong> | Sesi Aktif: Loket A1 (Shift Pagi)</p>
           </div>
 
           <div class="console-head-actions">
@@ -458,10 +545,10 @@
         <section aria-labelledby="status-printer-heading" style="margin-bottom: 32px;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
             <div>
-              <h2 id="status-printer-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 2px;">
+              <h2 id="status-printer-heading" class="console-section-title">
                 Status Printer &amp; Hardware
               </h2>
-              <p style="font-size: 13px; color: var(--muted); margin: 0;">Status kondisi fisik printer dan ketersediaan baki kertas saat ini</p>
+              <p class="console-section-sub" style="margin: 0;">Status kondisi fisik printer dan ketersediaan baki kertas saat ini</p>
             </div>
             <a href="antrean.html" class="btn-export-outline" style="font-size: 12.5px; padding: 6px 14px;">
               Buka Konsol Spooler &rarr;
@@ -506,29 +593,29 @@
               <div>
                 <div class="printer-card-top">
                   <h3 class="printer-name">Printer 2 &ndash; Epson L3150</h3>
-                  <span class="printer-status-chip warning">
-                    <img src="./assets/images/status-warning.svg" alt="" width="14" height="14" />
-                    Kertas Hampir Habis
+                  <span class="printer-status-chip">
+                    <img src="./assets/images/status-ready.svg" alt="" width="14" height="14" />
+                    Kertas Terisi Normal
                   </span>
                 </div>
 
                 <div class="printer-meter-wrap">
                   <div class="printer-meter-label">
                     <span>Level Kertas Baki 1:</span>
-                    <strong style="color: #b45309;">Rendah (45/500 lbr)</strong>
+                    <strong>Tersedia (450/500 lbr)</strong>
                   </div>
-                  <div class="progress-track" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill c-amber" style="width: 9%;"></div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill" style="width: 90%;"></div>
                   </div>
                 </div>
 
                 <div class="printer-task-row">
-                  <span>Tugas Aktif: <strong>Idle (Menunggu)</strong></span>
+                  <span>Tugas Aktif: <strong>Standby (Siap Cetak)</strong></span>
                 </div>
               </div>
 
-              <a href="antrean.html" class="btn-printer-manage" style="background: #fffbeb; color: #92400e; border-color: #fde68a;">
-                <span>Isi Ulang Kertas</span>
+              <a href="antrean.html" class="btn-printer-manage">
+                <span>Kelola Antrean</span>
                 &rarr;
               </a>
             </article>
@@ -538,29 +625,29 @@
               <div>
                 <div class="printer-card-top">
                   <h3 class="printer-name">Printer 3 &ndash; Canon iP2870</h3>
-                  <span class="printer-status-chip error">
-                    <img src="./assets/images/status-error.svg" alt="" width="14" height="14" />
-                    Error / Macet
+                  <span class="printer-status-chip">
+                    <img src="./assets/images/status-ready.svg" alt="" width="14" height="14" />
+                    Siap (Ready)
                   </span>
                 </div>
 
                 <div class="printer-meter-wrap">
                   <div class="printer-meter-label">
                     <span>Level Kertas Baki 1:</span>
-                    <strong style="color: #dc2626;">Tidak terdeteksi</strong>
+                    <strong>Penuh (500/500 lbr)</strong>
                   </div>
-                  <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill" style="width: 0%; background: #ef4444;"></div>
+                  <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill" style="width: 100%;"></div>
                   </div>
                 </div>
 
                 <div class="printer-task-row">
-                  <span>Tugas Aktif: <strong style="color: #dc2626;">Dijeda (Paper Jam)</strong></span>
+                  <span>Tugas Aktif: <strong>Standby (Siap Cetak)</strong></span>
                 </div>
               </div>
 
-              <a href="antrean.html" class="btn-printer-manage" style="background: #fef2f2; color: #991b1b; border-color: #fecaca;">
-                <span>Reset &amp; Perbaiki</span>
+              <a href="antrean.html" class="btn-printer-manage">
+                <span>Kelola Antrean</span>
                 &rarr;
               </a>
             </article>
@@ -664,7 +751,7 @@
         </section>
 
         <!-- Section Pesanan & Transaksi Terbaru (Live Dynamic Sync) -->
-        <section aria-labelledby="recent-orders-heading" class="console-card" style="margin-bottom: 28px;">
+        <section aria-labelledby="recent-orders-heading" class="console-card">
           <div class="console-card-header">
             <div>
               <h2 id="recent-orders-heading" style="font-size: 16px; font-weight: 800; color: var(--ink); margin: 0;">
@@ -702,24 +789,24 @@
         </section>
 
         <!-- Aksi Cepat Konsol -->
-        <section aria-labelledby="aksi-cepat-heading" style="margin-bottom: 24px;">
-          <h2 id="aksi-cepat-heading" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 12px;">
+        <section aria-labelledby="aksi-cepat-heading" class="quick-actions-section" style="margin-bottom: 36px;">
+          <h2 id="aksi-cepat-heading" class="console-section-title quick-actions-title" style="margin-bottom: 16px;">
             Aksi Cepat
           </h2>
 
-          <div class="quick-actions-grid">
-            <a href="order-manual.html" class="quick-action-card" style="border-color: #bfdbfe; background: #eff6ff;">
-              <div class="quick-action-icon" style="background: #dbeafe; color: #1d4ed8;">
+          <div class="quick-actions-grid" style="margin-bottom: 36px;">
+            <a href="order-manual.html" class="quick-action-card">
+              <div class="quick-action-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong style="color: #1e40af;">Order Manual POS</strong>
-                <span style="color: #3b82f6;">Input tamu walk-in kasir</span>
+                <strong class="action-title">Order Manual POS</strong>
+                <span class="action-sub">Input tamu walk-in kasir</span>
               </div>
-              <span class="arrow-icon" style="color: #1d4ed8;">&rarr;</span>
+              <span class="arrow-icon">&rarr;</span>
             </a>
 
             <a href="antrean.html" class="quick-action-card">
@@ -734,24 +821,24 @@
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Antrean Aktif</strong>
-                <span>Pantau antrean cetak</span>
+                <strong class="action-title">Antrean Aktif</strong>
+                <span class="action-sub">Pantau antrean cetak</span>
               </div>
               <span class="arrow-icon">&rarr;</span>
             </a>
 
             <a href="antrean.html#riwayat" class="quick-action-card">
-              <div class="quick-action-icon" style="background: #ecfdf5; color: #059669;">
+              <div class="quick-action-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Riwayat Pesanan</strong>
-                <span>Pesanan yang telah diserahkan</span>
+                <strong class="action-title">Riwayat Pesanan</strong>
+                <span class="action-sub">Pesanan yang telah diserahkan</span>
               </div>
-              <span class="arrow-icon" style="color: #059669;">&rarr;</span>
+              <span class="arrow-icon">&rarr;</span>
             </a>
 
             <a href="#laporan" class="quick-action-card">
@@ -763,14 +850,14 @@
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Ekspor CSV</strong>
-                <span>Unduh laporan berkala</span>
+                <strong class="action-title">Ekspor CSV</strong>
+                <span class="action-sub">Unduh laporan berkala</span>
               </div>
               <span class="arrow-icon">&rarr;</span>
             </a>
 
-            <a href="login.html" class="quick-action-card" style="border-color: #fecaca;">
-              <div class="quick-action-icon" style="background: #fee2e2; color: #ef4444;">
+            <a href="login.html" class="quick-action-card">
+              <div class="quick-action-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                   <polyline points="16 17 21 12 16 7"></polyline>
@@ -778,21 +865,36 @@
                 </svg>
               </div>
               <div class="quick-action-text">
-                <strong>Logout Konsol</strong>
-                <span>Akhiri sesi aman</span>
+                <strong class="action-title">Logout Konsol</strong>
+                <span class="action-sub">Akhiri sesi aman</span>
               </div>
-              <span class="arrow-icon" style="color: #ef4444;">&rarr;</span>
+              <span class="arrow-icon">&rarr;</span>
             </a>
           </div>
         </section>
 
       </main>
 
+      <!-- Catatan Footer Audit Hash (Paling Bawah setelah Penutup Kartu Terakhir) -->
+      <div id="audit-hash-note" class="audit-footer-note">
+        <div class="audit-footer-left">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Semua data tercatat secara permanen di basis data PostgreSQL POS Central untuk kepatuhan audit kasir.</span>
+        </div>
+        <div class="audit-footer-right">
+          <span>Hash Audit: <strong>#SHA-256</strong></span>
+          <span>ID Sesi Kasir: <strong>REG-01-SHIFT1</strong></span>
+        </div>
+      </div>
+
       <!-- Footer Konsol -->
       <footer class="console-site-footer">
         <p>
           <small>
-            PrintShop POS Konsol Operator &bull; Data diperbarui secara real-time &bull; Gerai Kampus Utama
+            PrintShop POS Konsol Operator | Data diperbarui secara real-time | Gerai Kampus Utama
           </small>
         </p>
       </footer>

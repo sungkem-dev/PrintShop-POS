@@ -10,10 +10,20 @@
 ;(function () {
   'use strict';
 
+  // =========================================================================
+  // TESTING & DEMO MODE SWITCH FLAG
+  // Set to `true` during UI/UX testing & Clarity recording (allows PIN 123456 bypass,
+  // open testing, and auto-generates test session if opening protected pages directly).
+  // Set to `false` for strict production / lecturer demo mode (requires real DB verification).
+  // =========================================================================
+  var IS_TESTING_MODE = true;
+  window.IS_TESTING_MODE = IS_TESTING_MODE;
+
   // Session key constants
   var SESSION_KEY = 'printshop_operator';
   var SESSION_TOKEN_KEY = 'printshop_auth_token';
   var SESSION_EXPIRY_KEY = 'printshop_session_expiry';
+  var SESSION_STATION_KEY = 'printshop_active_station';
   var SESSION_DURATION_MS = 8 * 60 * 60 * 1000; // 8 hours
 
   // Current page detection (handles clean paths e.g. /dasbor as well as /dasbor.html)
@@ -35,6 +45,7 @@
   // If NOT a protected page (e.g. login.html, register.html, index.html), allow open access
   if (!isProtected) {
     window.__PrintShopAuth = {
+      IS_TESTING_MODE: IS_TESTING_MODE,
       getSession: function () {
         try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; }
       },
@@ -45,11 +56,16 @@
         var s = this.getSession();
         return s && s.role === 'admin';
       },
+      getStation: function () {
+        var s = this.getSession();
+        return localStorage.getItem(SESSION_STATION_KEY) || (s && (s.station_id || s.loket_id)) || 'LOKET-1';
+      },
       logout: function () {
         try {
           localStorage.removeItem(SESSION_KEY);
           localStorage.removeItem(SESSION_TOKEN_KEY);
           localStorage.removeItem(SESSION_EXPIRY_KEY);
+          localStorage.removeItem(SESSION_STATION_KEY);
         } catch (e) {}
         window.location.replace('login.html');
       }
@@ -97,6 +113,26 @@
     }
   }
 
+  // If in testing mode and not authenticated yet, automatically provide default test session
+  if (!isAuthenticated && IS_TESTING_MODE) {
+    currentOperator = {
+      id: 'OP-01',
+      name: 'Ahmad Hidayat',
+      email: 'operator@printshop.com',
+      role: 'admin',
+      loket_id: 'LOKET-1',
+      station_id: 'LOKET-1',
+      station_name: 'Loket 1 (Kasir Utama)'
+    };
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(currentOperator));
+      localStorage.setItem(SESSION_TOKEN_KEY, 'auth_test_' + Date.now());
+      localStorage.setItem(SESSION_EXPIRY_KEY, String(Date.now() + SESSION_DURATION_MS));
+      localStorage.setItem(SESSION_STATION_KEY, 'LOKET-1');
+      isAuthenticated = true;
+    } catch (e) {}
+  }
+
   // Not authenticated on a protected page -> Redirect to login immediately!
   if (!isAuthenticated) {
     // Prevent flash of protected UI
@@ -118,6 +154,7 @@
 
   // Helper on protected pages
   window.__PrintShopAuth = {
+    IS_TESTING_MODE: IS_TESTING_MODE,
     getSession: function () {
       try {
         return JSON.parse(localStorage.getItem(SESSION_KEY));
@@ -132,11 +169,16 @@
       var s = this.getSession();
       return s && s.role === 'admin';
     },
+    getStation: function () {
+      var s = this.getSession();
+      return localStorage.getItem(SESSION_STATION_KEY) || (s && (s.station_id || s.loket_id)) || 'LOKET-1';
+    },
     logout: function () {
       try {
         localStorage.removeItem(SESSION_KEY);
         localStorage.removeItem(SESSION_TOKEN_KEY);
         localStorage.removeItem(SESSION_EXPIRY_KEY);
+        localStorage.removeItem(SESSION_STATION_KEY);
       } catch (e) {}
       window.location.replace('login.html');
     },

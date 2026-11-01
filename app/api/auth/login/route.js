@@ -18,7 +18,7 @@ export async function POST(request) {
       }, { status: 401 });
     }
 
-    // Return operator session data
+    // Return isolated operator session data with dedicated loket identity
     return NextResponse.json({
       success: true,
       message: 'Login berhasil',
@@ -26,11 +26,18 @@ export async function POST(request) {
         id: operator.id,
         name: operator.name,
         email: operator.email,
-        role: operator.role
+        role: operator.role,
+        loket_id: operator.loket_id || 'LOKET-1',
+        station_id: operator.station_id || operator.loket_id || 'LOKET-1',
+        station_name: operator.station_name || 'Loket 1 (Kasir Utama)'
       },
-      token: `auth_${Date.now()}_${operator.id}`
+      token: operator.token || `auth_${Date.now()}_${operator.id}`
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const isPending = error.message && error.message.toLowerCase().includes('menunggu');
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: isPending ? 403 : 500 });
   }
 }

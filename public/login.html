@@ -5,11 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Operator - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev19" />
 </head>
 
 <body class="login-body">
@@ -267,7 +265,7 @@
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <span>Akses khusus pegawai Express Print &bull; Enkripsi TLS 256-bit</span>
+          <span>Akses khusus pegawai Express Print | Enkripsi TLS 256-bit</span>
         </div>
       </main>
 
@@ -289,6 +287,7 @@
         localStorage.removeItem('printshop_operator');
         localStorage.removeItem('printshop_auth_token');
         localStorage.removeItem('printshop_session_expiry');
+        localStorage.removeItem('printshop_active_station');
       } catch (e) {}
 
       const pinInput = document.getElementById('pin-operator');
@@ -379,7 +378,7 @@
             }
           });
         } else {
-          window.location.href = 'dasbor.html';
+          showAlert('Layanan autentikasi database sedang tidak tersedia.', true);
         }
       });
 
