@@ -9,6 +9,7 @@
   let activeOrders = [];
   let historyOrders = [];
   let filterStatus = 'ALL';
+  let historyStatusFilter = 'ALL';
   let searchQuery = '';
   let historyRange = 'today';
   let pendingCancelOrder = null;
@@ -259,12 +260,27 @@
       kpiVals[3].textContent = formatRupiah(totalRevenue);
     }
 
-    if (filtered.length === 0) {
+    // Filter by Status (ALL, COMPLETED / SELESAI, CANCELLED / DIBATALKAN)
+    let displayList = filtered;
+    if (historyStatusFilter && historyStatusFilter !== 'ALL') {
+      displayList = filtered.filter(o => {
+        const s = (o.status || '').toUpperCase();
+        if (historyStatusFilter === 'COMPLETED' || historyStatusFilter === 'SELESAI') {
+          return s === 'COMPLETED' || s === 'SELESAI';
+        }
+        if (historyStatusFilter === 'CANCELLED' || historyStatusFilter === 'DIBATALKAN') {
+          return s === 'CANCELLED' || s === 'DIBATALKAN';
+        }
+        return s.includes(historyStatusFilter);
+      });
+    }
+
+    if (displayList.length === 0) {
       tbody.innerHTML = `
-        <tr>
+        <tr class="history-table-row-empty">
           <td colspan="8" style="text-align: center; padding: 36px 20px; color: var(--muted);">
             <div style="font-size: 24px; margin-bottom: 6px;">📋</div>
-            Belum ada riwayat pesanan yang diserahkan untuk periode ini.
+            Tidak ada riwayat pesanan dengan status <strong>${historyStatusFilter === 'ALL' ? '' : historyStatusFilter}</strong> untuk periode ini.
           </td>
         </tr>
       `;
@@ -272,9 +288,9 @@
     }
 
     // Sort by latest updated/created
-    filtered.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
+    displayList.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
 
-    tbody.innerHTML = filtered.map(order => {
+    tbody.innerHTML = displayList.map(order => {
       const spec = order.specifications || {};
       const paper = spec.paper_size || 'A4';
       const isColor = (spec.color_mode || '').includes('Color');
@@ -282,9 +298,10 @@
       const pages = order.total_pages || 1;
       const sheets = spec.sheets_count || pages;
       const price = formatRupiah(order.total_price || 0);
+      const isCancelled = order.status === 'CANCELLED' || order.status === 'DIBATALKAN';
 
       return `
-        <tr data-order-id="${order.id}">
+        <tr class="history-table-row ${isCancelled ? 'row-cancelled' : ''}" data-order-id="${order.id}" data-status="${(order.status || '').toUpperCase()}">
           <td><strong class="order-id">${order.order_code}</strong></td>
           <td><time title="${formatDateTime(order.created_at)}">${formatTime(order.updated_at || order.created_at)}</time></td>
           <td>
@@ -324,7 +341,7 @@
     document.querySelectorAll('.btn-view-receipt').forEach(btn => {
       btn.addEventListener('click', function () {
         const id = this.dataset.id;
-        const order = historyOrders.find(o => o.id === id);
+        const order = historyOrders.find(o => o.id === id || o.order_code === id) || (typeof staticReceiptOrders !== 'undefined' ? staticReceiptOrders[id] : null);
         if (order) openReceiptModal(order);
       });
     });
@@ -451,6 +468,10 @@
 
   // Export for external callers
   window.reloadOrders = reloadOrders;
+  window.setHistoryStatusFilter = function (filter) {
+    historyStatusFilter = (filter || 'ALL').toUpperCase();
+    renderHistoryTable();
+  };
 
   // ── Cancel Modal Handling ─────────────────────────────────────────
   function openCancelModal(id, code) {
@@ -486,12 +507,28 @@
     pendingCancelOrder = null;
   }
 
+  const staticReceiptOrders = {
+    'ORD-034': { order_code: 'ORD-034', customer_name: 'budi', file_name: 'makalah-fisika.pdf', specifications: { paper_size: 'A4', color_mode: 'B&W' }, total_pages: 12, copies: 1, total_price: 6000, status: 'COMPLETED', created_at: '2026-10-19T06:12:00+07:00' },
+    'ORD-035': { order_code: 'ORD-035', customer_name: 'ica', file_name: 'proposal-ta-cover.pdf', specifications: { paper_size: 'A4', color_mode: 'Full Color' }, total_pages: 6, copies: 3, total_price: 9000, status: 'COMPLETED', created_at: '2026-10-19T06:28:00+07:00' },
+    'ORD-036': { order_code: 'ORD-036', customer_name: 'ica', file_name: 'laporan-pkl.pdf', specifications: { paper_size: 'A4', color_mode: 'B&W' }, total_pages: 40, copies: 1, total_price: 20000, status: 'CANCELLED', created_at: '2026-10-19T06:45:00+07:00' },
+    'ORD-037': { order_code: 'ORD-037', customer_name: 'ica', file_name: 'skripsi-bab4.docx', specifications: { paper_size: 'A4', color_mode: 'B&W' }, total_pages: 56, copies: 2, total_price: 56000, status: 'COMPLETED', created_at: '2026-10-19T07:03:00+07:00' },
+    'ORD-038': { order_code: 'ORD-038', customer_name: 'ica', file_name: 'cv-lamar-kerja.pdf', specifications: { paper_size: 'A4', color_mode: 'Full Color' }, total_pages: 2, copies: 1, total_price: 3000, status: 'COMPLETED', created_at: '2026-10-19T07:15:00+07:00' },
+    'ORD-039': { order_code: 'ORD-039', customer_name: 'ica', file_name: 'presentasi-bisnis.pptx', specifications: { paper_size: 'A4', color_mode: 'Full Color' }, total_pages: 18, copies: 1, total_price: 27000, status: 'COMPLETED', created_at: '2026-10-19T07:22:00+07:00' },
+  };
+
   // ── Receipt Modal Handling ────────────────────────────────────────
   function openReceiptModal(order) {
+    if (typeof order === 'string') {
+      const code = order.replace(/^#/, '');
+      order = historyOrders.find(o => o.id === code || o.order_code === code) || staticReceiptOrders[code];
+    }
+    if (!order) return;
+
     let modal = document.getElementById('receipt-view-modal');
     if (!modal) {
       modal = document.createElement('div');
       modal.id = 'receipt-view-modal';
+      modal.className = 'modal-overlay';
       modal.style.cssText = `
         position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
         display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
@@ -500,51 +537,54 @@
     }
 
     const spec = order.specifications || {};
+    const orderCode = order.order_code || order.id || 'ORD-000';
+    const statusText = (order.status || 'SELESAI').toUpperCase();
+
     modal.innerHTML = `
-      <div style="background:#fff; border-radius:16px; max-width:440px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.25); overflow:hidden; font-family:var(--font-sans, Inter, sans-serif);">
-        <div style="padding:20px 24px; background:#1e293b; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+      <div class="receipt-modal-card" style="background:#fff; border-radius:18px; max-width:440px; width:100%; box-shadow:0 24px 48px rgba(0,0,0,0.28); overflow:hidden; font-family:var(--font-sans, Inter, sans-serif);">
+        <div class="modal-header receipt-modal-header detail-modal-header" style="padding:20px 24px; background:#1F3D17 !important; background-color:#1F3D17 !important; color:#FFFFFF !important; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #438E38 !important;">
           <div>
-            <h3 style="margin:0; font-size:16px; font-weight:700;">Detail Pesanan &amp; Struk</h3>
-            <span style="font-size:12px; color:#94a3b8;">Status: ${order.status}</span>
+            <h3 style="margin:0; font-size:16px; font-weight:700; color:#FFFFFF !important; letter-spacing:-0.2px;">Detail Pesanan &amp; Struk</h3>
+            <span style="font-size:12px; color:#E4F5D4 !important; opacity:0.95; display:inline-block; margin-top:2px;">Status: ${statusText}</span>
           </div>
-          <button type="button" id="btn-close-receipt" style="background:transparent; border:none; color:#cbd5e1; font-size:20px; cursor:pointer; line-height:1;">&times;</button>
+          <button type="button" id="btn-close-receipt" class="modal-close-btn" aria-label="Tutup" style="background:transparent; border:none; color:#FFFFFF !important; font-size:24px; cursor:pointer; line-height:1; padding:2px 8px; border-radius:6px; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='transparent'">&times;</button>
         </div>
         <div style="padding:24px; font-size:13px; line-height:1.6; color:#334155;">
           <div style="text-align:center; padding-bottom:16px; border-bottom:1px dashed #cbd5e1; margin-bottom:16px;">
-            <strong style="font-size:18px; color:#0f172a; display:block;">PrintShop POS</strong>
+            <strong style="font-size:18px; color:#152B11; display:block; font-weight:800; letter-spacing:-0.3px;">PrintShop POS</strong>
             <span style="color:#64748b; font-size:12px;">Gerai Kampus Utama | Kios Loket A1</span>
-            <div style="margin-top:8px; font-size:14px; font-weight:800; color:#1d4ed8; letter-spacing:1px;">#${order.order_code}</div>
+            <div style="margin-top:8px; font-size:15px; font-weight:800; color:#438E38; letter-spacing:1px;">#${orderCode}</div>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
             <span style="color:#64748b;">Nama Pemesan:</span>
-            <strong>${order.customer_name || 'Tamu Walk-In'}</strong>
+            <strong style="color:#152B11;">${order.customer_name || 'Tamu Walk-In'}</strong>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
             <span style="color:#64748b;">Nama Berkas:</span>
-            <strong style="max-width:200px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${order.file_name}</strong>
+            <strong style="max-width:200px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; color:#152B11;">${order.file_name}</strong>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
             <span style="color:#64748b;">Format &amp; Kertas:</span>
-            <span>${spec.paper_size || 'A4'} &bull; ${(spec.color_mode || '').includes('Color') ? 'Full Color' : 'Hitam-Putih'}</span>
+            <span style="color:#152B11;">${spec.paper_size || 'A4'} &bull; ${(spec.color_mode || '').includes('Color') ? 'Full Color' : 'Hitam-Putih'}</span>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
             <span style="color:#64748b;">Halaman &amp; Salinan:</span>
-            <span>${order.total_pages || 1} Halaman &times; ${order.copies || 1} Rangkap</span>
+            <span style="color:#152B11;">${order.total_pages || 1} Halaman &times; ${order.copies || 1} Rangkap</span>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
             <span style="color:#64748b;">Waktu Selesai:</span>
-            <span>${formatDateTime(order.updated_at || order.created_at)}</span>
+            <span style="color:#152B11;">${formatDateTime(order.updated_at || order.created_at)}</span>
           </div>
           <div style="border-top:1px dashed #cbd5e1; margin-top:14px; padding-top:12px; display:flex; justify-content:space-between; font-size:15px;">
-            <strong style="color:#0f172a;">Total Biaya:</strong>
-            <strong style="color:#047857; font-size:16px;">${formatRupiah(order.total_price)}</strong>
+            <strong style="color:#152B11;">Total Biaya:</strong>
+            <strong style="color:#438E38; font-size:17px; font-weight:800;">${formatRupiah(order.total_price)}</strong>
           </div>
         </div>
         <div style="padding:16px 24px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; gap:10px; justify-content:flex-end;">
-          <button type="button" onclick="window.print()" class="btn-export-outline" style="font-size:12.5px; padding:8px 14px;">
+          <button type="button" onclick="window.print()" class="btn-export-outline btn-modal-action" style="font-size:12.5px; padding:8px 15px; border:1px solid #cbd5e1; border-radius:8px; background:#fff; font-weight:600; cursor:pointer;">
             🖨️ Cetak Struk
           </button>
-          <button type="button" id="btn-done-receipt" class="btn-primary" style="font-size:12.5px; padding:8px 18px;">
+          <button type="button" id="btn-done-receipt" class="btn-primary modal-btn-primary" style="font-size:12.5px; padding:8px 20px; background-color:#438E38 !important; color:#FFFFFF !important; border:1.5px solid #326B25 !important; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(67, 142, 56, 0.28);">
             Tutup
           </button>
         </div>
@@ -556,6 +596,8 @@
     document.getElementById('btn-done-receipt').onclick = () => { modal.style.display = 'none'; };
   }
 
+  window.openReceiptModal = openReceiptModal;
+
   // ── Main Init ──────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', async function () {
     // 1. Authentication Guard
@@ -565,15 +607,26 @@
       return;
     }
 
-    // Set operator name
+    // Set operator name & isolated station identity
     const userNameEl = document.querySelector('.console-user-name');
     const userRoleEl = document.querySelector('.console-user-role');
     const userAvatarEl = document.querySelector('.console-user-avatar');
+    const userChipEl = document.getElementById('antrean-user-chip');
 
+    const stationLabel = session.station_name || session.loket_id || 'Loket 1';
     if (userNameEl) userNameEl.textContent = session.name || 'Ahmad Hidayat';
-    if (userRoleEl) userRoleEl.innerHTML = `${session.role || 'Kasir Loket A1'} &bull; Online`;
+    if (userRoleEl) userRoleEl.innerHTML = `${stationLabel} | Online`;
     if (userAvatarEl && session.name) {
       userAvatarEl.textContent = session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    }
+    if (userChipEl) {
+      userChipEl.innerHTML = `
+        <div>
+          <strong>${session.loket_id || 'Loket 1'}</strong>
+          <span>${session.name || 'Kasir'}</span>
+        </div>
+        <div class="console-user-avatar-small" aria-hidden="true">${(session.name || 'AH').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</div>
+      `;
     }
 
     // Logout
@@ -613,6 +666,50 @@
         historyRange = this.dataset.historyRange;
         renderHistoryTable();
       });
+    });
+
+    // 3b. History Status KPI Filter Cards (Total Transaksi, Selesai, Dibatalkan)
+    const historyFilterCards = document.querySelectorAll(
+      '.filter-status-card, .history-filter-btn, #riwayat .history-kpi-card[data-filter], #riwayat .history-kpi-card[data-history-status]'
+    );
+    historyFilterCards.forEach(card => {
+      card.addEventListener('click', function () {
+        const filterVal = (this.getAttribute('data-filter') || this.getAttribute('data-history-status') || 'ALL').toUpperCase();
+        historyStatusFilter = filterVal;
+
+        historyFilterCards.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+
+        // Dynamic table update
+        renderHistoryTable();
+
+        // Direct DOM update on all matching rows
+        document.querySelectorAll('.history-table-row, #history-table-tbody tr').forEach(row => {
+          if (row.classList.contains('history-table-row-empty')) return;
+          const rowStatus = (row.getAttribute('data-status') || row.querySelector('td:nth-child(7)')?.textContent || '').toUpperCase();
+          if (filterVal === 'ALL') {
+            row.style.display = '';
+          } else if (filterVal === 'COMPLETED' || filterVal === 'SELESAI') {
+            row.style.display = (rowStatus.includes('COMPLETED') || rowStatus.includes('SELESAI')) ? '' : 'none';
+          } else if (filterVal === 'CANCELLED' || filterVal === 'DIBATALKAN') {
+            row.style.display = (rowStatus.includes('CANCELLED') || rowStatus.includes('DIBATALKAN') || row.classList.contains('row-cancelled')) ? '' : 'none';
+          } else {
+            row.style.display = rowStatus.includes(filterVal) ? '' : 'none';
+          }
+        });
+      });
+    });
+
+    // 3c. Detail Pesanan & Receipt Modal Trigger for Table Rows
+    document.addEventListener('click', function (e) {
+      const viewBtn = e.target.closest('.btn-view-receipt, [title="Lihat detail pesanan"], [aria-label*="Detail #ORD"]');
+      if (viewBtn) {
+        e.preventDefault();
+        const id = viewBtn.dataset.id || (viewBtn.getAttribute('aria-label') || '').replace(/^Detail\s*#?/, '') || viewBtn.closest('tr')?.querySelector('.order-id')?.textContent?.replace(/^#/, '');
+        if (id) {
+          openReceiptModal(id);
+        }
+      }
     });
 
     // 4. Export History to CSV

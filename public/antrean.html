@@ -5,17 +5,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Antrean Aktif - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
   <meta name="description"
     content="Halaman antrean cetak aktif PrintShop POS Staff Console. Kelola dan pantau pesanan cetak secara real-time." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev22" />
   <script src="./assets/js/auth-guard.js"></script>
 </head>
 
-<body class="console-body">
+<body class="console-body page-antrean">
 
   <div class="console-container">
 
@@ -24,8 +22,7 @@
 
     <!-- Sidebar Konsol Operator -->
     <aside id="console-sidebar" class="console-sidebar" aria-label="Bilah Sisi Konsol Operator">
-      <div>
-        <div class="console-sidebar-header">
+      <div class="console-sidebar-header">
           <a href="dasbor.html" class="console-brand-link" aria-label="PrintShop POS Dasbor">
             <span class="brand-icon-box">
               <img src="./assets/images/logo-operator.svg" alt="Logo PrintShop POS Konsol" width="22" height="22" />
@@ -146,14 +143,13 @@
             </li>
           </ul>
         </nav>
-      </div>
 
       <div class="console-user-footer">
         <div class="console-user-card">
           <div class="console-user-avatar" aria-hidden="true">AH</div>
           <div class="console-user-info">
             <div class="console-user-name">Ahmad Hidayat</div>
-            <div class="console-user-role">Kasir Loket A1 &bull; Mandiri</div>
+            <div class="console-user-role">Kasir Loket A1 | Mandiri</div>
           </div>
           <a href="login.html" class="console-logout-btn" title="Logout dari Konsol" aria-label="Logout dari Konsol">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -218,7 +214,7 @@
             <span>Buka Dasbor</span>
           </a>
 
-          <div class="console-header-user-chip">
+          <div class="console-header-user-chip" id="antrean-user-chip">
             <div>
               <strong>Loket A1</strong>
               <span>Kasir Utama</span>
@@ -427,9 +423,9 @@
             </h2>
             <p class="console-card-subtitle" aria-live="polite" role="status">
               <span class="pulse-dot"></span>
-              Data diperbarui otomatis setiap 10 detik &bull; Terakhir: <strong id="last-update-time">07:42:15
+              Data diperbarui otomatis setiap 10 detik | Terakhir: <strong id="last-update-time">07:42:15
                 WIB</strong>
-              &bull; Urutan FIFO
+              | Urutan FIFO
             </p>
           </div>
           <div class="console-card-body console-card-body--flush">
@@ -1279,10 +1275,7 @@
             </div><!-- end user reports -->
 
             <!-- RIGHT: Operasi Admin -->
-            <div class="refund-admin-col">
-
-              <!-- Admin manual cancel form -->
-              <div class="console-card refund-panel" aria-labelledby="admin-cancel-heading">
+            <div class="console-card refund-panel" aria-labelledby="admin-cancel-heading">
                 <div class="console-card-header">
                   <h3 id="admin-cancel-heading" class="console-card-title">
                     Operasi Pembatalan Admin
@@ -1397,113 +1390,108 @@
                     </fieldset>
                   </form>
                 </div>
+              </div><!-- end admin cancel form -->
+            </div><!-- end refund-two-col -->
+
+            <!-- Refund history log (Riwayat Pengembalian) -->
+            <div id="riwayat-pengembalian" class="console-card refund-panel" aria-labelledby="refund-log-heading">
+              <div class="console-card-header">
+                <h3 id="refund-log-heading" class="console-card-title">
+                  Riwayat Pengembalian &amp; Log Refund
+                  <span class="badge-count">8</span>
+                </h3>
               </div>
-
-              <!-- Refund history log (Riwayat Pengembalian) -->
-              <div id="riwayat-pengembalian" class="console-card refund-panel" aria-labelledby="refund-log-heading">
-                <div class="console-card-header">
-                  <h3 id="refund-log-heading" class="console-card-title">
-                    Riwayat Pengembalian &amp; Log Refund
-                    <span class="badge-count">8</span>
-                  </h3>
-                </div>
-                <div class="console-card-body" style="padding:0;">
-                  <ul class="refund-log-list" aria-label="Log refund yang sudah diproses hari ini" id="refund-log-list">
-                    <li class="refund-log-item">
-                      <div class="refund-log-left">
-                        <strong class="order-id">#ORD-021</strong>
-                        <span class="refund-log-method refund-log-method--qris">QRIS</span>
-                      </div>
-                      <div class="refund-log-right">
-                        <span class="refund-log-amount">Rp8.500</span>
-                        <span class="refund-log-time"><time datetime="2026-10-19T05:14:00+07:00">05:14 WIB</time></span>
-                        <span class="status-badge status-badge--ready"
-                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
-                      </div>
-                    </li>
-                    <li class="refund-log-item">
-                      <div class="refund-log-left">
-                        <strong class="order-id">#ORD-019</strong>
-                        <span class="refund-log-method refund-log-method--cash">Tunai</span>
-                      </div>
-                      <div class="refund-log-right">
-                        <span class="refund-log-amount">Rp15.000</span>
-                        <span class="refund-log-time"><time datetime="2026-10-19T04:58:00+07:00">04:58 WIB</time></span>
-                        <span class="status-badge status-badge--ready"
-                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
-                      </div>
-                    </li>
-                    <li class="refund-log-item">
-                      <div class="refund-log-left">
-                        <strong class="order-id">#ORD-015</strong>
-                        <span class="refund-log-method refund-log-method--credit">Kredit</span>
-                      </div>
-                      <div class="refund-log-right">
-                        <span class="refund-log-amount">Rp24.000</span>
-                        <span class="refund-log-time"><time datetime="2026-10-19T04:31:00+07:00">04:31 WIB</time></span>
-                        <span class="status-badge status-badge--ready"
-                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
-                      </div>
-                    </li>
-                    <li class="refund-log-item">
-                      <div class="refund-log-left">
-                        <strong class="order-id">#ORD-011</strong>
-                        <span class="refund-log-method refund-log-method--qris">QRIS</span>
-                      </div>
-                      <div class="refund-log-right">
-                        <span class="refund-log-amount">Rp6.000</span>
-                        <span class="refund-log-time"><time datetime="2026-10-19T03:50:00+07:00">03:50 WIB</time></span>
-                        <span class="status-badge status-badge--ready"
-                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
-                      </div>
-                    </li>
-                    <li class="refund-log-item">
-                      <div class="refund-log-left">
-                        <strong class="order-id">#ORD-008</strong>
-                        <span class="refund-log-method refund-log-method--cash">Tunai</span>
-                      </div>
-                      <div class="refund-log-right">
-                        <span class="refund-log-amount">Rp3.000</span>
-                        <span class="refund-log-time"><time datetime="2026-10-19T03:12:00+07:00">03:12 WIB</time></span>
-                        <span class="status-badge status-badge--ready"
-                          style="font-size:10.5px;padding:2px 7px;">Selesai</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+              <div class="console-card-body" style="padding:0;">
+                <ul class="refund-log-list" aria-label="Log refund yang sudah diproses hari ini" id="refund-log-list">
+                  <li class="refund-log-item">
+                    <div class="refund-log-left">
+                      <strong class="order-id">#ORD-021</strong>
+                      <span class="refund-log-method refund-log-method--qris">QRIS</span>
+                    </div>
+                    <div class="refund-log-right">
+                      <span class="refund-log-amount">Rp8.500</span>
+                      <span class="refund-log-time"><time datetime="2026-10-19T05:14:00+07:00">05:14 WIB</time></span>
+                      <span class="status-badge status-badge--ready"
+                        style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                    </div>
+                  </li>
+                  <li class="refund-log-item">
+                    <div class="refund-log-left">
+                      <strong class="order-id">#ORD-019</strong>
+                      <span class="refund-log-method refund-log-method--cash">Tunai</span>
+                    </div>
+                    <div class="refund-log-right">
+                      <span class="refund-log-amount">Rp15.000</span>
+                      <span class="refund-log-time"><time datetime="2026-10-19T04:58:00+07:00">04:58 WIB</time></span>
+                      <span class="status-badge status-badge--ready"
+                        style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                    </div>
+                  </li>
+                  <li class="refund-log-item">
+                    <div class="refund-log-left">
+                      <strong class="order-id">#ORD-015</strong>
+                      <span class="refund-log-method refund-log-method--credit">Kredit</span>
+                    </div>
+                    <div class="refund-log-right">
+                      <span class="refund-log-amount">Rp24.000</span>
+                      <span class="refund-log-time"><time datetime="2026-10-19T04:31:00+07:00">04:31 WIB</time></span>
+                      <span class="status-badge status-badge--ready"
+                        style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                    </div>
+                  </li>
+                  <li class="refund-log-item">
+                    <div class="refund-log-left">
+                      <strong class="order-id">#ORD-011</strong>
+                      <span class="refund-log-method refund-log-method--qris">QRIS</span>
+                    </div>
+                    <div class="refund-log-right">
+                      <span class="refund-log-amount">Rp6.000</span>
+                      <span class="refund-log-time"><time datetime="2026-10-19T03:50:00+07:00">03:50 WIB</time></span>
+                      <span class="status-badge status-badge--ready"
+                        style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                    </div>
+                  </li>
+                  <li class="refund-log-item">
+                    <div class="refund-log-left">
+                      <strong class="order-id">#ORD-008</strong>
+                      <span class="refund-log-method refund-log-method--cash">Tunai</span>
+                    </div>
+                    <div class="refund-log-right">
+                      <span class="refund-log-amount">Rp3.000</span>
+                      <span class="refund-log-time"><time datetime="2026-10-19T03:12:00+07:00">03:12 WIB</time></span>
+                      <span class="status-badge status-badge--ready"
+                        style="font-size:10.5px;padding:2px 7px;">Selesai</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
-
-            </div><!-- end admin col -->
-          </div><!-- end refund-two-col -->
-
-          <!-- Refund policy note -->
-          <div class="refund-policy-note" role="note">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            <span>Semua tindakan pembatalan dan refund tercatat secara permanen beserta ID operator, timestamp, dan
-              alasan dalam log audit PostgreSQL. Refund QRIS diproses dalam <strong>1–3 hari kerja</strong>. Refund
-              tunai wajib disertai tanda tangan penerima.</span>
-          </div>
+            </div><!-- end riwayat-pengembalian -->
         </section><!-- end #batal -->
 
       </main>
 
-      <!-- Footer Konsol -->
-      <footer class="console-footer">
-        <div class="console-footer-left">
+      <!-- Catatan Footer Audit Hash (Paling Bawah setelah Penutup Kartu Terakhir) -->
+      <div id="audit-hash-note" class="audit-footer-note">
+        <div class="audit-footer-left">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <span>Semua data tercatat secara permanen di basis data PostgreSQL POS Central untuk kepatuhan audit
-            kasir.</span>
+          <span>Semua data tercatat secara permanen di basis data PostgreSQL POS Central untuk kepatuhan audit kasir.</span>
         </div>
-        <div class="console-footer-right">
+        <div class="audit-footer-right">
           <span>Hash Audit: <strong>#SHA-256</strong></span>
           <span>ID Sesi Kasir: <strong>REG-01-SHIFT1</strong></span>
         </div>
+      </div>
+
+      <!-- Footer Utama Halaman Konsol -->
+      <footer class="console-site-footer">
+        <p>
+          <small>
+            PrintShop POS Konsol Operator | Data diperbarui secara real-time | Gerai Kampus Utama
+          </small>
+        </p>
       </footer>
 
     </div>
@@ -1511,7 +1499,7 @@
   </div>
 
   <div id="modal-refund-confirm" class="modal-overlay" role="dialog" aria-modal="true"
-    aria-labelledby="modal-refund-title" hidden>
+    aria-labelledby="modal-refund-title" style="display:none;" hidden>
     <div class="modal-box">
       <div class="modal-header">
         <div class="modal-icon modal-icon--warning" aria-hidden="true">
@@ -1610,25 +1598,124 @@
   <style>
     /* ===== Antrean-Specific Styles ===== */
 
+    .console-container {
+      display: flex !important;
+      min-height: 100vh !important;
+      height: auto !important;
+      align-items: flex-start !important;
+    }
+    .console-main-area {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .console-sidebar {
+      height: 100vh !important;
+      position: sticky !important;
+      top: 0 !important;
+      overflow-y: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      flex-shrink: 0 !important;
+    }
+    .console-sidebar-header {
+      padding: 18px 20px !important;
+      border-bottom: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    .console-user-footer {
+      margin-top: auto !important;
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 10 !important;
+    }
+    .console-content {
+      flex: 0 0 auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      padding: 18px 24px 36px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-content > section,
+    .console-content > .console-card,
+    .console-content > .stats-card-row,
+    .console-content > .console-page-head,
+    .console-card,
+    .stat-card,
+    .stats-card-row {
+      margin-bottom: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .console-card {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 18px 22px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+    }
+    .console-card .console-card-header {
+      padding: 0 0 12px 0 !important;
+      margin-bottom: 14px !important;
+      border-bottom: 1px solid #E4F5D4 !important;
+    }
+    .console-card-header h2,
+    .console-card-header h3 {
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: #152B11 !important;
+      margin: 0 !important;
+    }
+    .audit-footer-note {
+      margin-top: 16px !important;
+      margin-bottom: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    .console-site-footer {
+      margin-top: 0 !important;
+      flex-shrink: 0 !important;
+    }
+
     /* Stat Cards Row */
     .stats-card-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      display: grid !important;
+      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      margin-bottom: 0 !important;
+      width: 100% !important;
+    }
+
+    @media (max-width: 1100px) {
+      .stats-card-row {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+      }
     }
 
     .stat-card {
-      background: #fff;
-      border: 1px solid var(--border-color, #e5e7eb);
-      border-radius: 12px;
-      padding: 20px;
-      transition: box-shadow 0.2s ease, transform 0.15s ease;
+      background: #FFFFFF !important;
+      border: 1.5px solid #CEE9BA !important;
+      border-radius: 14px !important;
+      padding: 16px 18px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+      box-sizing: border-box !important;
+      transition: box-shadow 0.2s ease, transform 0.15s ease !important;
     }
 
     .stat-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(67, 142, 56, 0.12) !important;
+      transform: translateY(-2px) !important;
     }
 
     .stat-card-body {
@@ -1653,10 +1740,10 @@
     }
 
     .stat-card-value {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: #111827;
+      font-size: 26px !important;
+      font-weight: 800 !important;
+      line-height: 1.1 !important;
+      color: #152B11 !important;
     }
 
     .stat-card-value--warning {
@@ -1682,13 +1769,13 @@
     }
 
     .stat-card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 10px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
     }
 
     .stat-card-icon--primary {
@@ -2012,9 +2099,21 @@
 
     /* Legend Grid */
     .legend-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+    }
+
+    @media (max-width: 1024px) and (min-width: 641px) {
+      .legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .legend-grid {
+        grid-template-columns: 1fr !important;
+      }
     }
 
     .legend-item {
@@ -2182,11 +2281,15 @@
       }
 
       .console-content {
-        padding: 16px 12px 48px;
+        padding: 16px 12px 16px;
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
+        height: auto !important;
+        min-height: 0 !important;
+        flex: 0 0 auto !important;
+        margin-bottom: 0 !important;
       }
 
       .stats-card-row {
@@ -2388,6 +2491,16 @@
       color: #991b1b;
     }
 
+    .console-table th,
+    .console-table td {
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+    }
+    .console-table thead th {
+      padding: 10px 14px !important;
+      font-size: 11px !important;
+    }
+
     .console-table tfoot tr {
       background: #f3f4f6;
       font-size: 13px;
@@ -2424,7 +2537,7 @@
       flex-wrap: wrap;
       gap: 16px;
       margin-bottom: 20px;
-      padding: 24px 28px 0;
+      padding: 0;
     }
 
     .refund-section-head-left {
@@ -2511,18 +2624,21 @@
     .refund-two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 0 28px 24px;
+      gap: 24px;
+      padding: 0;
+      align-items: stretch;
     }
 
     .refund-panel {
       margin: 0;
+      height: 100%;
     }
 
     .refund-admin-col {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 24px;
+      height: 100%;
     }
 
     .console-card-subtitle {
@@ -2834,19 +2950,19 @@
       align-items: flex-start;
       gap: 10px;
       padding: 14px 20px;
-      margin: 0 28px 28px;
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      border-radius: 10px;
+      margin: 0 0 24px 0;
+      background: #E4F5D4;
+      border: 1.5px solid #CEE9BA;
+      border-radius: 18px;
       font-size: 12.5px;
-      color: #78350f;
+      color: #1F3819;
       line-height: 1.5;
     }
 
     .refund-policy-note svg {
       flex-shrink: 0;
       margin-top: 1px;
-      color: #d97706;
+      color: #438E38;
     }
 
     /* ===== NEW: Feedback Alert Box ===== */
@@ -3335,11 +3451,15 @@
           const pin = document.getElementById('modal-admin-pin');
           if (pin) pin.value = '';
           modal.hidden = false;
+          modal.style.display = 'flex';
         });
       });
 
       function closeModal() {
-        if (modal) modal.hidden = true;
+        if (modal) {
+          modal.hidden = true;
+          modal.style.display = 'none';
+        }
         pendingOrderId = null;
         pendingItem = null;
         pendingAmount = 0;

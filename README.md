@@ -1,6 +1,6 @@
 ﻿# PrintShop POS
 
-**PrintShop POS** adalah aplikasi web berbasis *self-service* (layanan mandiri) yang dirancang untuk memenuhi kebutuhan pencetakan dokumen mahasiswa dan civitas akademika di lingkungan kampus Universitas Mulawarman, dan Universitas Wijaya Kusuma Surabaya. Sistem ini mengintegrasikan proses unggah dokumen, pengaturan spesifikasi cetak, pembayaran digital berbasis QRIS, serta manajemen antrean dan kasir operasional.
+**PrintShop POS** adalah aplikasi web berbasis *self-service* (layanan mandiri) yang dirancang untuk memenuhi kebutuhan pencetakan dokumen mahasiswa dan civitas akademika di lingkungan kampus. Sistem ini mengintegrasikan proses unggah dokumen, pengaturan spesifikasi cetak, pembayaran digital berbasis QRIS, serta manajemen antrean dan kasir operasional.
 
 ---
 

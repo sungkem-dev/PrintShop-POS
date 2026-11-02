@@ -141,7 +141,7 @@
     const userAvatarEl = document.querySelector('.console-user-avatar');
 
     if (userNameEl) userNameEl.textContent = session.name || 'Ahmad Hidayat';
-    if (userRoleEl) userRoleEl.innerHTML = `${session.role || 'Kasir Loket A1'} &bull; Online`;
+    if (userRoleEl) userRoleEl.innerHTML = `${session.role || 'Kasir Loket A1'} | Online`;
     if (userAvatarEl && session.name) {
       userAvatarEl.textContent = session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     }

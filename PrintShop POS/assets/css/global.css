@@ -711,16 +711,19 @@ h3 {
 }
 
 .hero-cta-group .btn-hero-primary {
-    color: #fff;
-    background: #10b981;
-    box-shadow: 0 12px 30px -8px rgba(16, 185, 129, .7), inset 0 1px 0 rgba(255, 255, 255, .3);
+    color: #fff !important;
+    background: #438E38 !important; 
+    border: 1.5px solid #326B25 !important;
+    border-radius: 14px !important;
+
+    box-shadow: 0 6px 20px rgba(67, 142, 56, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.2s ease !important;
 }
 
 .hero-cta-group .btn-hero-primary:hover {
-    background: #34d399;
-    color: #022c22;
-    transform: translateY(-3px);
-    box-shadow: 0 18px 38px -8px rgba(52, 211, 153, .75);
+    background: #326B25 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(50, 107, 37, 0.45) !important;
 }
 
 .hero-cta-group .btn-secondary {

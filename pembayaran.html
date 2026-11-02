@@ -12,16 +12,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
   <style>
     /* ── Pembayaran Page Overrides ── */
     .page-pay {
-      --pay-primary: #1D4ED8;
-      --pay-primary-hover: #1e40af;
-      --pay-primary-light: #eff6ff;
-      --pay-primary-ring: rgba(29, 78, 216, .18);
-      --pay-primary-glow: rgba(29, 78, 216, .35);
-      --pay-font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --pay-primary: #438E38;
+      --pay-primary-hover: #326B25;
+      --pay-primary-light: #E4F5D4;
+      --pay-primary-ring: rgba(67, 142, 56, .20);
+      --pay-primary-glow: rgba(67, 142, 56, .35);
+      --pay-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
     .page-pay,
@@ -38,9 +38,7 @@
 
     .pay-main {
       position: relative;
-      background:
-        radial-gradient(800px 340px at 50% 0%, rgba(219, 234, 254, .65), transparent 70%),
-        #fcfdfd;
+      background: #F8FAF6 !important;
     }
 
     .pay-page-grid {
@@ -233,7 +231,7 @@
     .progress-bar-fill {
       height: 100%;
       border-radius: var(--r-pill);
-      background: linear-gradient(90deg, var(--pay-primary), #3b82f6);
+      background: #438E38 !important;
       transition: width .3s linear;
       will-change: width;
     }
@@ -253,8 +251,8 @@
       flex-direction: column;
       align-items: center;
       padding: 28px 20px;
-      background: linear-gradient(145deg, var(--pay-primary-light) 0%, #fff 80%);
-      border: 2px solid #bfdbfe;
+      background: #E4F5D4 !important;
+      border: 1.5px solid #A8E280 !important;
       border-radius: 20px;
       margin-bottom: 24px;
       transition: all .3s var(--ease);
@@ -370,19 +368,23 @@
       letter-spacing: -.01em;
       line-height: 1.4;
       text-align: center;
-      border: none;
+      border: 1.5px solid #326B25 !important;
       cursor: pointer;
       color: #fff;
       background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
       box-shadow: 0 6px 20px -2px rgba(29, 78, 216, .42), inset 0 1px 0 rgba(255, 255, 255, .25);
+      color: #fff !important;
+      background: #438E38 !important;
+      box-shadow: 0 4px 14px -2px rgba(67, 142, 56, .35) !important;
       transition: all .25s var(--ease);
       font-family: var(--pay-font);
     }
 
     .btn-snap-pay:hover {
-      background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+      background: #326B25 !important;
+      border-color: #244A1B !important;
       transform: translateY(-2px);
-      box-shadow: 0 10px 26px -4px rgba(29, 78, 216, .52);
+      box-shadow: 0 8px 20px -4px rgba(50, 107, 37, .45) !important;
     }
 
     .btn-snap-pay:active {
@@ -429,13 +431,14 @@
     }
 
     .btn-save-qr {
-      color: var(--pay-primary);
-      background: var(--pay-primary-light);
-      border: 1.5px solid #bfdbfe;
+      color: #152B11 !important;
+      background: #E4F5D4 !important;
+      border: 1.5px solid #A8E280 !important;
     }
 
     .btn-save-qr:hover {
-      background: #dbeafe;
+      background: #CEE9BA !important;
+      color: #1F3819 !important;
       transform: translateY(-2px);
       box-shadow: 0 4px 14px -4px var(--pay-primary-ring);
     }
@@ -444,6 +447,10 @@
       color: #fff;
       background: linear-gradient(180deg, #10b981 0%, #059669 100%);
       box-shadow: 0 4px 16px -2px rgba(16, 185, 129, .35), inset 0 1px 0 rgba(255, 255, 255, .2);
+      color: #fff !important;
+      background: #438E38 !important;
+      border: 1.5px solid #326B25 !important;
+      box-shadow: 0 4px 16px -2px rgba(67, 142, 56, .35) !important;
     }
 
     .btn-simulate:hover {
@@ -652,7 +659,7 @@
     .pay-sidebar {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px !important;
       position: static;
       margin-top: 0;
       width: 100%;
@@ -673,11 +680,12 @@
     .summary-card {
       position: static;
       margin-top: 0;
-      padding: 22px 18px;
-      background: var(--surface);
-      border: 2px solid #bfdbfe;
-      border-radius: var(--r-xl);
-      box-shadow: 0 8px 28px -4px var(--pay-primary-ring);
+      padding: 24px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #438E38 !important;
+      border-top: 4px solid #438E38 !important;
+      border-radius: 18px !important;
+      box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
       width: 100%;
       max-width: 100%;
       min-width: 0;
@@ -689,8 +697,8 @@
       align-items: center;
       gap: 10px;
       margin-bottom: 18px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+      border-bottom: none !important;
     }
 
     .summary-card-icon {
@@ -699,7 +707,8 @@
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: var(--pay-primary);
+      background: #438E38 !important;
+      color: #FFFFFF !important;
       flex-shrink: 0;
     }
 
@@ -719,7 +728,7 @@
     .summary-rows {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 18px;
     }
 
@@ -732,6 +741,7 @@
       width: 100%;
       font-size: 13.5px;
       box-sizing: border-box;
+      border: none !important;
     }
 
     .summary-row .s-label {
@@ -748,9 +758,7 @@
     }
 
     .summary-divider {
-      height: 1px;
-      background: var(--line);
-      margin: 4px 0;
+      display: none !important;
     }
 
     .summary-total-row {
@@ -761,7 +769,8 @@
       gap: 8px;
       width: 100%;
       padding: 14px 16px;
-      background: linear-gradient(135deg, var(--pay-primary-light) 0%, #dbeafe 100%);
+      background: #E4F5D4 !important;
+      border: 1.5px solid #A8E280 !important;
       border-radius: 12px;
       margin-bottom: 12px;
       box-sizing: border-box;
@@ -869,7 +878,7 @@
 
     .btn-pay-back:hover {
       color: var(--pay-primary);
-      border-color: #bfdbfe;
+      border-color: #CEE9BA;
       background: var(--pay-primary-light);
       transform: translateY(-1px);
     }
@@ -1441,6 +1450,7 @@
           <!-- Privacy Badge -->
           <div class="troubleshoot-card"
             style="background: linear-gradient(145deg, #eff6ff, #fff); border-color: #bfdbfe;">
+          <div class="troubleshoot-card" style="background: #FFFFFF; border: 1.5px solid #CEE9BA; border-radius: 18px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 22px;">🔒</span>
               <h3 style="font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em;">Privasi &amp;
