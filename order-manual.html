@@ -11,7 +11,7 @@
     content="Konsol kasir operator PrintShop POS untuk input pesanan cetak manual pelanggan walk-in di meja kasir." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev28" />
   <script src="./assets/js/auth-guard.js"></script>
   <style>
     /* Dedicated POS Cashier Styles */
@@ -333,9 +333,11 @@
     .console-page-head {
       margin-bottom: 14px !important;
     }
-    /* Sidebar Sticky Flex-Start */
+    /* Sidebar Sticky & Mobile Drawer */
     .console-sidebar {
+      width: 270px !important;
       height: 100vh !important;
+      max-height: 100vh !important;
       position: sticky !important;
       top: 0 !important;
       overflow-y: auto !important;
@@ -343,18 +345,68 @@
       flex-direction: column !important;
       justify-content: flex-start !important;
       flex-shrink: 0 !important;
+      background: #FFFFFF !important;
+      border-right: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      z-index: 40 !important;
     }
+    .console-sidebar > div:first-child,
     .console-sidebar-header {
       padding: 18px 20px !important;
       border-bottom: 1.5px solid #CEE9BA !important;
       box-sizing: border-box !important;
+      flex: 0 0 auto !important;
+      flex-grow: 0 !important;
       flex-shrink: 0 !important;
+      height: auto !important;
+    }
+    .console-nav-menu {
+      padding: 16px 14px !important;
+      flex: 1 1 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      box-sizing: border-box !important;
     }
     .console-user-footer {
       margin-top: auto !important;
       position: sticky !important;
       bottom: 0 !important;
       z-index: 10 !important;
+      background: #F8FAF6 !important;
+      border-top: 1.5px solid #CEE9BA !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1024px) {
+      .console-sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        z-index: 1000 !important;
+        transition: left 0.3s ease !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+      }
+      .console-sidebar.is-open,
+      .console-sidebar.open {
+        left: 0 !important;
+      }
+      .console-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.4) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 999 !important;
+        display: none !important;
+      }
+      .console-backdrop.is-open,
+      .console-backdrop.visible {
+        display: block !important;
+      }
     }
   </style>
 </head>

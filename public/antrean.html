@@ -9,7 +9,7 @@
     content="Halaman antrean cetak aktif PrintShop POS Staff Console. Kelola dan pantau pesanan cetak secara real-time." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="./assets/css/global.css?v=rev22" />
+  <link rel="stylesheet" href="./assets/css/global.css?v=rev28" />
   <script src="./assets/js/auth-guard.js"></script>
 </head>
 
@@ -73,7 +73,7 @@
                   <line x1="20" y1="8" x2="20" y2="14"></line>
                   <line x1="23" y1="11" x2="17" y2="11"></line>
                 </svg>
-                <span>Tambah Pesanan Manual (Walk-In)</span>
+                <span>Tambah Pesanan (Walk-In)</span>
               </a>
             </li>
           </ul>
@@ -1612,7 +1612,9 @@
       flex-direction: column !important;
     }
     .console-sidebar {
+      width: 270px !important;
       height: 100vh !important;
+      max-height: 100vh !important;
       position: sticky !important;
       top: 0 !important;
       overflow-y: auto !important;
@@ -1620,18 +1622,68 @@
       flex-direction: column !important;
       justify-content: flex-start !important;
       flex-shrink: 0 !important;
+      background: #FFFFFF !important;
+      border-right: 1.5px solid #CEE9BA !important;
+      box-sizing: border-box !important;
+      z-index: 40 !important;
     }
+    .console-sidebar > div:first-child,
     .console-sidebar-header {
       padding: 18px 20px !important;
       border-bottom: 1.5px solid #CEE9BA !important;
       box-sizing: border-box !important;
+      flex: 0 0 auto !important;
+      flex-grow: 0 !important;
       flex-shrink: 0 !important;
+      height: auto !important;
+    }
+    .console-nav-menu {
+      padding: 16px 14px !important;
+      flex: 1 1 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      box-sizing: border-box !important;
     }
     .console-user-footer {
       margin-top: auto !important;
       position: sticky !important;
       bottom: 0 !important;
       z-index: 10 !important;
+      background: #F8FAF6 !important;
+      border-top: 1.5px solid #CEE9BA !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1024px) {
+      .console-sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        z-index: 1000 !important;
+        transition: left 0.3s ease !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+      }
+      .console-sidebar.is-open,
+      .console-sidebar.open {
+        left: 0 !important;
+      }
+      .console-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.4) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 999 !important;
+        display: none !important;
+      }
+      .console-backdrop.is-open,
+      .console-backdrop.visible {
+        display: block !important;
+      }
     }
     .console-content {
       flex: 0 0 auto !important;
@@ -3179,13 +3231,13 @@
       const toggleBtn = document.getElementById('btn-sidebar-toggle');
 
       function openSidebar() {
-        if (sidebar) sidebar.classList.add('open');
-        if (backdrop) backdrop.classList.add('visible');
+        if (sidebar) { sidebar.classList.add('open'); sidebar.classList.add('is-open'); }
+        if (backdrop) { backdrop.classList.add('visible'); backdrop.classList.add('is-open'); }
       }
 
       function closeSidebar() {
-        if (sidebar) sidebar.classList.remove('open');
-        if (backdrop) backdrop.classList.remove('visible');
+        if (sidebar) { sidebar.classList.remove('open'); sidebar.classList.remove('is-open'); }
+        if (backdrop) { backdrop.classList.remove('visible'); backdrop.classList.remove('is-open'); }
       }
 
       if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
