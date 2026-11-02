@@ -2653,28 +2653,31 @@ h3 {
     font-family: var(--font);
     display: flex;
     flex-direction: column;
+    overflow-x: clip !important;
 }
 
 .console-container {
     display: flex;
     min-height: 100vh;
+    height: auto;
     width: 100%;
+    align-items: flex-start;
 }
 
 /* Sidebar Navigation (Matches Modul 5 image1.png, image5.png, image8.png) */
 .console-sidebar {
     width: 270px;
     background: #ffffff;
-    border-right: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 40;
+    border-right: 1.5px solid #CEE9BA;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+    z-index: 100 !important;
 }
 
 @media (max-width: 1024px) {
@@ -2706,8 +2709,10 @@ h3 {
 }
 
 .console-sidebar-header {
-    padding: 22px 20px;
-    border-bottom: 1px solid var(--line);
+    padding: 18px 20px !important;
+    border-bottom: 1.5px solid #CEE9BA !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
 }
 
 .console-brand-link {
@@ -2818,6 +2823,8 @@ h3 {
     padding: 16px;
     border-top: 1px solid var(--line);
     background: #fafbfc;
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
 }
 
 .console-user-card {
@@ -4453,9 +4460,11 @@ button.btn-reupload,
 .console-sidebar {
     display: flex !important;
     flex-direction: column !important;
+    justify-content: flex-start !important;
     height: 100vh !important;
     position: sticky !important;
     top: 0 !important;
+    overflow-y: auto !important;
 }
 
 .console-user-footer {
@@ -4777,11 +4786,18 @@ body.page-ticket main {
     box-shadow: 0 6px 18px rgba(67, 142, 56, 0.12) !important;
 }
 
-.quick-action-card strong {
+.quick-action-card strong,
+.quick-action-card .action-title,
+.quick-action-text strong {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
     color: #152B11 !important;
 }
 
-.quick-action-card span {
+.quick-action-card span,
+.quick-action-card .action-sub,
+.quick-action-text span {
+    font-size: 12.5px !important;
     color: #35522B !important;
 }
 
@@ -5236,36 +5252,55 @@ article.step-card .step-number {
 .console-container {
     display: flex !important;
     min-height: 100vh !important;
+    height: auto !important; /* Jangan height 100vh */
     width: 100% !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
 }
 
 .console-sidebar,
 .sidebar-wrapper {
+    width: 270px !important;
+    background: #ffffff !important;
+    border-right: 1.5px solid #CEE9BA !important;
     display: flex !important;
     flex-direction: column !important;
-    height: 100vh !important;
+    justify-content: flex-start !important;
+    flex-shrink: 0 !important;
     position: sticky !important;
     top: 0 !important;
-    left: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
     overflow-y: auto !important;
-    flex-shrink: 0 !important;
-    width: 270px !important;
-    z-index: 100 !important;
+    z-index: 40 !important;
     box-sizing: border-box !important;
 }
 
-.console-sidebar > div:first-child {
+.console-sidebar > div:first-child,
+.console-sidebar-header {
+    padding: 18px 20px !important;
+    border-bottom: 1.5px solid #CEE9BA !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    height: auto !important;
+}
+
+.console-nav-menu {
+    padding: 16px 14px !important;
     flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
 }
 
 .console-user-footer,
 .sidebar-user-card {
     margin-top: auto !important;
-    position: relative !important;
-    bottom: auto !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 10 !important;
     background: #F8FAF6 !important;
     border-top: 1.5px solid #CEE9BA !important;
     width: 100% !important;
@@ -5280,11 +5315,29 @@ article.step-card .step-number {
         top: 0 !important;
         bottom: 0 !important;
         height: 100vh !important;
+        max-height: 100vh !important;
         z-index: 1000 !important;
+        transition: left 0.3s ease !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     }
 
-    .console-sidebar.is-open {
+    .console-sidebar.is-open,
+    .console-sidebar.open {
         left: 0 !important;
+    }
+
+    .console-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.4) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 999 !important;
+        display: none !important;
+    }
+
+    .console-backdrop.is-open,
+    .console-backdrop.visible {
+        display: block !important;
     }
 }
 
@@ -5292,21 +5345,24 @@ article.step-card .step-number {
 .console-main-area {
     flex: 1 1 auto !important;
     min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
     display: flex !important;
     flex-direction: column !important;
-    min-height: 100vh !important;
 }
 
 .console-content {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
-    padding: 20px 24px 64px 24px !important;
-    max-width: 1140px !important;
+    padding: 18px 24px 36px !important;
+    max-width: 100% !important;
     width: 100% !important;
-    margin: 0 auto !important;
     box-sizing: border-box !important;
-    flex: 1 0 auto !important;
 }
 
 .console-content > section,
@@ -5319,10 +5375,12 @@ article.step-card .step-number {
 .console-card,
 .stat-card,
 .kpi-metric-card,
-.stats-card-row {
+.stats-card-row,
+.audit-reconcile-card,
+.analytics-two-col-grid {
     margin-bottom: 0 !important;
     width: 100% !important;
-    max-width: 1140px !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
 }
 
@@ -5330,29 +5388,95 @@ article.step-card .step-number {
 .page-antrean .console-card {
     background: #FFFFFF !important;
     border: 1.5px solid #CEE9BA !important;
-    border-radius: 18px !important;
-    padding: 24px !important;
+    border-radius: 14px !important;
+    padding: 18px 22px !important;
     box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
 }
 
 .console-card-body--flush {
-    margin: 0 -24px -24px -24px !important;
+    margin: 0 -22px -18px -22px !important;
     padding: 0 !important;
 }
 
 .console-card .console-card-header {
-    padding: 0 0 16px 0 !important;
-    margin-bottom: 18px !important;
+    padding: 0 0 12px 0 !important;
+    margin-bottom: 14px !important;
     border-bottom: 1px solid #E4F5D4 !important;
 }
 
 .stat-card {
     background: #FFFFFF !important;
     border: 1.5px solid #CEE9BA !important;
-    border-radius: 18px !important;
+    border-radius: 14px !important;
+    padding: 16px 18px !important;
     box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+    box-sizing: border-box !important;
+    transition: box-shadow 0.2s ease, transform 0.15s ease !important;
+}
+
+.kpi-metric-card {
+    background: #FFFFFF !important;
+    border: 1.5px solid #CEE9BA !important;
+    border-radius: 14px !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.audit-reconcile-card {
+    padding: 14px 20px !important;
+    border-radius: 14px !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+}
+
+.analytics-two-col-grid {
+    display: grid !important;
+    grid-template-columns: 1.2fr 1fr !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+.stats-card-row {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+}
+
+@media (max-width: 1100px) {
+    .stats-card-row {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    }
+}
+
+.stat-card-value {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+}
+
+.stat-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+}
+
+.console-table th,
+.console-table td {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+}
+
+.console-table thead th {
+    padding: 10px 14px !important;
+    font-size: 11px !important;
 }
 
 /* Status Badges in Tables (dasbor.html & antrean.html) */
@@ -5377,6 +5501,25 @@ tbody span.badge,
     text-transform: uppercase !important;
     letter-spacing: 0.04em !important;
     white-space: nowrap !important;
+}
+
+/* Point 5: Keterangan Status Antrean 4 Kolom Horizontal Sebaris (antrean.html) */
+.legend-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+}
+
+@media (max-width: 1024px) and (min-width: 641px) {
+    .legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .legend-grid {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 /* Point 3 (Part A): Symmetrical Refund & Cancellation Section (antrean.html) */
@@ -5430,7 +5573,7 @@ tbody span.badge,
 #riwayat-pengembalian {
     max-width: 1140px !important;
     width: 100% !important;
-    margin: 0 auto 16px auto !important;
+    margin: 0 auto !important;
     background: #FFFFFF !important;
     border: 1.5px solid #CEE9BA !important;
     border-radius: 18px !important;
@@ -5439,38 +5582,30 @@ tbody span.badge,
     box-sizing: border-box !important;
 }
 
-.refund-policy-note {
-    max-width: 1140px !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-    background: #E4F5D4 !important;
-    border: 1.5px solid #CEE9BA !important;
-    border-radius: 18px !important;
-    color: #1F3819 !important;
-    padding: 16px 22px !important;
-    box-shadow: 0 4px 16px rgba(21, 43, 17, 0.04) !important;
-    box-sizing: border-box !important;
-}
-
-.refund-policy-note svg {
-    color: #438E38 !important;
-}
-
-/* Point 3 (Part B): Audit Footer Note Paling Bawah (antrean.html) */
+/* Point 3 (Part B): Audit Footer Note Paling Bawah (dasbor.html & antrean.html) */
 .audit-footer-note {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     flex-wrap: wrap !important;
     gap: 12px !important;
-    padding: 14px 28px !important;
+    padding: 12px 28px !important;
     background: #F8FAF6 !important;
     border-top: 1.5px solid #CEE9BA !important;
-    margin-top: auto !important;
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    flex-shrink: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
     font-size: 12px !important;
     color: #35522B !important;
+}
+
+.modal-overlay[hidden],
+[hidden] {
+    display: none !important;
 }
 
 .audit-footer-left {
@@ -5503,9 +5638,371 @@ tbody span.badge,
     text-align: center !important;
     background: #F8FAF6 !important;
     border-top: 1px solid #E4F5D4 !important;
-    color: #6B7280 !important;
+    color: #5C6E57 !important;
     box-sizing: border-box !important;
     font-size: 12px !important;
+    margin-top: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* Point 1: Sejajarkan Tombol Filter Waktu, Order Manual, Ekspor CSV, & Buka Antrean Aktif secara Horizontal (dasbor.html) */
+.console-page-head,
+.page-dasbor .console-page-head {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 2px 0 4px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+@media (min-width: 1025px) {
+    .console-page-head,
+    .page-dasbor .console-page-head {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        gap: 16px !important;
+    }
+}
+
+.console-title-group,
+.page-dasbor .console-title-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.console-title-group h1,
+.page-dasbor .console-title-group h1 {
+    font-size: clamp(20px, 2vw, 24px) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+    color: #152B11 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.console-title-group p,
+.page-dasbor .console-title-group p {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #5C6E57 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.page-dasbor .console-head-actions {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+}
+
+.page-dasbor .console-head-actions .date-filter-btn-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: #F1F5F9 !important;
+    border: 1px solid #CEE9BA !important;
+    border-radius: 10px !important;
+    padding: 2px !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+.page-dasbor .console-head-actions .date-filter-btn {
+    border: 0 !important;
+    background: transparent !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    padding: 0 10px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #5C6E57 !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: all 0.2s ease !important;
+}
+
+.page-dasbor .console-head-actions .date-filter-btn.active {
+    background: #FFFFFF !important;
+    color: #152B11 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 3px rgba(21, 43, 17, 0.08) !important;
+}
+
+.page-dasbor .console-head-actions .btn-export-outline {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 12px !important;
+    border-radius: 10px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #CEE9BA !important;
+    color: #152B11 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 1px 3px rgba(21, 43, 17, 0.04) !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+
+.page-dasbor .console-head-actions .btn-export-outline:hover {
+    background: #E4F5D4 !important;
+    border-color: #438E38 !important;
+    color: #152B11 !important;
+}
+
+.page-dasbor .console-head-actions .btn-export-outline svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+}
+
+.page-dasbor .console-head-actions .btn-console-queue {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 14px !important;
+    border-radius: 10px !important;
+    background: #438E38 !important;
+    border: 1px solid #326B25 !important;
+    color: #FFFFFF !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 8px rgba(67, 142, 56, 0.25) !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+
+.page-dasbor .console-head-actions .btn-console-queue:hover {
+    background: #326B25 !important;
+}
+
+.page-dasbor .console-head-actions .btn-console-queue svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+}
+
+@media (max-width: 1024px) and (min-width: 641px) {
+    .page-dasbor .console-head-actions {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-dasbor .console-head-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    .page-dasbor .console-head-actions .date-filter-btn-group {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        display: flex !important;
+    }
+    .page-dasbor .console-head-actions .date-filter-btn {
+        flex: 1 1 0 !important;
+        text-align: center !important;
+    }
+    .page-dasbor .console-head-actions .btn-export-outline,
+    .page-dasbor .console-head-actions .btn-console-queue {
+        width: 100% !important;
+        min-height: 38px !important;
+        justify-content: center !important;
+    }
+    .page-dasbor .console-head-actions .btn-console-queue {
+        grid-column: 1 / -1 !important;
+    }
+}
+
+/* 24. Receipt & Detail Modal Harmonization (Dark Forest Green) */
+.modal-header,
+.receipt-modal-header,
+.detail-modal-header {
+    background-color: #1F3D17 !important;
+    background: #1F3D17 !important;
+    color: #FFFFFF !important;
+    border-bottom: 1px solid #438E38 !important;
+}
+
+.modal-header h2,
+.modal-header h3,
+.modal-header span,
+.modal-header strong,
+.modal-header .modal-title,
+.receipt-modal-header h2,
+.receipt-modal-header h3,
+.receipt-modal-header span,
+.receipt-modal-header strong,
+.detail-modal-header h2,
+.detail-modal-header h3,
+.detail-modal-header span,
+.detail-modal-header strong {
+    color: #FFFFFF !important;
+}
+
+.modal-header .modal-subtitle,
+.receipt-modal-header span,
+.detail-modal-header span {
+    color: #E4F5D4 !important;
+}
+
+.modal-close-btn,
+#btn-close-receipt {
+    color: #FFFFFF !important;
+}
+
+.modal-close-btn svg {
+    stroke: #FFFFFF !important;
+}
+
+/* Tombol konfirmasi tutup/cetak dalam modal */
+.modal-btn-primary,
+.btn-modal-action {
+    background-color: #438E38 !important;
+    background: #438E38 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #326B25 !important;
+}
+
+.modal-btn-primary:hover,
+.btn-modal-action:hover {
+    background-color: #326B25 !important;
+}
+
+/* History KPI Card Filter Styles */
+.history-kpi-card[data-filter],
+.history-kpi-card[data-history-status],
+.filter-status-card {
+    cursor: pointer !important;
+    user-select: none !important;
+    transition: all 0.2s ease !important;
+    border: 1.5px solid transparent !important;
+}
+
+.history-kpi-card[data-filter]:hover,
+.history-kpi-card[data-history-status]:hover,
+.filter-status-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(67, 142, 56, 0.15) !important;
+}
+
+.history-kpi-card[data-filter="ALL"].active,
+.history-kpi-card[data-history-status="ALL"].active,
+.history-kpi-card.active:not(.history-kpi-card--danger):not(.history-kpi-card--success) {
+    border-color: #438E38 !important;
+    background-color: #E4F5D4 !important;
+    box-shadow: 0 0 0 2px rgba(67, 142, 56, 0.25) !important;
+}
+
+.history-kpi-card--success.active,
+.history-kpi-card[data-filter="COMPLETED"].active,
+.history-kpi-card[data-history-status="COMPLETED"].active {
+    border-color: #438E38 !important;
+    background-color: #E4F5D4 !important;
+    box-shadow: 0 0 0 2px rgba(67, 142, 56, 0.25) !important;
+}
+
+.history-kpi-card--danger.active,
+.history-kpi-card[data-filter="CANCELLED"].active,
+.history-kpi-card[data-history-status="CANCELLED"].active {
+    border-color: #dc2626 !important;
+    background-color: #fee2e2 !important;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25) !important;
+}
+
+/* 25. Spacing & Typography Penyelarasan Bagian Aksi Cepat (Dasbor) */
+.quick-actions-grid,
+.quick-actions-section {
+    margin-bottom: 36px !important; /* Berikan space bawah yang luas dan rapi */
+}
+
+.quick-actions-section h2,
+.quick-actions-title,
+h2:has(+ .quick-actions-grid),
+#aksi-cepat-heading {
+    font-size: clamp(20px, 2.5vw, 24px) !important;
+    font-weight: 800 !important;
+    color: #152B11 !important;
+    margin-top: 36px !important;
+    margin-bottom: 16px !important; 
+}
+
+/* Sesuaikan ukuran font di dalam kartu Aksi Cepat agar setara dengan Status Printer */
+.quick-action-card strong,
+.quick-action-card .action-title,
+.quick-action-text strong {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    color: #152B11 !important;
+}
+
+.quick-action-card span,
+.quick-action-card .action-sub,
+.quick-action-text span {
+    font-size: 12.5px !important;
+    color: #35522B !important;
+}
+
+/* Pastikan jarak strip audit terhadap elemen di atasnya juga pas dan seimbang */
+.audit-footer-note {
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
 }
 
 
+
+
+
+
+
+/* Point 25: Order Manual (Walk-In POS) Compact Spacing */
+.page-order-manual .console-content {
+    padding: 18px 24px 36px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    gap: 12px !important;
+}
+
+.page-order-manual .console-page-head {
+    margin-bottom: 14px !important;
+}
+
+.page-order-manual .pos-layout-grid {
+    gap: 18px !important;
+    width: 100% !important;
+}

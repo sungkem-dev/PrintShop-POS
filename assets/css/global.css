@@ -5275,6 +5275,26 @@ article.step-card .step-number {
     box-sizing: border-box !important;
 }
 
+.console-sidebar > div:first-child,
+.console-sidebar-header {
+    padding: 18px 20px !important;
+    border-bottom: 1.5px solid #CEE9BA !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    height: auto !important;
+}
+
+.console-nav-menu {
+    padding: 16px 14px !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+}
+
 .console-user-footer,
 .sidebar-user-card {
     margin-top: auto !important;
@@ -5295,11 +5315,29 @@ article.step-card .step-number {
         top: 0 !important;
         bottom: 0 !important;
         height: 100vh !important;
+        max-height: 100vh !important;
         z-index: 1000 !important;
+        transition: left 0.3s ease !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     }
 
-    .console-sidebar.is-open {
+    .console-sidebar.is-open,
+    .console-sidebar.open {
         left: 0 !important;
+    }
+
+    .console-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.4) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 999 !important;
+        display: none !important;
+    }
+
+    .console-backdrop.is-open,
+    .console-backdrop.visible {
+        display: block !important;
     }
 }
 
@@ -5608,16 +5646,22 @@ tbody span.badge,
 }
 
 /* Point 1: Sejajarkan Tombol Filter Waktu, Order Manual, Ekspor CSV, & Buka Antrean Aktif secara Horizontal (dasbor.html) */
+.console-page-head,
 .page-dasbor .console-page-head {
     display: flex !important;
     flex-direction: column !important;
-    gap: 16px !important;
-    margin-bottom: 20px !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 2px 0 4px 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
+    .console-page-head,
     .page-dasbor .console-page-head {
         flex-direction: row !important;
         align-items: center !important;
@@ -5627,8 +5671,35 @@ tbody span.badge,
     }
 }
 
+.console-title-group,
 .page-dasbor .console-title-group {
-    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.console-title-group h1,
+.page-dasbor .console-title-group h1 {
+    font-size: clamp(20px, 2vw, 24px) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+    color: #152B11 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.console-title-group p,
+.page-dasbor .console-title-group p {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #5C6E57 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .page-dasbor .console-head-actions {
@@ -5637,6 +5708,7 @@ tbody span.badge,
     flex-wrap: nowrap !important;
     gap: 8px !important;
     flex-shrink: 0 !important;
+    margin: 0 !important;
 }
 
 .page-dasbor .console-head-actions .date-filter-btn-group {
@@ -5739,10 +5811,12 @@ tbody span.badge,
     flex-shrink: 0 !important;
 }
 
-@media (max-width: 1023px) and (min-width: 641px) {
+@media (max-width: 1024px) and (min-width: 641px) {
     .page-dasbor .console-head-actions {
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
     }
 }
 
@@ -5756,11 +5830,20 @@ tbody span.badge,
     .page-dasbor .console-head-actions .date-filter-btn-group {
         grid-column: 1 / -1 !important;
         width: 100% !important;
+        display: flex !important;
+    }
+    .page-dasbor .console-head-actions .date-filter-btn {
+        flex: 1 1 0 !important;
+        text-align: center !important;
     }
     .page-dasbor .console-head-actions .btn-export-outline,
     .page-dasbor .console-head-actions .btn-console-queue {
         width: 100% !important;
         min-height: 38px !important;
+        justify-content: center !important;
+    }
+    .page-dasbor .console-head-actions .btn-console-queue {
+        grid-column: 1 / -1 !important;
     }
 }
 
