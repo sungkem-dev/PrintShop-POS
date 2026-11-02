@@ -26,9 +26,12 @@ export async function POST(request) {
         id: operator.id,
         name: operator.name,
         email: operator.email,
-        role: operator.role
+        role: operator.role,
+        loket_id: operator.loket_id || 'LOKET-1',
+        station_id: operator.station_id || 'LOKET-1',
+        station_name: operator.station_name || 'Loket 1 (Kasir Utama)'
       },
-      token: `auth_${Date.now()}_${operator.id}`
+      token: operator.token || `auth_${Date.now()}_${operator.id}`
     });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

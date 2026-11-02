@@ -28,9 +28,11 @@
       });
     }
 
-    // Submit handler
+    // Submit handler (jika login.js dipanggil secara terpisah)
     if (form) {
       form.addEventListener('submit', async function (e) {
+        // Cek jika event sudah di-handle oleh handler internal login.html
+        if (e.defaultPrevented) return;
         e.preventDefault();
 
         const email = emailInput ? emailInput.value.trim() : '';
@@ -55,8 +57,8 @@
               return;
             }
           }
-          // Default fallback
-          if (pin === '123456') {
+          // Default fallback offline demo
+          if (pin === '123456' && email.toLowerCase().includes('operator')) {
             localStorage.setItem('printshop_operator', JSON.stringify({
               name: 'Ahmad Hidayat',
               email: email,
@@ -65,7 +67,7 @@
             window.location.href = 'dasbor.html';
             return;
           }
-          alert('PIN salah atau tidak terdaftar. Coba PIN default: 123456');
+          alert('Kombinasi email atau PIN salah.');
         } catch (err) {
           alert(err.message || 'Login gagal. Periksa kembali email dan PIN.');
         } finally {
