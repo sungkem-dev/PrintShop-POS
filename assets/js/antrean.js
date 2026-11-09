@@ -581,7 +581,7 @@
           </div>
         </div>
         <div style="padding:16px 24px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; gap:10px; justify-content:flex-end;">
-          <button type="button" onclick="window.print()" class="btn-export-outline btn-modal-action" style="font-size:12.5px; padding:8px 15px; border:1px solid #cbd5e1; border-radius:8px; background:#fff; font-weight:600; cursor:pointer;">
+          <button type="button" id="btn-print-receipt-modal" class="btn-export-outline btn-modal-action" style="font-size:12.5px; padding:8px 15px; border:1px solid #cbd5e1; border-radius:8px; background:#fff; font-weight:600; cursor:pointer;">
             🖨️ Cetak Struk
           </button>
           <button type="button" id="btn-done-receipt" class="btn-primary modal-btn-primary" style="font-size:12.5px; padding:8px 20px; background-color:#438E38 !important; color:#FFFFFF !important; border:1.5px solid #326B25 !important; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(67, 142, 56, 0.28);">
@@ -594,6 +594,16 @@
     modal.style.display = 'flex';
     document.getElementById('btn-close-receipt').onclick = () => { modal.style.display = 'none'; };
     document.getElementById('btn-done-receipt').onclick = () => { modal.style.display = 'none'; };
+    const btnPrintReceipt = document.getElementById('btn-print-receipt-modal');
+    if (btnPrintReceipt) {
+      btnPrintReceipt.onclick = () => {
+        if (window.PrintShopAPI && typeof window.PrintShopAPI.printThermalReceipt === 'function') {
+          window.PrintShopAPI.printThermalReceipt(order);
+        } else {
+          window.print();
+        }
+      };
+    }
   }
 
   window.openReceiptModal = openReceiptModal;

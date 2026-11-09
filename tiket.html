@@ -1487,7 +1487,8 @@
     @media print {
       body {
         background: #ffffff !important;
-        color: #000000 !important;
+        color: #0f172a !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
       }
 
       .site-header,
@@ -1498,35 +1499,48 @@
       .ticket-actions-bar,
       .help-cta-wrap,
       .btn-copy-claim,
-      .toast-notification {
+      .toast-notification,
+      .ticket-tracker-col,
+      .tracker-card,
+      .guide-card,
+      .success-banner,
+      .back-to-home,
+      .live-status-pill,
+      #modal-not-found {
         display: none !important;
       }
 
       .ticket-page-grid {
         display: block !important;
-        margin: 0 !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
         padding: 0 !important;
       }
 
-      .ticket-card,
-      .tracker-card,
-      .guide-card,
-      .success-banner {
-        border: 1px solid #000000 !important;
+      .ticket-card {
+        border: 2px solid #0f172a !important;
+        border-radius: 14px !important;
         box-shadow: none !important;
-        margin-bottom: 20px !important;
+        margin: 0 auto !important;
+        padding: 24px !important;
         break-inside: avoid;
+        page-break-inside: avoid;
       }
 
       .claim-code-container {
-        background: #ffffff !important;
-        color: #000000 !important;
-        border: 2px solid #000000 !important;
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        border: 2px dashed #0f172a !important;
         box-shadow: none !important;
+        padding: 16px !important;
+        text-align: center !important;
       }
 
       .claim-code-text {
-        color: #000000 !important;
+        color: #0f172a !important;
+        font-size: 32px !important;
+        letter-spacing: 4px !important;
+        font-weight: 900 !important;
         text-shadow: none !important;
       }
     }
@@ -2014,8 +2028,7 @@
 
             <!-- Ticket Action Buttons -->
             <div class="ticket-actions-bar">
-              <a href="./assets/images/tiket-ord-042.png" download="tiket-ORD-042.png"
-                class="btn-ticket-action btn-ticket-primary">
+              <button type="button" class="btn-ticket-action btn-ticket-primary" id="btn-download-ticket" title="Unduh berkas tiket digital">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -2023,7 +2036,7 @@
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Unduh Tiket sebagai Gambar
-              </a>
+              </button>
 
               <button type="button" class="btn-ticket-action btn-ticket-outline" id="btn-print-ticket">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"

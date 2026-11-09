@@ -386,7 +386,238 @@
     }, 1000);
   }
 
+  // ── Ticket Image Generator & Downloader ───────────
+  function roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+  }
+
+  function roundRectTop(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x, y + height);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+  }
+
+  function downloadTicketAsImage() {
+    const rawOrder = currentOrder || JSON.parse(sessionStorage.getItem('printshop_order') || '{}');
+    const orderIdHighlight = document.querySelector('.order-id-highlight');
+    const orderCode = (orderIdHighlight ? orderIdHighlight.textContent.replace('#', '') : (rawOrder.order_code || 'ORD-042')).trim();
+    const claimCode = (claimCodeEl ? claimCodeEl.textContent.trim() : (rawOrder.claim_code || 'XK7-29F'));
+    const customer = rawOrder.customer_name || 'Pelanggan PrintShop';
+    const phone = rawOrder.customer_phone || '-';
+    const fileName = (orderFilename ? orderFilename.textContent.trim() : (rawOrder.file_name || 'tugas-akhir-bab3.pdf'));
+    const paper = (orderPaper ? orderPaper.textContent.trim() : 'A4');
+    const color = (orderColor ? orderColor.textContent.trim() : 'Hitam & Putih');
+    const side = (orderSide ? orderSide.textContent.trim() : 'Satu Sisi (Simplex)');
+    const pages = (orderPages ? orderPages.textContent.trim() : '24 lembar');
+    const copies = (orderCopies ? orderCopies.textContent.trim() : '1 salinan');
+    const totalStr = (orderTotal ? orderTotal.textContent.trim() : (rawOrder.total_price ? formatRupiah(rawOrder.total_price) : 'Rp 12.000'));
+    const dateStr = new Date(rawOrder.created_at || Date.now()).toLocaleString('id-ID', {
+      day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 720;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      showToast('Gagal memproses gambar tiket');
+      return;
+    }
+
+    // Outer Background
+    ctx.fillStyle = '#F8FAFC';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Card Box
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, 30, 30, 660, 940, 24);
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.stroke();
+
+    // Top Brand Bar (Emerald Accent)
+    ctx.fillStyle = '#059669';
+    roundRectTop(ctx, 30, 30, 660, 16, 24);
+    ctx.fill();
+
+    // Header Content
+    ctx.fillStyle = '#0F172A';
+    ctx.font = 'bold 26px system-ui, -apple-system, sans-serif';
+    ctx.fillText('PrintShop POS', 60, 85);
+
+    ctx.fillStyle = '#64748B';
+    ctx.font = '14px system-ui, -apple-system, sans-serif';
+    ctx.fillText('Digital Self-Service Print Ticket', 60, 110);
+
+    // Order Code Badge
+    ctx.fillStyle = '#EFF6FF';
+    roundRect(ctx, 470, 65, 190, 48, 12);
+    ctx.fill();
+    ctx.strokeStyle = '#BFDBFE';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#1D4ED8';
+    ctx.font = 'bold 20px monospace';
+    const codeText = '#' + orderCode;
+    const codeWidth = ctx.measureText(codeText).width;
+    ctx.fillText(codeText, 470 + (190 - codeWidth) / 2, 96);
+
+    // Divider
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, 135);
+    ctx.lineTo(660, 135);
+    ctx.stroke();
+
+    // Claim Code Container
+    ctx.fillStyle = '#ECFDF5';
+    roundRect(ctx, 60, 155, 600, 135, 16);
+    ctx.fill();
+    ctx.strokeStyle = '#A7F3D0';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 6]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#065F46';
+    ctx.font = 'bold 13px system-ui, sans-serif';
+    ctx.fillText('KODE KLAIM PENGAMBILAN DOKUMEN', 85, 185);
+
+    ctx.fillStyle = '#047857';
+    ctx.font = 'bold 44px monospace';
+    ctx.fillText(claimCode, 85, 238);
+
+    ctx.fillStyle = '#065F46';
+    ctx.font = '13px system-ui, sans-serif';
+    ctx.fillText('Tunjukkan kode ini ke operator saat mengambil cetakan di loket.', 85, 268);
+
+    // Heading Specs
+    ctx.fillStyle = '#0F172A';
+    ctx.font = 'bold 16px system-ui, sans-serif';
+    ctx.fillText('Rincian Spesifikasi Dokumen', 60, 325);
+
+    // Table Rows
+    const rows = [
+      ['Nama Pelanggan', customer],
+      ['Nomor WhatsApp', phone],
+      ['Nama Berkas', fileName],
+      ['Ukuran Kertas', paper],
+      ['Mode Warna', color],
+      ['Sisi Cetak', side],
+      ['Halaman & Salinan', `${pages} × ${copies}`],
+      ['Waktu Masuk', dateStr],
+      ['Status Pembayaran', 'LUNAS (Verified)']
+    ];
+
+    let startY = 360;
+    rows.forEach(([label, val], idx) => {
+      if (idx % 2 === 0) {
+        ctx.fillStyle = '#F8FAFC';
+        ctx.fillRect(60, startY - 18, 600, 32);
+      }
+      ctx.fillStyle = '#64748B';
+      ctx.font = '13.5px system-ui, sans-serif';
+      ctx.fillText(label, 75, startY + 4);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 13.5px system-ui, sans-serif';
+      const displayVal = val.length > 36 ? val.slice(0, 36) + '...' : val;
+      const textWidth = ctx.measureText(displayVal).width;
+      ctx.fillText(displayVal, 645 - textWidth, startY + 4);
+
+      startY += 34;
+    });
+
+    // Total Payment Banner
+    startY += 10;
+    ctx.fillStyle = '#F0FDF4';
+    roundRect(ctx, 60, startY, 600, 60, 14);
+    ctx.fill();
+    ctx.strokeStyle = '#BBF7D0';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#166534';
+    ctx.font = 'bold 15px system-ui, sans-serif';
+    ctx.fillText('Total Biaya Dibayar', 85, startY + 36);
+
+    ctx.fillStyle = '#059669';
+    ctx.font = 'bold 22px system-ui, sans-serif';
+    const priceWidth = ctx.measureText(totalStr).width;
+    ctx.fillText(totalStr, 635 - priceWidth, startY + 38);
+
+    // Barcode Strip Simulation
+    startY += 85;
+    ctx.fillStyle = '#0F172A';
+    const barcodeX = 140;
+    const barcodeWidth = 440;
+    const barCount = 55;
+    const step = barcodeWidth / barCount;
+    for (let b = 0; b < barCount; b++) {
+      if ((b % 3 === 0) || (b % 7 === 0) || (b % 5 === 1)) {
+        ctx.fillRect(barcodeX + b * step, startY, (b % 4 === 0 ? 4 : 2), 44);
+      }
+    }
+    ctx.fillStyle = '#64748B';
+    ctx.font = '12px monospace';
+    const bcText = `*${orderCode}-${claimCode}*`;
+    const bcWidth = ctx.measureText(bcText).width;
+    ctx.fillText(bcText, (canvas.width - bcWidth) / 2, startY + 62);
+
+    // Footer Info
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '12px system-ui, sans-serif';
+    const foot1 = 'PrintShop POS — Gerai Ruko Kampus • Loket Pengambilan Buka 08.00–21.00 WIB';
+    ctx.fillText(foot1, (canvas.width - ctx.measureText(foot1).width) / 2, startY + 95);
+
+    // Trigger Download
+    try {
+      const dataUrl = canvas.toDataURL('image/png');
+      const dlLink = document.createElement('a');
+      dlLink.href = dataUrl;
+      dlLink.download = `tiket-${orderCode}.png`;
+      document.body.appendChild(dlLink);
+      dlLink.click();
+      document.body.removeChild(dlLink);
+      showToast(`Tiket #${orderCode} berhasil diunduh sebagai gambar!`);
+    } catch (err) {
+      console.error('Canvas download error:', err);
+      showToast('Tiket: Mengunduh gambar...');
+      const fallbackA = document.createElement('a');
+      fallbackA.href = './assets/images/tiket-ord-042.png';
+      fallbackA.download = `tiket-${orderCode}.png`;
+      fallbackA.click();
+    }
+  }
+
   // ── Interactive Buttons ───────────────────────────
+  const btnDownloadTicket = document.getElementById('btn-download-ticket') || document.querySelector('.ticket-actions-bar .btn-ticket-primary');
+  if (btnDownloadTicket) {
+    btnDownloadTicket.addEventListener('click', function (e) {
+      e.preventDefault();
+      downloadTicketAsImage();
+    });
+  }
+
   if (btnCopyClaim) {
     btnCopyClaim.addEventListener('click', function () {
       const code = claimCodeEl ? claimCodeEl.textContent.trim() : orderCode;

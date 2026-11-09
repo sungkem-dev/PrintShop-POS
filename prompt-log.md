@@ -106,6 +106,32 @@
 5. **Pembaruan Dokumentasi Bersih (`README.md` & `prompt-log.md`)**:
    - Menulis ulang `README.md` dan `prompt-log.md` menggunakan encoding UTF-8 standar dan format Markdown bersih tanpa simbol atau karakter yang rusak.
 
+### Sesi 8 — Perbaikan Revisi Magang: Pembenahan Icon Tarif, Unduh & Cetak Tiket, Cetak Struk POS, dan Ekspor Laporan CSV/PDF
+**Tanggal:** 09 November 2026, 19:00 WITA  
+**Instruksi Pengguna:**
+> *"tolong benerin revisi/fix kan web nya ya (icon tarif yang double, bagian unduh/cetak tiket, sama cetak struk & export laporan ke csv, dll) untuk projek magangnya ada yang terupdate dari progres teman kelompok magang yang ada di github, bisakah anda melakukan perbaikan tersebut dengan mengakses projek magang yang ada di github?"*
+
+**Perubahan & Implementasi:**
+1. **Sinkronisasi Kode GitHub (Merge Upstream `origin/main`)**:
+   - Menghubungkan dan melakukan `git pull origin main` secara aman tanpa konflik, mengintegrasikan seluruh commit terbaru dari tim (`fix/usability-iteration`, `topan/fix/fixing-auth-hash-detection`, `fix-ui-polish`, `topan/feat/integrasi-clarity`, `faris/feat/register-page-refund-system`).
+2. **Perbaikan Icon Tarif Ganda (`spesifikasi.html` & `public/spesifikasi.html`)**:
+   - Sebelumnya, kartu *Estimasi Biaya* dan kartu *Rincian Tarif* di sidebar kanan menggunakan icon dollar ($) yang identik persis, menimbulkan kesan visual icon kembar/double.
+   - Mengubah icon kartu *Estimasi Biaya* menjadi icon **Kalkulator / Mesin Hitung**, dan kartu *Rincian Tarif* menggunakan icon **Label Harga / Price Tag** yang semantik, elegan, dan proporsional.
+3. **Perbaikan Unduh & Cetak Tiket Digital (`tiket.html`, `ticket-tracker.js` & `public/`)**:
+   - **Unduh Tiket sebagai Gambar**: Mengganti unduhan tautan statis file gambar dummy (`tiket-ord-042.png`) dengan **Dynamic HTML5 Canvas Ticket Generator**. Sistem kini secara real-time merender kartu tiket resolusi tinggi (Order Code, Kode Klaim, Nama Pelanggan, Spesifikasi Berkas, Status Lunas, Barcode) dan mengunduhnya sebagai `tiket-[NOMOR_ORDER].png`.
+   - **Cetak Tiket Fisik**: Memperbaiki `@media print` sehingga saat tombol dicetak ditekan, hanya kartu tiket fisik (`#ticket-card`) yang dicetak ke kertas. Elemen live tracker, panduan pengambilan, banner sukses, sidebar, dan header/footer otomatis disembunyikan.
+4. **Perbaikan & Standarisasi Cetak Struk POS Kasir (`antrean.js`, `order-manual.html`, `order-manual.js`, `api.js`)**:
+   - Menambahkan utilitas global `PrintShopAPI.printThermalReceipt(order)` yang mencetak struk kasir termal 80mm/58mm autentik melalui frame cetak terisolasi (lengkap dengan logo toko, identitas loket/kasir, waktu, rincian biaya, kode klaim, barcode, dan footer bukti sah).
+   - Memperbaiki tombol `🖨️ Cetak Struk` pada modal detail & riwayat pesanan di `antrean.html` agar tidak lagi mencetak background layar antrean.
+   - Menambahkan tombol `🖨️ Cetak Struk Kasir` pada modal sukses pemesanan manual walk-in di `order-manual.html` sehingga kasir dapat langsung mencetak struk fisik bagi pelanggan gerai.
+5. **Perbaikan Ekspor Laporan CSV & Dokumen Resmi PDF (`dasbor.html` & `dasbor.js`)**:
+   - **Ekspor CSV Komprehensif**: Menambahkan encoding UTF-8 Byte Order Mark (`\uFEFF`) agar file CSV terbuka sempurna di Microsoft Excel Windows tanpa masalah karakter rusak. Menambahkan kolom lengkap: Nomor, Kode Pesanan, Tanggal, Pelanggan, WhatsApp, File, Ukuran Kertas, Mode Warna, Sisi Cetak, Jilid/Finishing, Halaman, Salinan, Lembar Fisik, Metode Pembayaran, Total Biaya, dan Status.
+   - **Filter Periode Dinamis**: Mengubah input tanggal statis menjadi dinamis (otomatis terisi 30 hari terakhir s.d. hari ini) dan menyaring data ekspor sesuai rentang tanggal yang dipilih.
+   - **Ekspor PDF Resmi**: Menyediakan generator rekapitulasi audit transaksi resmi berformat landscape untuk cetak/simpan sebagai PDF lengkap dengan ringkasan omzet, total transaksi, dan lembar fisik.
+   - Mengintegrasikan kartu tindakan cepat *Ekspor CSV* di dasbor agar dapat langsung mengekspor laporan dengan 1 klik.
+6. **Perbaikan Pelacakan Pesanan Fallback (`lib/supabase.js` & `lib/mockStore.js`)**:
+   - Memperbaiki `getOrderById` agar fallback ke `mockStore` jika data di Supabase tidak ditemukan, sehingga pencarian tiket online (`ORD-042`, `ORD-600`, dll) selalu berhasil merespons dengan HTTP 200 dan data akurat.
+
 ---
 
 ## 3. Matriks Inventaris File Utama

@@ -248,6 +248,8 @@
       });
     }
 
+    let lastSavedOrder = null;
+
     if (form) {
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -306,6 +308,24 @@
 
           const orderCode = createdOrder?.order_code || `ORD-${Math.floor(Math.random() * 900) + 100}`;
 
+          lastSavedOrder = createdOrder || {
+            order_code: orderCode,
+            customer_name: customerName,
+            customer_phone: customerPhone,
+            file_name: fileName,
+            total_pages: totalPages,
+            copies: copies,
+            total_price: currentCalculatedTotal,
+            payment_method: paymentMethod,
+            created_at: new Date().toISOString(),
+            specifications: {
+              paper_size: paperSize,
+              color_mode: colorMode,
+              print_side: printSide,
+              finishing: finishing
+            }
+          };
+
           // Show success modal
           const modal = document.getElementById('modal-order-success');
           if (modal) {
@@ -347,6 +367,18 @@
         if (modal) modal.style.display = 'none';
         if (form) form.reset();
         calculateTotal();
+      });
+    }
+
+    // Modal Print Receipt button
+    const btnPrintSuccess = document.getElementById('btn-print-receipt-success');
+    if (btnPrintSuccess) {
+      btnPrintSuccess.addEventListener('click', function () {
+        if (lastSavedOrder && window.PrintShopAPI && typeof window.PrintShopAPI.printThermalReceipt === 'function') {
+          window.PrintShopAPI.printThermalReceipt(lastSavedOrder);
+        } else {
+          window.print();
+        }
       });
     }
 
