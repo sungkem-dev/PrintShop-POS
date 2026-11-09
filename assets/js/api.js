@@ -353,6 +353,144 @@
       }
     },
 
+    // ── Thermal POS Receipt Printer ─────────────────────
+    printThermalReceipt(order) {
+      if (!order) return;
+      const spec = order.specifications || order.spec || {};
+      const orderCode = order.order_code || order.id || 'ORD-000';
+      const customer = order.customer_name || 'Pelanggan Walk-In';
+      const phone = order.customer_phone || '-';
+      const fileName = order.file_name || 'Dokumen.pdf';
+      const paper = spec.paper_size || order.paper || 'A4';
+      const color = (spec.color_mode || order.color || '').toLowerCase().includes('color') ? 'Full Color' : 'Hitam-Putih';
+      const side = (spec.print_side || order.side || 'Simplex').toLowerCase().includes('duplex') ? '2 Sisi (Duplex)' : '1 Sisi (Simplex)';
+      const finishing = spec.finishing || order.finishing || 'Tanpa Jilid';
+      const pages = Number(order.total_pages || order.pages || 1);
+      const copies = Number(order.copies || 1);
+      const sheets = Math.ceil(pages / (side.includes('Duplex') ? 2 : 1)) * copies;
+      const totalPrice = Number(order.total_price || 0);
+      const method = order.payment_method || (order.payment && order.payment.method) || 'TUNAI';
+      const dateStr = new Date(order.created_at || Date.now()).toLocaleString('id-ID', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      const claimCode = order.claim_code || ('PKM-' + String(orderCode).replace(/\D/g, '').slice(-3).padStart(3, '0'));
+
+      let iframe = document.getElementById('receipt-print-frame');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'receipt-print-frame';
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
+      }
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Struk Pesanan #${orderCode}</title>
+          <style>
+            @page {
+              size: 80mm auto;
+              margin: 3mm 4mm;
+            }
+            * { box-sizing: border-box; }
+            body {
+              font-family: 'Courier New', Courier, monospace, system-ui;
+              font-size: 11px;
+              line-height: 1.35;
+              color: #000;
+              background: #fff;
+              margin: 0;
+              padding: 4px;
+            }
+            .center { text-align: center; }
+            .right { text-align: right; }
+            .bold { font-weight: bold; }
+            .d-dash { border-top: 1px dashed #000; margin: 6px 0; }
+            .d-double { border-top: 2px dashed #000; margin: 6px 0; }
+            .row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+            .header-title { font-size: 15px; font-weight: bold; letter-spacing: 1px; }
+            .header-sub { font-size: 9.5px; }
+            .claim-box {
+              border: 1.5px dashed #000;
+              padding: 6px;
+              text-align: center;
+              margin: 6px 0;
+            }
+            .claim-code { font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+            .barcode { font-family: monospace; letter-spacing: 3px; font-size: 12px; text-align: center; margin: 4px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="center">
+            <div class="header-title">PRINTSHOP POS</div>
+            <div class="header-sub">Gerai Ruko Kampus • Self-Service Digital Print</div>
+            <div class="header-sub">WhatsApp: 0812-3456-7890</div>
+          </div>
+
+          <div class="d-double"></div>
+
+          <div class="row"><span>No. Order:</span><span class="bold">#${orderCode}</span></div>
+          <div class="row"><span>Waktu:</span><span>${dateStr}</span></div>
+          <div class="row"><span>Pelanggan:</span><span class="bold">${customer}</span></div>
+          <div class="row"><span>No. WA:</span><span>${phone}</span></div>
+
+          <div class="d-dash"></div>
+
+          <div class="bold" style="word-break: break-all; margin-bottom: 2px;">${fileName}</div>
+          <div class="row">
+            <span>${paper} • ${color}</span>
+            <span>${pages} hal × ${copies} cop</span>
+          </div>
+          <div class="row">
+            <span>${side} (${sheets} lbr)</span>
+            <span>${finishing}</span>
+          </div>
+
+          <div class="d-dash"></div>
+
+          <div class="row"><span>Subtotal:</span><span>Rp${totalPrice.toLocaleString('id-ID')}</span></div>
+          <div class="row bold" style="font-size: 13px;">
+            <span>TOTAL:</span>
+            <span>Rp${totalPrice.toLocaleString('id-ID')}</span>
+          </div>
+          <div class="row">
+            <span>Metode Bayar:</span>
+            <span class="bold">${method} (LUNAS)</span>
+          </div>
+
+          <div class="claim-box">
+            <div style="font-size: 9px;">KODE KLAIM PENGAMBILAN:</div>
+            <div class="claim-code">${claimCode}</div>
+          </div>
+
+          <div class="barcode">||| | || |||| | ||| || ||</div>
+
+          <div class="d-dash"></div>
+
+          <div class="center" style="font-size: 9px;">
+            <div>Simpan struk ini sebagai bukti sah pengambilan.</div>
+            <div style="margin-top: 3px;">Terima kasih atas kunjungan Anda!</div>
+          </div>
+        </body>
+        </html>
+      `);
+      doc.close();
+
+      setTimeout(() => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }, 250);
+    },
+
     // ── Realtime Poller / WebSocket ─────────────────────
     subscribeToOrders(callback, intervalMs = 4000) {
       let active = true;

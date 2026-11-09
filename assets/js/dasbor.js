@@ -328,8 +328,8 @@
     }
   }
 
-  // ── CSV Exporter ───────────────────────────────────────────────────
-  async function exportOrdersToCsv(filename = null) {
+  // ── CSV & Report Exporter ───────────────────────────────────────────
+  async function exportOrdersToCsv(filename = null, dateRange = null) {
     let orders = cachedOrders;
     if (!orders || orders.length === 0) {
       if (window.PrintShopAPI) {
@@ -337,29 +337,241 @@
       }
     }
 
-    const headers = ['Order Code', 'Pelanggan', 'No HP', 'Nama Berkas', 'Halaman', 'Salinan', 'Total Biaya', 'Status', 'Tanggal'];
-    const rows = (orders || []).map(o => [
-      o.order_code,
-      `"${(o.customer_name || '').replace(/"/g, '""')}"`,
-      o.customer_phone || '-',
-      `"${(o.file_name || '').replace(/"/g, '""')}"`,
-      o.total_pages || 1,
-      o.copies || 1,
-      o.total_price || 0,
-      o.status,
-      o.created_at
-    ]);
+    let filtered = orders || [];
+    if (dateRange && dateRange.dari && dateRange.sampai) {
+      const fromTime = new Date(dateRange.dari + 'T00:00:00').getTime();
+      const toTime = new Date(dateRange.sampai + 'T23:59:59.999').getTime();
+      filtered = filtered.filter(o => {
+        const t = new Date(o.created_at || Date.now()).getTime();
+        return t >= fromTime && t <= toTime;
+      });
+    }
 
-    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    if (filtered.length === 0) {
+      alert('Tidak ada data pesanan pada periode tanggal yang dipilih.');
+      return;
+    }
+
+    const headers = [
+      'No',
+      'Kode Pesanan',
+      'Tanggal & Waktu',
+      'Nama Pelanggan',
+      'Nomor WhatsApp',
+      'Nama Berkas',
+      'Ukuran Kertas',
+      'Mode Warna',
+      'Sisi Cetak',
+      'Finishing / Jilid',
+      'Total Halaman',
+      'Salinan (Copy)',
+      'Total Lembar Fisik',
+      'Metode Bayar',
+      'Total Biaya (Rp)',
+      'Status Pesanan'
+    ];
+
+    const rows = filtered.map((o, idx) => {
+      const spec = o.specifications || o.spec || {};
+      const paper = spec.paper_size || o.paper || 'A4';
+      const color = (spec.color_mode || o.color || '').toLowerCase().includes('color') ? 'Full Color' : 'Hitam-Putih';
+      const side = (spec.print_side || o.side || 'Simplex').toLowerCase().includes('duplex') ? 'Duplex (2 Sisi)' : 'Simplex (1 Sisi)';
+      const finishing = spec.finishing || o.finishing || 'Tanpa Jilid';
+      const pages = Number(o.total_pages || o.pages || 1);
+      const copies = Number(o.copies || 1);
+      const sheets = Math.ceil(pages / (side.includes('Duplex') ? 2 : 1)) * copies;
+      const paymentMethod = o.payment_method || (o.payment && o.payment.method) || (o.total_price > 0 ? 'TUNAI' : 'QRIS');
+      const dateStr = new Date(o.created_at || Date.now()).toLocaleString('id-ID', {
+        year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+      });
+
+      return [
+        idx + 1,
+        `"${o.order_code || o.id || ''}"`,
+        `"${dateStr}"`,
+        `"${(o.customer_name || 'Pelanggan Walk-In').replace(/"/g, '""')}"`,
+        `"${(o.customer_phone || '-').replace(/"/g, '""')}"`,
+        `"${(o.file_name || 'Dokumen.pdf').replace(/"/g, '""')}"`,
+        `"${paper}"`,
+        `"${color}"`,
+        `"${side}"`,
+        `"${finishing}"`,
+        pages,
+        copies,
+        sheets,
+        `"${paymentMethod}"`,
+        Number(o.total_price || 0),
+        `"${o.status || 'COMPLETED'}"`
+      ];
+    });
+
+    // Prepend UTF-8 BOM (\uFEFF) for Microsoft Excel compatibility
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
 
+    const defaultFilename = `Laporan-PrintShop-POS-${new Date().toISOString().split('T')[0]}.csv`;
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', filename || `Laporan-PrintShop-POS-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', filename || defaultFilename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // ── PDF Official Report Generator ──────────────────────────────────
+  async function exportOrdersToPdf(dateRange = null) {
+    let orders = cachedOrders;
+    if (!orders || orders.length === 0) {
+      if (window.PrintShopAPI) {
+        orders = await window.PrintShopAPI.getOrders();
+      }
+    }
+
+    let filtered = orders || [];
+    if (dateRange && dateRange.dari && dateRange.sampai) {
+      const fromTime = new Date(dateRange.dari + 'T00:00:00').getTime();
+      const toTime = new Date(dateRange.sampai + 'T23:59:59.999').getTime();
+      filtered = filtered.filter(o => {
+        const t = new Date(o.created_at || Date.now()).getTime();
+        return t >= fromTime && t <= toTime;
+      });
+    }
+
+    const session = window.PrintShopAPI ? window.PrintShopAPI.getOperatorSession() : null;
+    const operatorName = session?.name || 'Ahmad Hidayat';
+    const stationLabel = session?.station_name || session?.loket_id || 'Loket 1';
+    const totalOmzet = filtered.reduce((acc, o) => acc + (o.status !== 'CANCELLED' ? (o.total_price || 0) : 0), 0);
+    const totalLembar = filtered.reduce((acc, o) => {
+      const side = (o.specifications?.print_side || o.side || 'Simplex');
+      const p = Number(o.total_pages || o.pages || 1);
+      const c = Number(o.copies || 1);
+      return acc + (Math.ceil(p / (side.includes('Duplex') ? 2 : 1)) * c);
+    }, 0);
+
+    let iframe = document.getElementById('report-print-frame');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.id = 'report-print-frame';
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      document.body.appendChild(iframe);
+    }
+
+    const tableRows = filtered.map((o, idx) => {
+      const spec = o.specifications || o.spec || {};
+      const paper = spec.paper_size || o.paper || 'A4';
+      const color = (spec.color_mode || o.color || '').toLowerCase().includes('color') ? 'Color' : 'B/W';
+      const side = (spec.print_side || o.side || 'Simplex').toLowerCase().includes('duplex') ? 'Duplex' : 'Simplex';
+      const pages = Number(o.total_pages || o.pages || 1);
+      const copies = Number(o.copies || 1);
+      const sheets = Math.ceil(pages / (side.includes('Duplex') ? 2 : 1)) * copies;
+      const dateStr = new Date(o.created_at || Date.now()).toLocaleString('id-ID', {
+        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+      });
+
+      return `
+        <tr>
+          <td style="text-align:center; padding:6px 4px; border:1px solid #cbd5e1;">${idx + 1}</td>
+          <td style="padding:6px 8px; border:1px solid #cbd5e1; font-weight:bold;">${o.order_code || o.id}</td>
+          <td style="padding:6px 8px; border:1px solid #cbd5e1;">${dateStr}</td>
+          <td style="padding:6px 8px; border:1px solid #cbd5e1;">${o.customer_name || 'Walk-In'}</td>
+          <td style="padding:6px 8px; border:1px solid #cbd5e1; word-break:break-all;">${o.file_name || '-'}</td>
+          <td style="padding:6px 8px; border:1px solid #cbd5e1; font-size:10px;">${paper} • ${color} • ${side}</td>
+          <td style="text-align:center; padding:6px 4px; border:1px solid #cbd5e1;">${sheets}</td>
+          <td style="text-align:right; padding:6px 8px; border:1px solid #cbd5e1; font-weight:bold;">Rp${Number(o.total_price || 0).toLocaleString('id-ID')}</td>
+          <td style="text-align:center; padding:6px 4px; border:1px solid #cbd5e1; font-size:10px;">${o.status}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Laporan PrintShop POS</title>
+        <style>
+          @page { size: A4 landscape; margin: 12mm 15mm; }
+          body { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; color: #0f172a; margin: 0; padding: 10px; }
+          .header { border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+          .title { font-size: 20px; font-weight: 800; color: #0f172a; }
+          .sub { font-size: 12px; color: #64748b; margin-top: 2px; }
+          .kpi-boxes { display: flex; gap: 16px; margin-bottom: 16px; }
+          .kpi-card { flex: 1; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; background: #f8fafc; }
+          .kpi-card-label { font-size: 10.5px; color: #64748b; text-transform: uppercase; font-weight: 700; }
+          .kpi-card-val { font-size: 18px; font-weight: 800; color: #0f172a; margin-top: 4px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10.5px; }
+          th { background: #f1f5f9; padding: 8px 6px; border: 1px solid #94a3b8; font-weight: 700; text-align: left; }
+          .footer { margin-top: 24px; display: flex; justify-content: space-between; font-size: 11px; color: #64748b; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="title">PRINTSHOP POS — LAPORAN REKAPITULASI TRANSAKSI</div>
+            <div class="sub">Platform Self-Service Digital Print • Gerai Ruko Kampus</div>
+          </div>
+          <div style="text-align:right;">
+            <div><strong>Periode:</strong> ${dateRange ? `${dateRange.dari} s.d. ${dateRange.sampai}` : 'Semua Data'}</div>
+            <div class="sub">Dicetak oleh: ${operatorName} (${stationLabel})</div>
+          </div>
+        </div>
+
+        <div class="kpi-boxes">
+          <div class="kpi-card">
+            <div class="kpi-card-label">Total Omzet Tervalidasi</div>
+            <div class="kpi-card-val" style="color:#059669;">Rp${totalOmzet.toLocaleString('id-ID')}</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-card-label">Jumlah Transaksi</div>
+            <div class="kpi-card-val">${filtered.length} Pesanan</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-card-label">Total Lembar Fisik</div>
+            <div class="kpi-card-val">${totalLembar} Lembar</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px; text-align:center;">No</th>
+              <th style="width:75px;">No. Order</th>
+              <th style="width:105px;">Tanggal</th>
+              <th style="width:110px;">Pelanggan</th>
+              <th>Nama Dokumen</th>
+              <th style="width:130px;">Spesifikasi</th>
+              <th style="width:55px; text-align:center;">Lembar</th>
+              <th style="width:85px; text-align:right;">Biaya</th>
+              <th style="width:85px; text-align:center;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div>Laporan resmi dihasilkan otomatis oleh sistem PrintShop POS.</div>
+          <div>Tanggal cetak: ${new Date().toLocaleString('id-ID')}</div>
+        </div>
+      </body>
+      </html>
+    `);
+    doc.close();
+
+    setTimeout(() => {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+    }, 250);
   }
 
   // ── Main Init ──────────────────────────────────────────────────────
@@ -409,45 +621,95 @@
     updateLiveClock();
     setInterval(updateLiveClock, 10000);
 
-    // 4. Export CSV Action
+    // 4. Set Default Export Date Range (Dynamic)
+    const dariInput = document.getElementById('periode-dari');
+    const sampaiInput = document.getElementById('periode-sampai');
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    if (sampaiInput && !sampaiInput.value) sampaiInput.value = todayStr;
+    if (dariInput && !dariInput.value) dariInput.value = thirtyDaysAgo;
+
+    // 5. Export CSV Quick Actions
     const exportBtn = document.getElementById('btn-export-csv-quick');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', async function () {
-        exportBtn.disabled = true;
-        const originalText = exportBtn.innerHTML;
-        exportBtn.innerHTML = '<span>Menyiapkan CSV...</span>';
-        try {
-          await exportOrdersToCsv();
-        } catch (e) {
-          alert('Gagal mengekspor CSV: ' + e.message);
-        } finally {
-          exportBtn.disabled = false;
-          exportBtn.innerHTML = originalText;
+    const quickExportCard = document.getElementById('btn-quick-export-csv-card');
+
+    async function handleQuickCsvExport(btn) {
+      if (btn) btn.disabled = true;
+      const originalText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>Menyiapkan CSV...</span>';
+      try {
+        await exportOrdersToCsv();
+        const exportToast = document.getElementById('export-toast');
+        if (exportToast) {
+          exportToast.style.display = 'block';
+          exportToast.textContent = 'Laporan CSV berhasil diunduh!';
+          setTimeout(() => { exportToast.style.display = 'none'; }, 4000);
         }
+      } catch (e) {
+        alert('Gagal mengekspor CSV: ' + e.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      }
+    }
+
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => handleQuickCsvExport(exportBtn));
+    }
+    if (quickExportCard) {
+      quickExportCard.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleQuickCsvExport(null);
       });
     }
 
-    // 5. Form Ekspor Berkas (Date range export)
+    // 6. Form Ekspor Berkas (Date range filter + CSV / PDF)
     const exportForm = document.getElementById('form-ekspor');
     const exportToast = document.getElementById('export-toast');
 
     if (exportForm) {
       exportForm.addEventListener('submit', async function (e) {
         e.preventDefault();
+        const submitBtn = document.getElementById('btn-submit-export');
         const format = document.getElementById('format-ekspor').value;
         const dari = document.getElementById('periode-dari').value;
         const sampai = document.getElementById('periode-sampai').value;
 
-        if (format === 'csv') {
-          await exportOrdersToCsv(`Laporan_PrintShop_${dari}_sd_${sampai}.csv`);
-        } else {
-          window.print();
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Memproses Laporan...</span>';
         }
 
-        if (exportToast) {
-          exportToast.style.display = 'block';
-          exportToast.textContent = `Laporan periode ${dari} s.d. ${sampai} (${format.toUpperCase()}) berhasil diproses.`;
-          setTimeout(() => { exportToast.style.display = 'none'; }, 4000);
+        try {
+          const dateRange = (dari && sampai) ? { dari, sampai } : null;
+          if (format === 'csv') {
+            await exportOrdersToCsv(`Laporan_PrintShop_${dari}_sd_${sampai}.csv`, dateRange);
+          } else {
+            await exportOrdersToPdf(dateRange);
+          }
+
+          if (exportToast) {
+            exportToast.style.display = 'block';
+            exportToast.textContent = `Laporan periode ${dari} s.d. ${sampai} (${format.toUpperCase()}) berhasil dihasilkan.`;
+            setTimeout(() => { exportToast.style.display = 'none'; }, 4000);
+          }
+        } catch (err) {
+          alert('Gagal memproses laporan: ' + err.message);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Unduh Laporan</span>
+            `;
+          }
         }
       });
     }
