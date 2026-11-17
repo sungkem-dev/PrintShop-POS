@@ -4963,6 +4963,7 @@ body.page-ticket main {
 .text-gradient {
     background: none !important;
     -webkit-background-clip: unset !important;
+    background-clip: unset !important;
     -webkit-text-fill-color: #D2F2BA !important;
     color: #D2F2BA !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45) !important;
