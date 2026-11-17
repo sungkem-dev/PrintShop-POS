@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { DataService } from '@/lib/supabase';
 import { MidtransService } from '@/lib/midtrans';
+import { withRateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function POST(request) {
+async function createPayment(request) {
   try {
     const body = await request.json();
     const { orderId, orderData } = body;
@@ -128,4 +129,8 @@ export async function POST(request) {
       { status: 502 }
     );
   }
+}
+
+export async function POST(request) {
+  return withRateLimit(request, 'payment:create:post', () => createPayment(request));
 }

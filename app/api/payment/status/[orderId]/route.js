@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { DataService, getSupabaseClient } from '@/lib/supabase';
 import { MidtransService } from '@/lib/midtrans';
+import { withRateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET(request, { params }) {
+async function getPaymentStatus(request, { params }) {
   try {
     const { orderId } = params;
     const order = await DataService.getOrderById(orderId);
@@ -60,7 +61,7 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function POST(request, { params }) {
+async function settlePayment(request, { params }) {
   try {
     const { orderId } = params;
     let snapResult = null;
@@ -138,4 +139,12 @@ export async function POST(request, { params }) {
     console.error('API /api/payment/status POST error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
+}
+
+export async function GET(request, context) {
+  return withRateLimit(request, 'payment:status:get', () => getPaymentStatus(request, context));
+}
+
+export async function POST(request, context) {
+  return withRateLimit(request, 'payment:status:post', () => settlePayment(request, context));
 }
