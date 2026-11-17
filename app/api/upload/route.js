@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
+import { withRateLimit } from '@/lib/rate-limit';
 
-export async function POST(request) {
+async function uploadFile(request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file');
@@ -44,6 +45,7 @@ export async function POST(request) {
             fileUrl = publicUrlData.publicUrl;
           }
         }
+
       } catch (storageErr) {
         console.warn('Storage upload warning, fallback to path:', storageErr.message);
       }
@@ -62,4 +64,8 @@ export async function POST(request) {
     console.error('Upload API error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
+}
+
+export async function POST(request) {
+  return withRateLimit(request, 'upload:post', () => uploadFile(request), 10);
 }

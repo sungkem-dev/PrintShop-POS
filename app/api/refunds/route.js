@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { DataService } from '@/lib/supabase';
+import { withRateLimit } from '@/lib/rate-limit';
 
-export async function GET() {
+async function getRefunds() {
   try {
     const refunds = await DataService.getRefunds();
     return NextResponse.json({
@@ -13,7 +14,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request) {
+async function createRefund(request) {
   try {
     const body = await request.json();
     const { order_id, order_code, refund_amount, refund_method, reason, notes, operator_id, source } = body;
@@ -45,4 +46,12 @@ export async function POST(request) {
   } catch (err) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
+}
+
+export async function GET(request) {
+  return withRateLimit(request, 'refunds:get', getRefunds);
+}
+
+export async function POST(request) {
+  return withRateLimit(request, 'refunds:post', () => createRefund(request));
 }

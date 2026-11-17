@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { DataService, getSupabaseClient } from '@/lib/supabase';
+import { withRateLimit } from '@/lib/rate-limit';
 
-export async function POST(request) {
+async function processWebhook(request) {
   try {
     const notification = await request.json();
     console.log('[Midtrans Webhook] Received Notification Payload:', notification);
@@ -76,4 +77,8 @@ export async function POST(request) {
     console.error('[Midtrans Webhook Error]:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+}
+
+export async function POST(request) {
+  return withRateLimit(request, 'payment:webhook:post', () => processWebhook(request), 120);
 }

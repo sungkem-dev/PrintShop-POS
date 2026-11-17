@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase';
 import { mockStore } from '@/lib/mockStore';
+import { withRateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+async function getDashboardStats() {
   try {
     const supabase = getSupabaseClient();
     if (!supabase || !isSupabaseConfigured()) {
@@ -121,4 +122,8 @@ export async function GET() {
     console.error('API /api/dashboard/stats error:', error);
     return NextResponse.json({ success: true, data: mockStore.getDashboardStats() });
   }
+}
+
+export async function GET(request) {
+  return withRateLimit(request, 'dashboard:stats:get', getDashboardStats);
 }
