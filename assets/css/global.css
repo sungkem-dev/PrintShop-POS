@@ -6300,6 +6300,38 @@ h2:has(+ .quick-actions-grid),
     white-space: nowrap !important;
   }
 
+  /* Tombol kanan top navbar order-manual & antrean jadi ikon kompak 38x38 di mobile */
+  body.console-body.page-order-manual .console-top-right .btn-export-outline,
+  body.console-body.page-order-manual .console-top-right .btn-console-queue,
+  body.console-body.page-antrean .console-top-right .btn-export-outline,
+  body.console-body.page-antrean .console-top-right .btn-console-queue {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    font-size: 0 !important;
+  }
+
+  body.console-body.page-order-manual .console-top-right .btn-export-outline span,
+  body.console-body.page-order-manual .console-top-right .btn-console-queue span,
+  body.console-body.page-antrean .console-top-right .btn-export-outline span,
+  body.console-body.page-antrean .console-top-right .btn-console-queue span {
+    display: none !important;
+  }
+
+  body.console-body.page-order-manual .console-top-right svg,
+  body.console-body.page-antrean .console-top-right svg {
+    width: 17px !important;
+    height: 17px !important;
+    margin: 0 !important;
+  }
+
   /* Container utama: padding 10px, gap 10px seragam */
   body.console-body .console-content {
     padding: 10px !important;
@@ -6781,19 +6813,139 @@ h2:has(+ .quick-actions-grid),
   }
 
   body.page-dasbor .bar-label {
-    font-size: 10px !important;
-    white-space: nowrap !important;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+  }
+
+  body.page-dasbor .bar-label small {
+    font-size: 8.5px !important;
+    display: block !important;
+  }
+
+  body.console-body.page-dasbor .bar-col.has-revenue .bar-fill {
+    background: #10b981 !important;
+  }
+
+  body.console-body.page-dasbor .bar-col.active .bar-fill {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
   }
 
   body.page-dasbor .bar-tooltip {
     font-size: 10px !important;
-    padding: 2px 5px !important;
+    padding: 2px 6px !important;
+    opacity: 0 !important;
+    z-index: 20 !important;
+  }
+
+  body.console-body.page-dasbor .bar-col.active .bar-tooltip {
+    opacity: 1 !important;
+    z-index: 30 !important;
+  }
+
+  body.console-body.page-dasbor .bar-col:first-child .bar-tooltip {
+    left: 0 !important;
+    right: auto !important;
+    transform: translateY(-4px) !important;
+  }
+
+  body.console-body.page-dasbor .bar-col:last-child .bar-tooltip {
+    left: auto !important;
+    right: 0 !important;
+    transform: translateY(-4px) !important;
   }
 
   body.page-dasbor .chart-legend-strip {
     flex-wrap: wrap !important;
-    gap: 8px !important;
+    gap: 6px 10px !important;
     font-size: 11px !important;
+  }
+
+  /* Tabel Pendapatan 7 Hari Terakhir: 1 baris horizontal padat per hari */
+  body.console-body.page-dasbor #chart-table-wrap .console-table caption {
+    display: block !important;
+    width: 100% !important;
+    caption-side: top !important;
+    text-align: left !important;
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody tr {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto auto auto !important;
+    align-items: center !important;
+    gap: 4px 6px !important;
+    padding: 9px 10px !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(1) {
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(2) {
+    font-size: 10px !important;
+    color: var(--muted) !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(3),
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(4) {
+    font-size: 10px !important;
+    color: var(--muted) !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(3)::after {
+    content: " trx •" !important;
+    margin-left: 2px !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(4)::after {
+    content: " hal" !important;
+    margin-left: 2px !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tbody td:nth-child(5) {
+    justify-self: end !important;
+    text-align: right !important;
+    font-weight: 700 !important;
+    font-size: 11.5px !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tfoot tr {
+    display: grid !important;
+    grid-template-columns: 1fr auto auto auto !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 10px !important;
+    background: #ecfdf5 !important;
+    border-top: 1.5px solid #a7f3d0 !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tfoot th,
+  body.console-body.page-dasbor #chart-table-wrap .console-table tfoot td {
+    width: auto !important;
+    padding: 0 !important;
+    font-size: 10.5px !important;
+    white-space: nowrap !important;
+  }
+
+  body.console-body.page-dasbor #chart-table-wrap .console-table tfoot td:last-child {
+    justify-self: end !important;
+    text-align: right !important;
+    font-size: 11.5px !important;
   }
 
   body.console-body.page-dasbor #status-printer-heading,
@@ -6801,6 +6953,24 @@ h2:has(+ .quick-actions-grid),
     font-size: 13px !important;
     font-weight: 800 !important;
     line-height: 1.25 !important;
+  }
+
+  /* Header Status Printer & Tombol Buka Konsol Spooler full-width proporsional */
+  body.console-body.page-dasbor section[aria-labelledby="status-printer-heading"] > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  body.console-body.page-dasbor section[aria-labelledby="status-printer-heading"] > div:first-child .btn-export-outline {
+    width: 100% !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    font-size: 12.5px !important;
+    line-height: 1.2 !important;
+    padding: 8px 14px !important;
+    min-height: 38px !important;
   }
 
   body.page-dasbor .printer-status-grid {
@@ -6815,6 +6985,11 @@ h2:has(+ .quick-actions-grid),
   body.page-dasbor .printer-meter-label,
   body.page-dasbor .printer-task-row {
     font-size: 11px !important;
+  }
+
+  body.console-body.page-dasbor .printer-task-row strong {
+    color: #0f766e !important;
+    font-weight: 600 !important;
   }
 
   body.page-dasbor .btn-printer-manage {
@@ -6878,24 +7053,28 @@ h2:has(+ .quick-actions-grid),
     display: flex !important;
     justify-content: space-between !important;
     align-items: baseline !important;
-    gap: 8px !important;
+    gap: 10px !important;
   }
 
   body.console-body.page-dasbor .category-row-head strong {
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     font-weight: 700 !important;
     line-height: 1.3 !important;
+    min-width: 0 !important;
   }
 
   body.console-body.page-dasbor .category-row-head span {
-    font-size: 11px !important;
+    font-size: 11.5px !important;
     line-height: 1.3 !important;
     text-align: right !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
   }
 
   body.console-body.page-dasbor .category-total-badge {
     padding: 10px 12px !important;
-    gap: 10px !important;
+    gap: 12px !important;
+    align-items: center !important;
   }
 
   body.console-body.page-dasbor .category-total-badge > div > div {
@@ -6906,7 +7085,7 @@ h2:has(+ .quick-actions-grid),
   body.console-body.page-dasbor #category-total-omzet,
   body.console-body.page-dasbor #category-total-volume {
     font-size: 14px !important;
-    font-weight: 800 !important;
+    font-weight: 700 !important;
     line-height: 1.25 !important;
   }
 
@@ -7220,6 +7399,43 @@ h2:has(+ .quick-actions-grid),
     justify-content: center !important;
   }
 
+  body.console-body.page-antrean .queue-filter-feedback {
+    margin-top: 10px !important;
+    padding: 9px 12px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  body.console-body.page-antrean .queue-filter-feedback.is-found {
+    background: #ecfdf5 !important;
+    border: 1px solid #a7f3d0 !important;
+    color: #065f46 !important;
+  }
+
+  body.console-body.page-antrean .queue-filter-feedback.is-empty {
+    background: #fef2f2 !important;
+    border: 1px solid #fecaca !important;
+    color: #dc2626 !important;
+  }
+
+  body.console-body.page-antrean .btn-clear-filter-inline {
+    background: #ffffff !important;
+    border: 1px solid currentColor !important;
+    color: inherit !important;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+  }
+
   body.page-antrean .console-table td button,
   body.page-antrean .console-table td a {
     min-height: 36px !important;
@@ -7229,6 +7445,335 @@ h2:has(+ .quick-actions-grid),
 
   body.page-antrean .console-card {
     overflow: visible !important;
+  }
+
+  /* Daftar Antrean Masuk: Kartu Grid 2-Kolom Rapi & Padat */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] {
+    display: grid !important;
+    grid-template-columns: auto auto auto 1fr !important;
+    align-items: center !important;
+    padding: 12px 14px !important;
+    gap: 6px 8px !important;
+  }
+
+  /* Baris 1: #No + ID Pesanan (kiri) & Waktu (kanan) */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(1) {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(1)::before {
+    content: "#" !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(2) {
+    grid-column: 2 / 3 !important;
+    grid-row: 1 !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(2) .order-id {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #0f766e !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(3) {
+    grid-column: 3 / 5 !important;
+    grid-row: 1 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    width: auto !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+  }
+
+  /* Baris 2: File (kiri) & Printer (kanan) */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(4) {
+    grid-column: 1 / 4 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(4) .file-info {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(4) .file-info svg {
+    flex-shrink: 0 !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(4) .file-info span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: block !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(8) {
+    grid-column: 4 / 5 !important;
+    grid-row: 2 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    align-self: start !important;
+    width: auto !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    text-align: right !important;
+  }
+
+  /* Baris 3: Spesifikasi + Jumlah Halaman menyatu rapat di kiri */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(5) {
+    grid-column: 1 / 4 !important;
+    grid-row: 3 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(6) {
+    grid-column: 4 / 5 !important;
+    grid-row: 3 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    justify-self: start !important;
+    width: auto !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(6)::after {
+    content: " Hal." !important;
+    margin-left: 3px !important;
+  }
+
+  /* Baris 4: Harga (kiri) & Status (kanan) */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(7) {
+    grid-column: 1 / 3 !important;
+    grid-row: 4 !important;
+    justify-content: flex-start !important;
+    align-self: center !important;
+    width: auto !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(9) {
+    grid-column: 3 / 5 !important;
+    grid-row: 4 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+  }
+
+  /* Baris 5: Tombol Aksi sejajar rapi 1 baris */
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] td:nth-child(10) {
+    grid-column: 1 / -1 !important;
+    grid-row: 5 !important;
+    width: 100% !important;
+    padding-top: 4px !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] .action-btn-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] .action-btn-group .btn-action,
+  body.console-body.page-antrean #queue-table-tbody tr[data-order-id] .action-btn-group .btn-action-icon {
+    min-height: 36px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Riwayat Pesanan (Hari Ini, 7 Hari, Bulan Ini): Kartu Grid 2-Kolom Rapi & Padat */
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    padding: 12px 14px !important;
+    gap: 6px 8px !important;
+  }
+
+  /* Baris 1: ID Pesanan (kiri) & Waktu (kanan) */
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(1) {
+    grid-column: 1 / 3 !important;
+    grid-row: 1 !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(1) .order-id {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #0f766e !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(2) {
+    grid-column: 3 / 4 !important;
+    grid-row: 1 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    width: auto !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+  }
+
+  /* Baris 2: Ikon + Nama File (kiri) & Nama Pelanggan (kanan) */
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(3) {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(3) .file-info {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(3) .file-info svg {
+    flex-shrink: 0 !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(3) .file-info span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: block !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(3) small {
+    flex-shrink: 0 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    max-width: 40% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Baris 3: Badge Spesifikasi + Jumlah Halaman menyatu rapat di kiri */
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(4) {
+    grid-column: 1 / 2 !important;
+    grid-row: 3 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(5) {
+    grid-column: 2 / 4 !important;
+    grid-row: 3 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    justify-self: start !important;
+    width: auto !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(5)::after {
+    content: " Hal." !important;
+    margin-left: 3px !important;
+  }
+
+  /* Baris 4 (Footer Kartu): Harga di kiri, Status + Tombol Aksi di kanan */
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(6) {
+    grid-column: 1 / 2 !important;
+    grid-row: 4 !important;
+    justify-content: flex-start !important;
+    align-self: center !important;
+    width: auto !important;
+    font-size: 13px !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(7) {
+    grid-column: 2 / 3 !important;
+    grid-row: 4 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(8) {
+    grid-column: 3 / 4 !important;
+    grid-row: 4 !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+  }
+
+  body.console-body.page-antrean #history-table-tbody tr:not(.history-table-row-empty) td:nth-child(8) .btn-action-icon {
+    min-height: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+  }
+
+  /* Baris Total Bawah Riwayat */
+  body.console-body.page-antrean #riwayat .console-table tfoot tr {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+    border-bottom: 0 !important;
+  }
+
+  body.console-body.page-antrean #riwayat .console-table tfoot th,
+  body.console-body.page-antrean #riwayat .console-table tfoot td {
+    width: auto !important;
   }
 
   body.page-antrean .table-footer {
@@ -7283,6 +7828,14 @@ h2:has(+ .quick-actions-grid),
     font-size: 11.5px !important;
   }
 
+  body.page-antrean .pagination-btn:disabled {
+    opacity: 0.45 !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    background: #f8fafc !important;
+    color: #94a3b8 !important;
+  }
+
   body.page-antrean .history-kpi-row {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -7300,6 +7853,74 @@ h2:has(+ .quick-actions-grid),
   body.page-antrean .refund-two-col {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
+  }
+
+  /* Tombol Aksi Laporan dari Pengguna: Setujui Refund & Tolak sejajar proporsional */
+  body.console-body.page-antrean .refund-action-row {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  body.console-body.page-antrean .btn-approve-refund,
+  body.console-body.page-antrean .btn-reject-refund {
+    width: auto !important;
+    height: auto !important;
+    min-height: 38px !important;
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+
+  body.console-body.page-antrean .btn-reject-refund {
+    color: #dc2626 !important;
+    border: 1px solid #fecaca !important;
+    background: #fef2f2 !important;
+  }
+
+  body.console-body.page-antrean .btn-reject-refund svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Samakan ukuran font (13px seperti order-manual.html) & font-family placeholder dengan teks ketikan */
+  body.console-body.page-antrean input:not([type="checkbox"]):not([type="radio"]),
+  body.console-body.page-antrean textarea,
+  body.console-body.page-antrean select,
+  body.console-body.page-antrean .admin-cancel-input,
+  body.console-body.page-antrean .admin-cancel-textarea,
+  body.console-body.page-antrean .filter-search-input,
+  body.console-body.page-antrean .filter-select {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    font-family: inherit !important;
+  }
+
+  body.console-body.page-antrean input:not([type="checkbox"]):not([type="radio"])::placeholder,
+  body.console-body.page-antrean input:not([type="checkbox"]):not([type="radio"])::-webkit-input-placeholder,
+  body.console-body.page-antrean textarea::placeholder,
+  body.console-body.page-antrean textarea::-webkit-input-placeholder,
+  body.console-body.page-antrean .admin-cancel-input::placeholder,
+  body.console-body.page-antrean .admin-cancel-input::-webkit-input-placeholder,
+  body.console-body.page-antrean .admin-cancel-textarea::placeholder,
+  body.console-body.page-antrean .admin-cancel-textarea::-webkit-input-placeholder,
+  body.console-body.page-antrean .filter-search-input::placeholder,
+  body.console-body.page-antrean .filter-search-input::-webkit-input-placeholder {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    font-family: inherit !important;
   }
 
   /* 1. Judul & Chip Status Manajemen Pembatalan & Refund */
