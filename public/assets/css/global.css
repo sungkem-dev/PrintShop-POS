@@ -7576,3 +7576,46 @@ h2:has(+ .quick-actions-grid),
     max-width: 12px !important;
   }
 }
+
+/* === MAHASISWA MOBILE RESPONSIVE (COMPACT) === */
+@media (max-width: 480px) {
+    body.page-home .hero-headline,
+    body.page-home h1,
+    body.page-upload h1,
+    body.page-spec h1,
+    body.page-pay h1,
+    body.page-ticket h1 {
+        font-size: 1.5rem !important;
+        line-height: 1.25 !important;
+    }
+
+    body.page-home .hero-section,
+    body.page-upload main,
+    body.page-spec main,
+    body.page-pay main,
+    body.page-ticket main {
+        padding-top: 12px !important;
+        padding-bottom: 24px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    body.page-home .hero-card,
+    body.page-home .hero-content-box,
+    body.page-upload .upload-card,
+    body.page-spec .spec-card,
+    body.page-pay .pay-card,
+    body.page-ticket .ticket-card {
+        padding: 14px !important;
+    }
+
+    body.page-home .btn-primary,
+    body.page-home .btn-secondary,
+    body.page-upload button[type="submit"],
+    body.page-spec button[type="submit"],
+    body.page-pay .btn-snap-pay {
+        width: 100% !important;
+        padding: 12px 16px !important;
+        font-size: 0.95rem !important;
+    }
+}
