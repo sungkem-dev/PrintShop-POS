@@ -9,9 +9,14 @@
   let activeOrders = [];
   let historyOrders = [];
   let filterStatus = 'ALL';
+  let filterPrinter = 'ALL';
   let historyStatusFilter = 'ALL';
   let searchQuery = '';
+  const QUEUE_ITEMS_PER_PAGE = 5;
+  let currentQueuePage = 1;
   let historyRange = 'today';
+  const HISTORY_ITEMS_PER_PAGE = 5;
+  let historyCurrentPage = 1;
   let pendingCancelOrder = null;
 
   function formatRupiah(num) {
@@ -95,25 +100,143 @@
     }, 4000);
   }
 
+  function updateQueuePaginationFooter(tbody, totalItems, totalPages, startIdx, endIdx) {
+    const queueCard = tbody ? tbody.closest('.console-card') : null;
+    if (!queueCard) return;
+
+    const footerInfo = queueCard.querySelector('.table-footer-info');
+    if (footerInfo) {
+      footerInfo.textContent = totalItems === 0
+        ? 'Menampilkan 0 dari 0 pesanan aktif'
+        : `Menampilkan ${startIdx + 1}\u2013${endIdx} dari ${totalItems} pesanan aktif`;
+    }
+
+    const paginationWrap = queueCard.querySelector('.table-pagination');
+    if (!paginationWrap) return;
+
+    if (totalItems === 0) {
+      paginationWrap.innerHTML = [
+        '<button type="button" class="pagination-btn" data-page="0" disabled>&laquo;</button>',
+        '<button type="button" class="pagination-btn active" data-page="1">1</button>',
+        '<button type="button" class="pagination-btn" data-page="2" disabled>&raquo;</button>'
+      ].join('');
+      return;
+    }
+
+    const btns = [];
+    btns.push(`<button type="button" class="pagination-btn" data-page="${currentQueuePage - 1}" ${currentQueuePage <= 1 ? 'disabled' : ''}>&laquo;</button>`);
+    for (let p = 1; p <= totalPages; p++) {
+      btns.push(`<button type="button" class="pagination-btn ${p === currentQueuePage ? 'active' : ''}" data-page="${p}">${p}</button>`);
+    }
+    btns.push(`<button type="button" class="pagination-btn" data-page="${currentQueuePage + 1}" ${currentQueuePage >= totalPages ? 'disabled' : ''}>&raquo;</button>`);
+    paginationWrap.innerHTML = btns.join('');
+  }
+
+  function escapeHtmlText(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function updateQueueFilterFeedback(filterActive, matchCount) {
+    const feedbackEl = document.getElementById('queue-filter-feedback');
+    if (!feedbackEl) return;
+
+    if (!filterActive) {
+      feedbackEl.hidden = true;
+      feedbackEl.innerHTML = '';
+      feedbackEl.className = 'queue-filter-feedback';
+      return;
+    }
+
+    const parts = [];
+    if (searchQuery) parts.push(`"${escapeHtmlText(searchQuery)}"`);
+    if (filterStatus && filterStatus !== 'ALL') {
+      const statusSel = document.getElementById('filter-status');
+      const statusLabel = statusSel && statusSel.selectedIndex > 0 ? statusSel.options[statusSel.selectedIndex].text : filterStatus;
+      parts.push(`Status: ${escapeHtmlText(statusLabel)}`);
+    }
+    if (filterPrinter && filterPrinter !== 'ALL') {
+      const printerSel = document.getElementById('filter-printer');
+      const printerLabel = printerSel && printerSel.selectedIndex > 0 ? printerSel.options[printerSel.selectedIndex].text : filterPrinter;
+      parts.push(`Printer: ${escapeHtmlText(printerLabel)}`);
+    }
+    const criteriaText = parts.length > 0 ? ` (${parts.join(' • ')})` : '';
+
+    if (matchCount > 0) {
+      feedbackEl.className = 'queue-filter-feedback is-found';
+      feedbackEl.innerHTML = `<span>&#10003; Ditemukan <strong>${matchCount}</strong> pesanan${criteriaText}</span>`;
+    } else {
+      feedbackEl.className = 'queue-filter-feedback is-empty';
+      const msg = searchQuery
+        ? `! Tidak ada pesanan yang cocok dengan pencarian "${escapeHtmlText(searchQuery)}"${parts.length > 1 ? ` (${parts.slice(1).join(' • ')})` : ''}.`
+        : `! Tidak ada pesanan yang cocok dengan filter saat ini${criteriaText}.`;
+      feedbackEl.innerHTML = `<span>${msg}</span>`;
+    }
+    feedbackEl.hidden = false;
+  }
+
+  function getFilteredActiveOrders() {
+    let filtered = [...activeOrders];
+
+    if (filterStatus && filterStatus !== 'ALL') {
+      filtered = filtered.filter(o => (o.status || '').toUpperCase() === filterStatus.toUpperCase());
+    }
+
+    if (filterPrinter && filterPrinter !== 'ALL') {
+      filtered = filtered.filter(o => {
+        const rawPrinter = String(o.printer_id || o.printer_name || (o.specifications && o.specifications.printer) || 'Canon 1').toLowerCase();
+        if (filterPrinter === 'printer-1') return rawPrinter.includes('printer-1') || rawPrinter.includes('printer 1') || rawPrinter.includes('hp') || rawPrinter.includes('laserjet');
+        if (filterPrinter === 'printer-2') return rawPrinter.includes('printer-2') || rawPrinter.includes('printer 2') || rawPrinter.includes('epson') || rawPrinter.includes('l3150');
+        if (filterPrinter === 'printer-3') return rawPrinter.includes('printer-3') || rawPrinter.includes('printer 3') || rawPrinter.includes('canon') || rawPrinter.includes('ip2870');
+        return rawPrinter.includes(filterPrinter.toLowerCase());
+      });
+    }
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const qNoHash = q.replace(/^#/, '');
+      filtered = filtered.filter(o => {
+        const code = (o.order_code || '').toLowerCase();
+        const codeNoHash = code.replace(/^#/, '');
+        const cust = (o.customer_name || '').toLowerCase();
+        const file = (o.file_name || '').toLowerCase();
+        return code.includes(q) || codeNoHash.includes(qNoHash) || cust.includes(q) || file.includes(q);
+      });
+    }
+
+    return filtered;
+  }
+
+  function downloadCsv(filename, headers, rowsData) {
+    const escapeCell = (val) => `"${String(val ?? '').replace(/"/g, '""')}"`;
+    const csvLines = [
+      headers.map(escapeCell).join(','),
+      ...rowsData.map(row => row.map(escapeCell).join(','))
+    ];
+    const csvContent = '\uFEFF' + csvLines.join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   // ── Render Active Queue Table ──────────────────────────────────────
   function renderActiveTable() {
     const tbody = document.getElementById('queue-table-tbody') || document.querySelector('.console-table tbody');
     if (!tbody) return;
 
-    let filtered = [...activeOrders];
+    const filtered = getFilteredActiveOrders();
 
-    if (filterStatus !== 'ALL') {
-      filtered = filtered.filter(o => o.status === filterStatus);
-    }
-
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      filtered = filtered.filter(o =>
-        (o.order_code && o.order_code.toLowerCase().includes(q)) ||
-        (o.customer_name && o.customer_name.toLowerCase().includes(q)) ||
-        (o.file_name && o.file_name.toLowerCase().includes(q))
-      );
-    }
+    const filterActive = Boolean(searchQuery || (filterStatus && filterStatus !== 'ALL') || (filterPrinter && filterPrinter !== 'ALL'));
+    updateQueueFilterFeedback(filterActive, filtered.length);
 
     // Update badge count in header
     const countBadge = document.querySelector('#tabel-antrean-heading .badge-count') || document.querySelector('.badge-count');
@@ -122,19 +245,43 @@
     }
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="10" style="text-align: center; padding: 48px 20px; color: var(--muted);">
-            <div style="font-size: 28px; margin-bottom: 8px;">📭</div>
-            <strong style="display:block; color:var(--ink); font-size:15px; margin-bottom:4px;">Tidak ada antrean cetak aktif</strong>
-            <p style="margin:0; font-size:13px;">Semua pesanan saat ini sudah selesai diserahkan atau belum ada pesanan baru.</p>
-          </td>
-        </tr>
-      `;
+      currentQueuePage = 1;
+      if (filterActive) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align: center; padding: 42px 20px; color: var(--muted);">
+              <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+              <strong style="display:block; color:var(--ink); font-size:15px; margin-bottom:4px;">Pesanan tidak ditemukan</strong>
+              <p style="margin:0; font-size:13px;">Tidak ada pesanan yang cocok dengan kriteria filter/pencarian saat ini. Coba ubah kata kunci atau klik Reset.</p>
+              <button type="button" id="btn-empty-reset-filter" class="btn-primary btn-sm" style="margin-top:12px;">Reset Filter</button>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align: center; padding: 48px 20px; color: var(--muted);">
+              <div style="font-size: 28px; margin-bottom: 8px;">📭</div>
+              <strong style="display:block; color:var(--ink); font-size:15px; margin-bottom:4px;">Tidak ada antrean cetak aktif</strong>
+              <p style="margin:0; font-size:13px;">Semua pesanan saat ini sudah selesai diserahkan atau belum ada pesanan baru.</p>
+            </td>
+          </tr>
+        `;
+      }
+      updateQueuePaginationFooter(tbody, 0, 1, 0, 0);
       return;
     }
 
-    tbody.innerHTML = filtered.map((order, idx) => {
+    const totalItems = filtered.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / QUEUE_ITEMS_PER_PAGE));
+    if (currentQueuePage > totalPages) currentQueuePage = totalPages;
+    if (currentQueuePage < 1) currentQueuePage = 1;
+
+    const startIdx = (currentQueuePage - 1) * QUEUE_ITEMS_PER_PAGE;
+    const endIdx = Math.min(startIdx + QUEUE_ITEMS_PER_PAGE, totalItems);
+    const pageItems = filtered.slice(startIdx, endIdx);
+
+    tbody.innerHTML = pageItems.map((order, idx) => {
       const spec = order.specifications || {};
       const paper = spec.paper_size || 'A4';
       const isColor = (spec.color_mode || '').includes('Color');
@@ -181,7 +328,7 @@
 
       return `
         <tr data-order-id="${order.id}">
-          <td>${idx + 1}</td>
+          <td>${startIdx + idx + 1}</td>
           <td><strong class="order-id">${order.order_code}</strong></td>
           <td><time>${formatTime(order.created_at)}</time></td>
           <td>
@@ -221,6 +368,39 @@
     }).join('');
 
     bindActionEvents();
+    updateQueuePaginationFooter(tbody, totalItems, totalPages, startIdx, endIdx);
+  }
+
+  function updateHistoryPaginationFooter(totalItems, totalPages, startIdx, endIdx, rangeLabel, totalNominal) {
+    const riwayatSection = document.getElementById('riwayat');
+    if (!riwayatSection) return;
+
+    const tfootTh = riwayatSection.querySelector('.console-table tfoot th');
+    const tfootTd = riwayatSection.querySelector('.console-table tfoot td strong');
+    if (tfootTh) {
+      tfootTh.textContent = `Total (${rangeLabel}, ${totalItems} Transaksi)`;
+    }
+    if (tfootTd) {
+      tfootTd.textContent = formatRupiah(totalNominal);
+    }
+
+    const footerInfo = riwayatSection.querySelector('.table-footer-info');
+    if (footerInfo) {
+      footerInfo.textContent = totalItems === 0
+        ? 'Menampilkan 0 dari 0 transaksi'
+        : `Menampilkan ${startIdx + 1}\u2013${endIdx} dari ${totalItems} transaksi`;
+    }
+
+    const paginationWrap = riwayatSection.querySelector('.table-pagination');
+    if (!paginationWrap) return;
+
+    const btns = [];
+    btns.push(`<button type="button" class="pagination-btn" data-page="${historyCurrentPage - 1}" ${historyCurrentPage <= 1 ? 'disabled' : ''}>&laquo;</button>`);
+    for (let p = 1; p <= totalPages; p++) {
+      btns.push(`<button type="button" class="pagination-btn ${p === historyCurrentPage ? 'active' : ''}" data-page="${p}">${p}</button>`);
+    }
+    btns.push(`<button type="button" class="pagination-btn" data-page="${historyCurrentPage + 1}" ${historyCurrentPage >= totalPages ? 'disabled' : ''}>&raquo;</button>`);
+    paginationWrap.innerHTML = btns.join('');
   }
 
   // ── Render History (Riwayat) Table ─────────────────────────────────
@@ -228,6 +408,7 @@
     const tbody = document.getElementById('history-table-tbody') || document.querySelector('#riwayat table tbody');
     if (!tbody) return;
 
+    const rangeLabel = historyRange === 'today' ? 'Hari Ini' : historyRange === 'week' ? '7 Hari' : 'Bulan Ini';
     let filtered = [...historyOrders];
 
     // Filter by date range
@@ -276,6 +457,7 @@
     }
 
     if (displayList.length === 0) {
+      historyCurrentPage = 1;
       tbody.innerHTML = `
         <tr class="history-table-row-empty">
           <td colspan="8" style="text-align: center; padding: 36px 20px; color: var(--muted);">
@@ -284,13 +466,32 @@
           </td>
         </tr>
       `;
+      updateHistoryPaginationFooter(0, 1, 0, 0, rangeLabel, 0);
       return;
     }
 
     // Sort by latest updated/created
     displayList.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
 
-    tbody.innerHTML = displayList.map(order => {
+    const totalItems = displayList.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / HISTORY_ITEMS_PER_PAGE));
+    if (historyCurrentPage > totalPages) historyCurrentPage = totalPages;
+    if (historyCurrentPage < 1) historyCurrentPage = 1;
+
+    const startIdx = (historyCurrentPage - 1) * HISTORY_ITEMS_PER_PAGE;
+    const endIdx = Math.min(startIdx + HISTORY_ITEMS_PER_PAGE, totalItems);
+    const pageItems = displayList.slice(startIdx, endIdx);
+
+    const footerNominal = (historyStatusFilter === 'CANCELLED' || historyStatusFilter === 'DIBATALKAN')
+      ? displayList.reduce((sum, o) => sum + (Number(o.total_price) || 0), 0)
+      : displayList
+          .filter(o => {
+            const s = (o.status || '').toUpperCase();
+            return s === 'COMPLETED' || s === 'SELESAI';
+          })
+          .reduce((sum, o) => sum + (Number(o.total_price) || 0), 0);
+
+    tbody.innerHTML = pageItems.map(order => {
       const spec = order.specifications || {};
       const paper = spec.paper_size || 'A4';
       const isColor = (spec.color_mode || '').includes('Color');
@@ -345,6 +546,8 @@
         if (order) openReceiptModal(order);
       });
     });
+
+    updateHistoryPaginationFooter(totalItems, totalPages, startIdx, endIdx, rangeLabel, footerNominal);
   }
 
   // ── Update Summary Stat Counters ──────────────────────────────────
@@ -651,19 +854,89 @@
     }
 
     // 2. Active Queue Filter Controls
+    const filterForm = document.getElementById('form-filter');
     const filterSelect = document.getElementById('filter-status') || document.querySelector('select[name="status"]');
+    const printerSelect = document.getElementById('filter-printer') || document.querySelector('select[name="printer"]');
+    const searchInput = document.getElementById('cari-pesanan') || document.getElementById('search-input');
+    const resetFilterBtn = document.getElementById('btn-reset-filter');
+
+    function resetQueueFilters() {
+      searchQuery = '';
+      filterStatus = 'ALL';
+      filterPrinter = 'ALL';
+      currentQueuePage = 1;
+      if (searchInput) searchInput.value = '';
+      if (filterSelect) filterSelect.selectedIndex = 0;
+      if (printerSelect) printerSelect.selectedIndex = 0;
+      renderActiveTable();
+    }
+
+    if (filterForm) {
+      filterForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        searchQuery = searchInput ? searchInput.value.trim() : '';
+        filterStatus = filterSelect && filterSelect.value ? filterSelect.value : 'ALL';
+        filterPrinter = printerSelect && printerSelect.value ? printerSelect.value : 'ALL';
+        currentQueuePage = 1;
+        renderActiveTable();
+
+        const queueCard = document.getElementById('queue-section-card');
+        if (queueCard) {
+          queueCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    }
+
     if (filterSelect) {
       filterSelect.addEventListener('change', function () {
         filterStatus = this.value || 'ALL';
+        currentQueuePage = 1;
         renderActiveTable();
       });
     }
 
-    const searchInput = document.getElementById('cari-pesanan') || document.getElementById('search-input');
+    if (printerSelect) {
+      printerSelect.addEventListener('change', function () {
+        filterPrinter = this.value || 'ALL';
+        currentQueuePage = 1;
+        renderActiveTable();
+      });
+    }
+
     if (searchInput) {
       searchInput.addEventListener('input', function () {
         searchQuery = this.value.trim();
+        currentQueuePage = 1;
         renderActiveTable();
+      });
+    }
+
+    if (resetFilterBtn) {
+      resetFilterBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        resetQueueFilters();
+      });
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('.btn-clear-filter-inline') || e.target.closest('#btn-empty-reset-filter')) {
+        e.preventDefault();
+        resetQueueFilters();
+      }
+    });
+
+    // 2a. Active Queue Pagination Clicks (Event Delegation)
+    const queueTbodyEl = document.getElementById('queue-table-tbody');
+    const queuePaginationWrap = queueTbodyEl ? queueTbodyEl.closest('.console-card')?.querySelector('.table-pagination') : null;
+    if (queuePaginationWrap) {
+      queuePaginationWrap.addEventListener('click', function (e) {
+        const btn = e.target.closest('.pagination-btn[data-page]');
+        if (!btn || btn.disabled) return;
+        const targetPage = parseInt(btn.dataset.page, 10);
+        if (!isNaN(targetPage) && targetPage !== currentQueuePage) {
+          currentQueuePage = targetPage;
+          renderActiveTable();
+        }
       });
     }
 
@@ -674,9 +947,24 @@
         rangeBtns.forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         historyRange = this.dataset.historyRange;
+        historyCurrentPage = 1;
         renderHistoryTable();
       });
     });
+
+    // 3a. History Pagination Clicks (Event Delegation)
+    const historyPaginationWrap = document.querySelector('#riwayat .table-pagination');
+    if (historyPaginationWrap) {
+      historyPaginationWrap.addEventListener('click', function (e) {
+        const btn = e.target.closest('.pagination-btn[data-page]');
+        if (!btn || btn.disabled) return;
+        const targetPage = parseInt(btn.dataset.page, 10);
+        if (!isNaN(targetPage) && targetPage !== historyCurrentPage) {
+          historyCurrentPage = targetPage;
+          renderHistoryTable();
+        }
+      });
+    }
 
     // 3b. History Status KPI Filter Cards (Total Transaksi, Selesai, Dibatalkan)
     const historyFilterCards = document.querySelectorAll(
@@ -686,6 +974,7 @@
       card.addEventListener('click', function () {
         const filterVal = (this.getAttribute('data-filter') || this.getAttribute('data-history-status') || 'ALL').toUpperCase();
         historyStatusFilter = filterVal;
+        historyCurrentPage = 1;
 
         historyFilterCards.forEach(c => c.classList.remove('active'));
         this.classList.add('active');
@@ -722,31 +1011,107 @@
       }
     });
 
-    // 4. Export History to CSV
+    // 4. Export Active Queue & History to CSV
+    const exportHeaders = ['ID Pesanan', 'Tanggal & Waktu', 'Nama Pelanggan', 'Nama Berkas', 'Spesifikasi', 'Halaman', 'Copy', 'Printer', 'Metode Bayar', 'Total Tagihan (Rp)', 'Status'];
+
+    function buildExportRowsWithSummary(list, useUpdatedTime) {
+      let totalPagesSum = 0;
+      let totalCopiesSum = 0;
+      let totalPriceSum = 0;
+
+      const rowsData = list.map(o => {
+        const spec = o.specifications || {};
+        const paper = spec.paper_size || 'A4';
+        const color = (spec.color_mode || '').includes('Color') ? 'Full Color' : 'B&W';
+        const side = spec.print_side || 'Simplex';
+        const finishing = spec.finishing || 'Tanpa Jilid';
+        const copies = Number(o.copies || 1);
+        const pages = Number(spec.sheets_count || o.total_pages || 1);
+        const price = Number(o.total_price || 0);
+        const printer = o.printer_name || spec.printer || 'Canon 1';
+        const payment = o.payment_method || 'TUNAI';
+        const dt = new Date(useUpdatedTime ? (o.updated_at || o.created_at) : o.created_at).toLocaleString('id-ID', {
+          year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+        });
+
+        totalPagesSum += pages;
+        totalCopiesSum += copies;
+        totalPriceSum += price;
+
+        return [
+          o.order_code || '',
+          dt,
+          o.customer_name || 'Tamu Walk-In',
+          o.file_name || '',
+          `${paper} • ${color} • ${side} • ${finishing}`,
+          pages,
+          copies,
+          printer,
+          payment,
+          price,
+          o.status || ''
+        ];
+      });
+
+      rowsData.push([
+        `TOTAL (${list.length} Transaksi)`,
+        '',
+        '',
+        '',
+        '',
+        totalPagesSum,
+        totalCopiesSum,
+        '',
+        '',
+        totalPriceSum,
+        ''
+      ]);
+
+      return rowsData;
+    }
+
+    const exportQueueBtn = document.getElementById('btn-export-queue');
+    if (exportQueueBtn) {
+      exportQueueBtn.addEventListener('click', function () {
+        const filtered = getFilteredActiveOrders();
+        if (!filtered || filtered.length === 0) {
+          showToast('Tidak ada data antrean aktif untuk diekspor.');
+          return;
+        }
+        const dateStr = new Date().toISOString().split('T')[0];
+        downloadCsv(`antrean-aktif-${dateStr}.csv`, exportHeaders, buildExportRowsWithSummary(filtered, false));
+        showToast(`Berhasil mengekspor ${filtered.length} pesanan aktif ke CSV.`);
+      });
+    }
+
     const exportHistoryBtn = document.getElementById('btn-export-history');
     if (exportHistoryBtn) {
       exportHistoryBtn.addEventListener('click', function () {
-        const rows = [
-          ['ID Pesanan', 'Waktu Masuk', 'Waktu Selesai', 'Pelanggan', 'Nama File', 'Halaman', 'Rangkap', 'Total Bayar', 'Status'],
-          ...historyOrders.map(o => [
-            o.order_code,
-            o.created_at,
-            o.updated_at || o.created_at,
-            `"${(o.customer_name || '').replace(/"/g, '""')}"`,
-            `"${(o.file_name || '').replace(/"/g, '""')}"`,
-            o.total_pages || 1,
-            o.copies || 1,
-            o.total_price || 0,
-            o.status
-          ])
-        ];
-        const csvContent = 'data:text/csv;charset=utf-8,' + rows.map(r => r.join(',')).join('\n');
-        const link = document.createElement('a');
-        link.setAttribute('href', encodeURI(csvContent));
-        link.setAttribute('download', `Riwayat_PrintShop_${new Date().toISOString().split('T')[0]}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        let filtered = [...historyOrders];
+        const today = new Date().toISOString().split('T')[0];
+        if (historyRange === 'today') {
+          filtered = filtered.filter(o => o.created_at && o.created_at.startsWith(today));
+        } else if (historyRange === 'week') {
+          const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+          filtered = filtered.filter(o => o.created_at && o.created_at >= sevenDaysAgo);
+        }
+        if (historyStatusFilter && historyStatusFilter !== 'ALL') {
+          filtered = filtered.filter(o => {
+            const s = (o.status || '').toUpperCase();
+            if (historyStatusFilter === 'COMPLETED' || historyStatusFilter === 'SELESAI') return s === 'COMPLETED' || s === 'SELESAI';
+            if (historyStatusFilter === 'CANCELLED' || historyStatusFilter === 'DIBATALKAN') return s === 'CANCELLED' || s === 'DIBATALKAN';
+            return s.includes(historyStatusFilter);
+          });
+        }
+        if (!filtered || filtered.length === 0) {
+          showToast('Tidak ada data riwayat untuk diekspor.');
+          return;
+        }
+        filtered.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
+        const rangeSlug = historyRange === 'today' ? 'hari-ini' : (historyRange === 'week' ? '7-hari' : 'bulan-ini');
+        const dateStr = new Date().toISOString().split('T')[0];
+        downloadCsv(`riwayat-pesanan-${rangeSlug}-${dateStr}.csv`, exportHeaders, buildExportRowsWithSummary(filtered, true));
+        showToast(`Berhasil mengekspor ${filtered.length} riwayat transaksi ke CSV.`);
       });
     }
 
@@ -784,10 +1149,17 @@
     const refreshBtn = document.getElementById('btn-refresh-queue');
     if (refreshBtn) {
       refreshBtn.addEventListener('click', async function () {
+        if (refreshBtn.disabled) return;
+        const origHtml = refreshBtn.innerHTML;
         refreshBtn.disabled = true;
-        await reloadOrders();
-        showToast('Data antrean & riwayat berhasil diperbarui.');
-        setTimeout(() => { refreshBtn.disabled = false; }, 800);
+        refreshBtn.innerHTML = '<span>Memuat...</span>';
+        try {
+          await reloadOrders();
+          showToast('Data antrean berhasil diperbarui');
+        } finally {
+          refreshBtn.innerHTML = origHtml;
+          refreshBtn.disabled = false;
+        }
       });
     }
 

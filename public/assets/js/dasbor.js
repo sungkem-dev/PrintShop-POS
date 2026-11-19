@@ -8,6 +8,41 @@
 
   let cachedOrders = [];
   let cachedStats = null;
+  let activePeriod = 'today'; // 'today' | 'yesterday' | 'week'
+  let activeChartBarIdx = 6; // default: Hari Ini (bar ke-7)
+
+  function toLocalDateKey(dateObj) {
+    const d = dateObj instanceof Date ? dateObj : new Date(dateObj);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function getPeriodLabel(period) {
+    if (period === 'yesterday') return 'Kemarin';
+    if (period === 'week') return 'Pekan Ini';
+    return 'Hari Ini';
+  }
+
+  function filterOrdersByPeriod(orders, period) {
+    const now = new Date();
+    const todayKey = toLocalDateKey(now);
+    const yesterdayDate = new Date(now);
+    yesterdayDate.setDate(now.getDate() - 1);
+    const yesterdayKey = toLocalDateKey(yesterdayDate);
+    const weekStartDate = new Date(now);
+    weekStartDate.setDate(now.getDate() - 6);
+    const weekStartKey = toLocalDateKey(weekStartDate);
+
+    return (orders || []).filter(o => {
+      if (!o.created_at) return false;
+      const orderKey = toLocalDateKey(new Date(o.created_at));
+      if (period === 'today') return orderKey === todayKey;
+      if (period === 'yesterday') return orderKey === yesterdayKey;
+      return orderKey >= weekStartKey && orderKey <= todayKey;
+    });
+  }
 
   function formatRupiah(num) {
     return 'Rp ' + Number(num || 0).toLocaleString('id-ID');
@@ -58,21 +93,21 @@
       cachedOrders = Array.isArray(orders) ? orders : [];
       cachedStats = stats || {};
 
-      // 2. Real-time Calculation of Today's Numbers
-      const todayStr = new Date().toISOString().split('T')[0];
-      const todayOrders = cachedOrders.filter(o => o.created_at && o.created_at.startsWith(todayStr));
+      // 2. Real-time Calculation for Active Period ('today' | 'yesterday' | 'week')
+      const periodLabel = getPeriodLabel(activePeriod);
+      const periodOrders = filterOrdersByPeriod(cachedOrders, activePeriod);
 
-      // Omzet hari ini (hanya dari pesanan aktif/selesai, bukan batal/draft)
-      const validTodayOrders = todayOrders.filter(o => !['CANCELLED', 'DRAFT', 'PENDING_PAYMENT'].includes(o.status));
-      const liveOmzet = validTodayOrders.reduce((sum, o) => sum + (Number(o.total_price) || 0), 0);
+      // Omzet periode aktif (hanya dari pesanan aktif/selesai, bukan batal/draft)
+      const validPeriodOrders = periodOrders.filter(o => !['CANCELLED', 'DRAFT', 'PENDING_PAYMENT'].includes(o.status));
+      const liveOmzet = validPeriodOrders.reduce((sum, o) => sum + (Number(o.total_price) || 0), 0);
 
       // Antrean aktif saat ini
       const activeQueueOrders = cachedOrders.filter(o =>
         ['WAITING_IN_QUEUE', 'PROCESSING', 'PRINTING', 'READY_FOR_PICKUP'].includes(o.status)
       );
 
-      // Lembar tercetak hari ini
-      const liveLembar = todayOrders
+      // Lembar tercetak pada periode aktif
+      const liveLembar = periodOrders
         .filter(o => ['PRINTING', 'READY_FOR_PICKUP', 'COMPLETED'].includes(o.status))
         .reduce((sum, o) => {
           const spec = o.specifications || {};
@@ -81,21 +116,25 @@
           return sum + (sheets * copies);
         }, 0);
 
-      // Total transaksi selesai
-      const completedTodayOrders = cachedOrders.filter(o => o.status === 'COMPLETED');
+      // Total transaksi selesai pada periode aktif
+      const completedPeriodOrders = periodOrders.filter(o => o.status === 'COMPLETED');
 
-      // Use API stats with fallback to live calculation
-      const kpiData = cachedStats.kpi || {};
-      const displayOmzet = liveOmzet > 0 ? liveOmzet : (kpiData.omzetHariIni || 0);
+      const displayOmzet = liveOmzet;
       const displayAntrean = activeQueueOrders.length;
-      const displayLembar = liveLembar > 0 ? liveLembar : (kpiData.lembarHariIni || 0);
-      const displayTransaksi = completedTodayOrders.length > 0 ? completedTodayOrders.length : (kpiData.pesananSelesai || 0);
+      const displayLembar = liveLembar;
+      const displayTransaksi = completedPeriodOrders.length;
 
       // ── Update 4 KPI Cards ─────────────────────────────
       const omzetEl = document.getElementById('kpi-omzet');
       const antreanEl = document.getElementById('kpi-antrean');
       const lembarEl = document.getElementById('kpi-lembar');
       const transaksiEl = document.getElementById('kpi-transaksi');
+
+      const omzetCardTitle = omzetEl?.closest('.kpi-metric-card')?.querySelector('.kpi-card-title');
+      if (omzetCardTitle) omzetCardTitle.textContent = `Pendapatan ${periodLabel}`;
+
+      const lembarCardTitle = lembarEl?.closest('.kpi-metric-card')?.querySelector('.kpi-card-title');
+      if (lembarCardTitle) lembarCardTitle.textContent = `Lembar Tercetak ${periodLabel}`;
 
       if (omzetEl) omzetEl.textContent = formatRupiah(displayOmzet);
       if (antreanEl) antreanEl.textContent = `${displayAntrean} Pesanan`;
@@ -112,14 +151,15 @@
         kpiSubAntrean.textContent = `${printingCount} mencetak, ${waitingCount} menunggu, ${readyCount} siap`;
       }
 
-      const qrisTotal = validTodayOrders
+      const qrisTotal = validPeriodOrders
         .filter(o => (o.payment_method || '').toUpperCase() === 'QRIS')
         .reduce((s, o) => s + (Number(o.total_price) || 0), 0);
-      const tunaiTotal = displayOmzet - qrisTotal;
+      const tunaiTotal = Math.max(0, displayOmzet - qrisTotal);
 
       const kpiSubOmzet = document.getElementById('kpi-sub-omzet');
       if (kpiSubOmzet) {
-        kpiSubOmzet.textContent = `QRIS: ${formatRupiah(qrisTotal > 0 ? qrisTotal : displayOmzet * 0.7)} • Tunai: ${formatRupiah(tunaiTotal > 0 ? tunaiTotal : displayOmzet * 0.3)}`;
+        const avgOrder = validPeriodOrders.length > 0 ? Math.round(displayOmzet / validPeriodOrders.length) : 0;
+        kpiSubOmzet.textContent = `QRIS: ${formatRupiah(qrisTotal)} • Tunai: ${formatRupiah(tunaiTotal)} • Rata-rata: ${formatRupiah(avgOrder)}/order`;
       }
 
       // ── Update Audit Reconcile Banner ──────────────────
@@ -132,46 +172,80 @@
         auditSync.textContent = `Spooler Sync: ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`;
       }
 
-      // ── Update Dynamic 7-Day Chart ─────────────────────
-      let chart7Days = cachedStats.chart7Days || [];
-      if (chart7Days.length === 0) {
-        // Generate baseline 7 days
-        const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-        for (let i = 6; i >= 0; i--) {
-          const d = new Date();
-          d.setDate(d.getDate() - i);
-          chart7Days.push({
-            date: d.toISOString().split('T')[0],
-            day: days[d.getDay()],
-            total: (7 - i) * 20000 + 40000
-          });
-        }
+      // ── Update Dynamic 7-Day Chart (100% Real Data) ────
+      const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+      const chart7Days = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateKey = toLocalDateKey(d);
+        const dayOrders = cachedOrders.filter(o => o.created_at && toLocalDateKey(new Date(o.created_at)) === dateKey);
+        const validDayOrders = dayOrders.filter(o => !['CANCELLED', 'DRAFT', 'PENDING_PAYMENT'].includes(o.status));
+        const dayTotal = validDayOrders.reduce((sum, o) => sum + (Number(o.total_price) || 0), 0);
+        const daySheets = dayOrders
+          .filter(o => ['PRINTING', 'READY_FOR_PICKUP', 'COMPLETED'].includes(o.status))
+          .reduce((sum, o) => {
+            const spec = o.specifications || {};
+            const sheets = spec.sheets_count || o.total_pages || 1;
+            const copies = o.copies || 1;
+            return sum + (sheets * copies);
+          }, 0);
+
+        const shortDate = `${d.getDate()} ${d.toLocaleDateString('id-ID', { month: 'short' })}`;
+        const fullDate = `${d.getDate()} ${d.toLocaleDateString('id-ID', { month: 'short' })} ${d.getFullYear()}`;
+        chart7Days.push({
+          dateKey,
+          shortDate,
+          fullDate,
+          day: days[d.getDay()],
+          txCount: validDayOrders.length,
+          sheetCount: daySheets,
+          total: dayTotal
+        });
       }
 
-      // Ensure today's bar matches today's live omzet if greater
-      if (chart7Days.length > 0 && displayOmzet > 0) {
-        chart7Days[chart7Days.length - 1].total = displayOmzet;
+      const total7Days = chart7Days.reduce((sum, d) => sum + d.total, 0);
+      const avg7Days = Math.round(total7Days / 7);
+      const chartSubtitle = document.getElementById('chart-7day-subtitle');
+      if (chartSubtitle && chart7Days.length === 7) {
+        const yearNow = new Date().getFullYear();
+        chartSubtitle.textContent = `${chart7Days[0].shortDate} – ${chart7Days[6].shortDate} ${yearNow} • Rata-rata: ${formatRupiah(avg7Days)}/hari`;
       }
 
       const barContainer = document.getElementById('bar-chart-container') || document.querySelector('.bar-chart-visual');
       if (barContainer && chart7Days.length > 0) {
-        const maxVal = Math.max(...chart7Days.map(d => d.total), 100000);
+        const maxVal = Math.max(...chart7Days.map(d => d.total), 1);
         const isToday = (idx) => idx === chart7Days.length - 1;
+        if (activeChartBarIdx < 0 || activeChartBarIdx >= chart7Days.length) {
+          activeChartBarIdx = chart7Days.length - 1;
+        }
 
         barContainer.innerHTML = chart7Days.map((d, idx) => {
-          const heightPct = Math.max(14, Math.round((d.total / maxVal) * 100));
-          const activeClass = isToday(idx) ? ' active' : '';
-          const tooltipText = `${formatRupiah(d.total)}${isToday(idx) ? ' (Hari Ini)' : ''}`;
+          const heightPct = d.total > 0 ? Math.max(18, Math.round((d.total / maxVal) * 100)) : 10;
+          const activeClass = idx === activeChartBarIdx ? ' active' : '';
+          const revenueClass = d.total > 0 ? ' has-revenue' : '';
+          const tooltipText = `${formatRupiah(d.total)}${isToday(idx) ? ' (Hari Ini)' : ` (${d.shortDate})`}`;
 
           return `
-            <div class="bar-col${activeClass}">
+            <div class="bar-col${activeClass}${revenueClass}" data-bar-idx="${idx}">
               <div class="bar-fill" style="height: ${heightPct}%;">
                 <span class="bar-tooltip">${tooltipText}</span>
               </div>
-              <span class="bar-label">${d.day}<br><small>${d.date ? d.date.slice(5) : ''}</small></span>
+              <span class="bar-label">${d.day}<br><small>${d.shortDate}</small></span>
             </div>
           `;
         }).join('');
+
+        const barCols = barContainer.querySelectorAll('.bar-col[data-bar-idx]');
+        barCols.forEach(col => {
+          const activateBar = () => {
+            activeChartBarIdx = parseInt(col.dataset.barIdx, 10);
+            barCols.forEach(c => c.classList.remove('active'));
+            col.classList.add('active');
+          };
+          col.addEventListener('click', activateBar);
+          col.addEventListener('mouseenter', activateBar);
+        });
       }
 
       // Update Chart Legends
@@ -180,13 +254,12 @@
         legendToday.textContent = formatRupiah(chart7Days[chart7Days.length - 1].total);
       }
 
-      const total7Days = chart7Days.reduce((sum, d) => sum + (d.total || 0), 0);
       const legendTotal = document.getElementById('legend-total-7days');
       if (legendTotal) {
         legendTotal.textContent = formatRupiah(total7Days);
       }
 
-      // ── Update 7-Day Semantic Table ────────────────────
+      // ── Update 7-Day Semantic Table (100% Real Data) ───
       const tableTbody = document.getElementById('chart-table-tbody');
       const tableTfoot = document.getElementById('chart-table-tfoot');
       if (tableTbody && chart7Days.length > 0) {
@@ -195,45 +268,45 @@
           const rowStyle = isTodayRow ? 'style="background: #ecfdf5; font-weight: 700;"' : '';
           const priceColor = isTodayRow ? 'style="color: #065f46;"' : '';
           const dayLabel = isTodayRow ? `${d.day} (Hari Ini)` : d.day;
-          const txCount = isTodayRow ? (completedTodayOrders.length || 18) : (Math.round(d.total / 7000) || 12);
-          const sheetCount = isTodayRow ? displayLembar : (txCount * 14);
 
           return `
             <tr ${rowStyle}>
-              <td>${d.date || '-'}</td>
+              <td>${d.fullDate}</td>
               <td>${dayLabel}</td>
-              <td>${txCount}</td>
-              <td>${sheetCount}</td>
+              <td>${d.txCount}</td>
+              <td>${d.sheetCount}</td>
               <td ${priceColor}>${formatRupiah(d.total)}</td>
             </tr>
           `;
         }).join('');
 
         if (tableTfoot) {
+          const total7Tx = chart7Days.reduce((s, d) => s + d.txCount, 0);
+          const total7Sheets = chart7Days.reduce((s, d) => s + d.sheetCount, 0);
           tableTfoot.innerHTML = `
             <tr>
               <th scope="row" colspan="2">Total 7 Hari</th>
-              <td>${chart7Days.reduce((s, d) => s + (Math.round(d.total / 7000) || 12), 0)} transaksi</td>
-              <td>${chart7Days.reduce((s, d) => s + (Math.round(d.total / 500) || 150), 0)} lembar</td>
+              <td>${total7Tx} transaksi</td>
+              <td>${total7Sheets} lembar</td>
               <td><strong>${formatRupiah(total7Days)}</strong></td>
             </tr>
           `;
         }
       }
 
-      // ── Update Categories Breakdown ────────────────────
-      const bwOrders = cachedOrders.filter(o => !(o.specifications?.color_mode || '').includes('Color'));
-      const colorOrders = cachedOrders.filter(o => (o.specifications?.color_mode || '').includes('Color'));
-      const folioOrders = cachedOrders.filter(o => (o.specifications?.paper_size || '').includes('F4') || (o.specifications?.paper_size || '').includes('Folio'));
+      // ── Update Categories Breakdown (Filtered by Active Period) ──
+      const bwOrders = validPeriodOrders.filter(o => !(o.specifications?.color_mode || '').includes('Color') && !(o.specifications?.paper_size || '').includes('F4') && !(o.specifications?.paper_size || '').includes('Folio'));
+      const colorOrders = validPeriodOrders.filter(o => (o.specifications?.color_mode || '').includes('Color'));
+      const folioOrders = validPeriodOrders.filter(o => (o.specifications?.paper_size || '').includes('F4') || (o.specifications?.paper_size || '').includes('Folio'));
 
       const bwTotal = bwOrders.reduce((s, o) => s + (Number(o.total_price) || 0), 0);
       const colorTotal = colorOrders.reduce((s, o) => s + (Number(o.total_price) || 0), 0);
       const folioTotal = folioOrders.reduce((s, o) => s + (Number(o.total_price) || 0), 0);
-      const allOrdersTotal = Math.max(1, bwTotal + colorTotal + folioTotal);
+      const allOrdersTotal = bwTotal + colorTotal + folioTotal;
 
-      const bwPct = Math.round((bwTotal / allOrdersTotal) * 100) || 65;
-      const colorPct = Math.round((colorTotal / allOrdersTotal) * 100) || 25;
-      const folioPct = 100 - bwPct - colorPct;
+      const bwPct = allOrdersTotal > 0 ? Math.round((bwTotal / allOrdersTotal) * 100) : 0;
+      const colorPct = allOrdersTotal > 0 ? Math.round((colorTotal / allOrdersTotal) * 100) : 0;
+      const folioPct = allOrdersTotal > 0 ? Math.max(0, 100 - bwPct - colorPct) : 0;
 
       const catContainer = document.getElementById('category-breakdown-list');
       if (catContainer) {
@@ -241,7 +314,7 @@
           <div>
             <div class="category-row-head">
               <strong>Cetak Hitam-Putih A4</strong>
-              <span>${formatRupiah(bwTotal > 0 ? bwTotal : 710000)} (${bwPct}%) &bull; ${bwOrders.length || 24} Pesanan</span>
+              <span>${formatRupiah(bwTotal)} (${bwPct}%) &bull; ${bwOrders.length} Pesanan</span>
             </div>
             <div class="progress-track" role="progressbar" aria-valuenow="${bwPct}" aria-valuemin="0" aria-valuemax="100">
               <div class="progress-bar-fill c-green" style="width: ${bwPct}%;"></div>
@@ -250,7 +323,7 @@
           <div>
             <div class="category-row-head">
               <strong>Cetak Warna A4</strong>
-              <span>${formatRupiah(colorTotal > 0 ? colorTotal : 372000)} (${colorPct}%) &bull; ${colorOrders.length || 8} Pesanan</span>
+              <span>${formatRupiah(colorTotal)} (${colorPct}%) &bull; ${colorOrders.length} Pesanan</span>
             </div>
             <div class="progress-track" role="progressbar" aria-valuenow="${colorPct}" aria-valuemin="0" aria-valuemax="100">
               <div class="progress-bar-fill c-blue" style="width: ${colorPct}%;"></div>
@@ -259,42 +332,42 @@
           <div>
             <div class="category-row-head">
               <strong>Cetak F4 (Folio) &amp; Khusus</strong>
-              <span>${formatRupiah(folioTotal > 0 ? folioTotal : 122400)} (${Math.max(5, folioPct)}%) &bull; ${folioOrders.length || 4} Pesanan</span>
+              <span>${formatRupiah(folioTotal)} (${folioPct}%) &bull; ${folioOrders.length} Pesanan</span>
             </div>
-            <div class="progress-track" role="progressbar" aria-valuenow="${Math.max(5, folioPct)}" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-bar-fill c-amber" style="width: ${Math.max(5, folioPct)}%;"></div>
+            <div class="progress-track" role="progressbar" aria-valuenow="${folioPct}" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar-fill c-amber" style="width: ${folioPct}%;"></div>
             </div>
           </div>
         `;
       }
 
       const catOmzet = document.getElementById('category-total-omzet');
-      if (catOmzet) catOmzet.textContent = formatRupiah(displayOmzet * 3.5 || 1204400);
+      if (catOmzet) catOmzet.textContent = formatRupiah(displayOmzet);
 
       const catVol = document.getElementById('category-total-volume');
-      if (catVol) catVol.textContent = `${displayLembar * 4 || 1810} Lembar (${cachedOrders.length} Pesanan)`;
+      if (catVol) catVol.textContent = `${displayLembar} Lembar (${periodOrders.length} Pesanan)`;
 
       // ── Update Printer Active Task ─────────────────────
       const printingOrder = cachedOrders.find(o => o.status === 'PRINTING');
       const p1Task = document.getElementById('printer-1-task');
       if (p1Task) {
         if (printingOrder) {
-          p1Task.innerHTML = `Tugas Aktif: <strong style="color:#2563eb;">Mencetak #${printingOrder.order_code} (${printingOrder.file_name})</strong>`;
+          p1Task.innerHTML = `Tugas Aktif: <strong style="color:#0f766e; font-weight:600;">Mencetak #${printingOrder.order_code} (${printingOrder.file_name})</strong>`;
         } else {
           p1Task.innerHTML = `Tugas Aktif: <strong style="color:#059669;">Siap (Standby / Menunggu antrean)</strong>`;
         }
       }
 
-      // ── Update Realtime Recent Orders Table ─────────────
+      // ── Update Realtime Recent Orders Table (Filtered by Active Period) ──
       const recentTbody = document.getElementById('dashboard-recent-tbody');
       if (recentTbody) {
-        const sorted = [...cachedOrders].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 7);
+        const sorted = [...periodOrders].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 7);
 
         if (sorted.length === 0) {
           recentTbody.innerHTML = `
             <tr>
               <td colspan="6" style="text-align: center; padding: 24px; color: var(--muted);">
-                Belum ada data transaksi tersimpan.
+                Belum ada data transaksi pada periode ${periodLabel}.
               </td>
             </tr>
           `;
@@ -329,6 +402,10 @@
   }
 
   // ── CSV & Report Exporter ───────────────────────────────────────────
+  function escapeCsvCell(val) {
+    return `"${String(val ?? '').replace(/"/g, '""')}"`;
+  }
+
   async function exportOrdersToCsv(filename = null, dateRange = null) {
     let orders = cachedOrders;
     if (!orders || orders.length === 0) {
@@ -338,79 +415,99 @@
     }
 
     let filtered = orders || [];
+    let periodSlug = activePeriod === 'yesterday' ? 'kemarin' : (activePeriod === 'week' ? 'pekan-ini' : 'hari-ini');
+
     if (dateRange && dateRange.dari && dateRange.sampai) {
-      const fromTime = new Date(dateRange.dari + 'T00:00:00').getTime();
-      const toTime = new Date(dateRange.sampai + 'T23:59:59.999').getTime();
       filtered = filtered.filter(o => {
-        const t = new Date(o.created_at || Date.now()).getTime();
-        return t >= fromTime && t <= toTime;
+        if (!o.created_at) return false;
+        const key = toLocalDateKey(new Date(o.created_at));
+        return key >= dateRange.dari && key <= dateRange.sampai;
       });
+      periodSlug = `${dateRange.dari}_sd_${dateRange.sampai}`;
+    } else {
+      filtered = filterOrdersByPeriod(filtered, activePeriod);
     }
 
     if (filtered.length === 0) {
-      alert('Tidak ada data pesanan pada periode tanggal yang dipilih.');
-      return;
+      return { exported: false, count: 0 };
     }
 
     const headers = [
-      'No',
-      'Kode Pesanan',
+      'ID Pesanan',
       'Tanggal & Waktu',
       'Nama Pelanggan',
-      'Nomor WhatsApp',
       'Nama Berkas',
-      'Ukuran Kertas',
-      'Mode Warna',
-      'Sisi Cetak',
-      'Finishing / Jilid',
-      'Total Halaman',
-      'Salinan (Copy)',
-      'Total Lembar Fisik',
+      'Spesifikasi',
+      'Halaman',
+      'Copy',
+      'Printer',
       'Metode Bayar',
-      'Total Biaya (Rp)',
-      'Status Pesanan'
+      'Total Tagihan (Rp)',
+      'Status'
     ];
 
-    const rows = filtered.map((o, idx) => {
+    let totalPagesSum = 0;
+    let totalCopiesSum = 0;
+    let totalPriceSum = 0;
+
+    const rows = filtered.map((o) => {
       const spec = o.specifications || o.spec || {};
       const paper = spec.paper_size || o.paper || 'A4';
-      const color = (spec.color_mode || o.color || '').toLowerCase().includes('color') ? 'Full Color' : 'Hitam-Putih';
-      const side = (spec.print_side || o.side || 'Simplex').toLowerCase().includes('duplex') ? 'Duplex (2 Sisi)' : 'Simplex (1 Sisi)';
+      const color = (spec.color_mode || o.color || '').toLowerCase().includes('color') ? 'Full Color' : 'B&W';
+      const side = (spec.print_side || o.side || 'Simplex').toLowerCase().includes('duplex') ? 'Duplex' : 'Simplex';
       const finishing = spec.finishing || o.finishing || 'Tanpa Jilid';
       const pages = Number(o.total_pages || o.pages || 1);
       const copies = Number(o.copies || 1);
-      const sheets = Math.ceil(pages / (side.includes('Duplex') ? 2 : 1)) * copies;
-      const paymentMethod = o.payment_method || (o.payment && o.payment.method) || (o.total_price > 0 ? 'TUNAI' : 'QRIS');
+      const price = Number(o.total_price || 0);
+      const printer = o.printer_name || spec.printer || 'Printer 1 - HP LaserJet';
+      const paymentMethod = o.payment_method || (o.payment && o.payment.method) || 'TUNAI';
       const dateStr = new Date(o.created_at || Date.now()).toLocaleString('id-ID', {
         year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
       });
 
+      totalPagesSum += pages;
+      totalCopiesSum += copies;
+      totalPriceSum += price;
+
       return [
-        idx + 1,
-        `"${o.order_code || o.id || ''}"`,
-        `"${dateStr}"`,
-        `"${(o.customer_name || 'Pelanggan Walk-In').replace(/"/g, '""')}"`,
-        `"${(o.customer_phone || '-').replace(/"/g, '""')}"`,
-        `"${(o.file_name || 'Dokumen.pdf').replace(/"/g, '""')}"`,
-        `"${paper}"`,
-        `"${color}"`,
-        `"${side}"`,
-        `"${finishing}"`,
+        escapeCsvCell(o.order_code || o.id || ''),
+        escapeCsvCell(dateStr),
+        escapeCsvCell(o.customer_name || 'Tamu Walk-In'),
+        escapeCsvCell(o.file_name || 'Dokumen.pdf'),
+        escapeCsvCell(`${paper} • ${color} • ${side} • ${finishing}`),
         pages,
         copies,
-        sheets,
-        `"${paymentMethod}"`,
-        Number(o.total_price || 0),
-        `"${o.status || 'COMPLETED'}"`
+        escapeCsvCell(printer),
+        escapeCsvCell(paymentMethod),
+        price,
+        escapeCsvCell(o.status || 'COMPLETED')
       ];
     });
 
-    // Prepend UTF-8 BOM (\uFEFF) for Microsoft Excel compatibility
-    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+    const summaryRow = [
+      escapeCsvCell(`TOTAL (${filtered.length} Transaksi)`),
+      '""',
+      '""',
+      '""',
+      '""',
+      totalPagesSum,
+      totalCopiesSum,
+      '""',
+      '""',
+      totalPriceSum,
+      '""'
+    ];
+
+    // Prepend UTF-8 BOM (\uFEFF) for Microsoft Excel & Google Sheets compatibility
+    const csvContent = '\uFEFF' + [
+      headers.map(escapeCsvCell).join(','),
+      ...rows.map(r => r.join(',')),
+      summaryRow.join(',')
+    ].join('\r\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
 
-    const defaultFilename = `Laporan-PrintShop-POS-${new Date().toISOString().split('T')[0]}.csv`;
+    const defaultFilename = `laporan-dasbor-${periodSlug}-${toLocalDateKey(new Date())}.csv`;
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('download', filename || defaultFilename);
@@ -418,6 +515,7 @@
     link.click();
     document.body.removeChild(link);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+    return { exported: true, count: filtered.length, filename: filename || defaultFilename };
   }
 
   // ── PDF Official Report Generator ──────────────────────────────────
@@ -431,12 +529,15 @@
 
     let filtered = orders || [];
     if (dateRange && dateRange.dari && dateRange.sampai) {
-      const fromTime = new Date(dateRange.dari + 'T00:00:00').getTime();
-      const toTime = new Date(dateRange.sampai + 'T23:59:59.999').getTime();
       filtered = filtered.filter(o => {
-        const t = new Date(o.created_at || Date.now()).getTime();
-        return t >= fromTime && t <= toTime;
+        if (!o.created_at) return false;
+        const key = toLocalDateKey(new Date(o.created_at));
+        return key >= dateRange.dari && key <= dateRange.sampai;
       });
+    }
+
+    if (filtered.length === 0) {
+      return { exported: false, count: 0 };
     }
 
     const session = window.PrintShopAPI ? window.PrintShopAPI.getOperatorSession() : null;
@@ -634,20 +735,31 @@
     const exportBtn = document.getElementById('btn-export-csv-quick');
     const quickExportCard = document.getElementById('btn-quick-export-csv-card');
 
+    function showExportToast(msg, isError = false) {
+      const exportToast = document.getElementById('export-toast');
+      if (!exportToast) return;
+      exportToast.style.display = 'block';
+      exportToast.style.background = isError ? '#fef2f2' : '#ecfdf5';
+      exportToast.style.borderColor = isError ? '#fecaca' : '#a7f3d0';
+      exportToast.style.color = isError ? '#dc2626' : '#065f46';
+      exportToast.textContent = msg;
+      clearTimeout(exportToast._timer);
+      exportToast._timer = setTimeout(() => { exportToast.style.display = 'none'; }, 4500);
+    }
+
     async function handleQuickCsvExport(btn) {
       if (btn) btn.disabled = true;
       const originalText = btn ? btn.innerHTML : '';
       if (btn) btn.innerHTML = '<span>Menyiapkan CSV...</span>';
       try {
-        await exportOrdersToCsv();
-        const exportToast = document.getElementById('export-toast');
-        if (exportToast) {
-          exportToast.style.display = 'block';
-          exportToast.textContent = 'Laporan CSV berhasil diunduh!';
-          setTimeout(() => { exportToast.style.display = 'none'; }, 4000);
+        const res = await exportOrdersToCsv();
+        if (res && !res.exported) {
+          showExportToast(`Tidak ada data transaksi pada periode ${getPeriodLabel(activePeriod)}.`, true);
+        } else {
+          showExportToast(`Laporan CSV periode ${getPeriodLabel(activePeriod)} (${res.count} transaksi) berhasil diunduh!`);
         }
       } catch (e) {
-        alert('Gagal mengekspor CSV: ' + e.message);
+        showExportToast('Gagal mengekspor CSV: ' + e.message, true);
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -668,7 +780,6 @@
 
     // 6. Form Ekspor Berkas (Date range filter + CSV / PDF)
     const exportForm = document.getElementById('form-ekspor');
-    const exportToast = document.getElementById('export-toast');
 
     if (exportForm) {
       exportForm.addEventListener('submit', async function (e) {
@@ -678,6 +789,11 @@
         const dari = document.getElementById('periode-dari').value;
         const sampai = document.getElementById('periode-sampai').value;
 
+        if (dari && sampai && dari > sampai) {
+          showExportToast('Tanggal mulai tidak boleh lebih besar dari tanggal akhir.', true);
+          return;
+        }
+
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.innerHTML = '<span>Memproses Laporan...</span>';
@@ -686,18 +802,22 @@
         try {
           const dateRange = (dari && sampai) ? { dari, sampai } : null;
           if (format === 'csv') {
-            await exportOrdersToCsv(`Laporan_PrintShop_${dari}_sd_${sampai}.csv`, dateRange);
+            const res = await exportOrdersToCsv(`laporan-dasbor-${dari}_sd_${sampai}.csv`, dateRange);
+            if (res && !res.exported) {
+              showExportToast(`Tidak ada data pesanan pada rentang ${dari} s.d. ${sampai}.`, true);
+            } else {
+              showExportToast(`Laporan periode ${dari} s.d. ${sampai} (${res.count} transaksi CSV) berhasil diunduh.`);
+            }
           } else {
-            await exportOrdersToPdf(dateRange);
-          }
-
-          if (exportToast) {
-            exportToast.style.display = 'block';
-            exportToast.textContent = `Laporan periode ${dari} s.d. ${sampai} (${format.toUpperCase()}) berhasil dihasilkan.`;
-            setTimeout(() => { exportToast.style.display = 'none'; }, 4000);
+            const pdfRes = await exportOrdersToPdf(dateRange);
+            if (pdfRes && pdfRes.exported === false) {
+              showExportToast(`Tidak ada data pesanan pada rentang ${dari} s.d. ${sampai}.`, true);
+            } else {
+              showExportToast(`Laporan periode ${dari} s.d. ${sampai} (PDF) berhasil dihasilkan.`);
+            }
           }
         } catch (err) {
-          alert('Gagal memproses laporan: ' + err.message);
+          showExportToast('Gagal memproses laporan: ' + err.message, true);
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
@@ -742,12 +862,20 @@
       });
     }
 
-    // 8. Filter buttons
+    // 8. Filter buttons (Hari Ini | Kemarin | Pekan Ini)
     const filterBtns = document.querySelectorAll('.date-filter-btn');
     filterBtns.forEach(btn => {
       btn.addEventListener('click', function () {
         filterBtns.forEach(b => b.classList.remove('active'));
         this.classList.add('active');
+        const label = (this.textContent || '').trim().toLowerCase();
+        if (label.includes('kemarin')) {
+          activePeriod = 'yesterday';
+        } else if (label.includes('pekan')) {
+          activePeriod = 'week';
+        } else {
+          activePeriod = 'today';
+        }
         refreshDashboard();
       });
     });

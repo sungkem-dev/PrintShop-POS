@@ -119,7 +119,7 @@
     const diff = cashVal - currentCalculatedTotal;
     if (diff < 0) {
       changeBox.classList.add('shortage');
-      changeAmount.textContent = `Kurang ${formatRupiah(Math.abs(diff))}`;
+      changeAmount.textContent = `Uang tunai kurang ${formatRupiah(Math.abs(diff))}`;
     } else {
       changeBox.classList.remove('shortage');
       changeAmount.textContent = formatRupiah(diff);
@@ -196,8 +196,44 @@
 
     // Cash received inputs & quick buttons
     const cashInput = document.getElementById('cash_received');
+    const cashErrorEl = document.getElementById('cash-received-error');
+    const submitErrorEl = document.getElementById('order-submit-error');
+
+    function showCashError(msg) {
+      if (cashErrorEl) {
+        cashErrorEl.textContent = msg;
+        cashErrorEl.hidden = false;
+      }
+      if (submitErrorEl) {
+        submitErrorEl.textContent = msg;
+        submitErrorEl.hidden = false;
+      }
+      if (cashInput) {
+        cashInput.style.borderColor = '#dc2626';
+        cashInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => cashInput.focus({ preventScroll: true }), 150);
+      }
+    }
+
+    function clearCashError() {
+      if (cashErrorEl) {
+        cashErrorEl.hidden = true;
+        cashErrorEl.textContent = '';
+      }
+      if (submitErrorEl) {
+        submitErrorEl.hidden = true;
+        submitErrorEl.textContent = '';
+      }
+      if (cashInput) {
+        cashInput.style.borderColor = '';
+      }
+    }
+
     if (cashInput) {
-      cashInput.addEventListener('input', updateChangeDisplay);
+      cashInput.addEventListener('input', function () {
+        clearCashError();
+        updateChangeDisplay();
+      });
     }
 
     const btnExactCash = document.getElementById('btn-exact-cash');
@@ -205,6 +241,7 @@
       btnExactCash.addEventListener('click', function () {
         if (cashInput) {
           cashInput.value = currentCalculatedTotal;
+          clearCashError();
           updateChangeDisplay();
         }
       });
@@ -214,6 +251,7 @@
       btn.addEventListener('click', function () {
         if (cashInput) {
           cashInput.value = this.dataset.amount;
+          clearCashError();
           updateChangeDisplay();
         }
       });
@@ -227,20 +265,13 @@
         if (cashCalcWrap) {
           cashCalcWrap.style.display = this.value === 'CASH' ? 'block' : 'none';
         }
+        if (this.value !== 'CASH') {
+          clearCashError();
+        }
       });
     });
 
-    // 5. Submit Handlers
-    const btnDirectPrint = document.getElementById('btn-submit-direct-print');
-    if (btnDirectPrint) {
-      btnDirectPrint.addEventListener('click', function () {
-        targetOrderStatus = 'PRINTING';
-        if (form.reportValidity()) {
-          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        }
-      });
-    }
-
+    // 5. Submit Handler
     const btnQueueSubmit = document.getElementById('btn-submit-queue');
     if (btnQueueSubmit) {
       btnQueueSubmit.addEventListener('click', function () {
@@ -267,9 +298,29 @@
         const notes = document.getElementById('operator_notes').value.trim();
         const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'CASH';
 
+        clearCashError();
+        if (paymentMethod === 'CASH') {
+          const rawCash = cashInput ? cashInput.value.trim() : '';
+          const cashVal = parseFloat(rawCash);
+          if (!rawCash || isNaN(cashVal) || cashVal <= 0) {
+            showCashError('Masukkan atau pilih nominal uang tunai yang diterima terlebih dahulu.');
+            return;
+          }
+          if (cashVal < currentCalculatedTotal) {
+            updateChangeDisplay();
+            showCashError('Nominal uang diterima kurang dari total tagihan.');
+            return;
+          }
+        }
+
         // Calculate sheets count
         const sheetsPerPage = printSide === 'Duplex' ? Math.ceil(totalPages / 2) : totalPages;
         const sheetsCount = sheetsPerPage * copies;
+
+        const isDirectPrint = targetOrderStatus === 'PRINTING';
+        const targetPrinterName = (paperSize === 'A3' || paperSize === 'F4')
+          ? 'Printer 3 - Canon iP2870'
+          : (colorMode !== 'B/W' ? 'Printer 2 - Epson L3150' : 'Printer 1 - HP LaserJet');
 
         const payload = {
           customer_name: customerName,
@@ -282,6 +333,7 @@
           total_price: currentCalculatedTotal,
           status: targetOrderStatus,
           payment_method: paymentMethod,
+          printer_name: targetPrinterName,
           specifications: {
             paper_size: paperSize,
             color_mode: colorMode,
@@ -289,12 +341,14 @@
             paper_type: paperType,
             finishing: finishing,
             sheets_count: sheetsCount,
+            printer: targetPrinterName,
             notes: notes ? `[Walk-In POS] ${notes}` : '[Walk-In POS]'
           }
         };
 
         // Disable submit button while saving
         const submitBtn = document.getElementById('btn-submit-queue');
+        const origQueueHtml = submitBtn ? submitBtn.innerHTML : '';
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Menyimpan pesanan...';
@@ -317,16 +371,18 @@
             copies: copies,
             total_price: currentCalculatedTotal,
             payment_method: paymentMethod,
+            printer_name: targetPrinterName,
             created_at: new Date().toISOString(),
             specifications: {
               paper_size: paperSize,
               color_mode: colorMode,
               print_side: printSide,
-              finishing: finishing
+              finishing: finishing,
+              printer: targetPrinterName
             }
           };
 
-          // Show success modal
+          // Show success modal with clear differentiation
           const modal = document.getElementById('modal-order-success');
           if (modal) {
             document.getElementById('success-order-code').textContent = `#${orderCode}`;
@@ -336,14 +392,53 @@
             document.getElementById('success-payment-method').textContent = paymentMethod === 'CASH' ? 'Tunai (Lunas di Kasir)' : (paymentMethod === 'QRIS' ? 'QRIS Kasir' : 'Bayar Saat Ambil');
             document.getElementById('success-total-price').textContent = formatRupiah(currentCalculatedTotal);
 
+            const modalTitle = document.getElementById('success-modal-title');
             const statusNote = document.getElementById('success-status-note');
+            const statusBadge = document.getElementById('success-status-badge');
+            const printerRow = document.getElementById('success-printer-row');
+            const printerNameEl = document.getElementById('success-printer-name');
+
+            if (modalTitle) {
+              modalTitle.textContent = isDirectPrint ? 'Pesanan Langsung Dicetak!' : 'Pesanan Masuk Antrean!';
+            }
             if (statusNote) {
-              statusNote.textContent = targetOrderStatus === 'PRINTING'
-                ? 'Pesanan langsung diteruskan ke mesin printer untuk dicetak.'
-                : 'Pesanan telah masuk ke dalam antrean cetak aktif.';
+              statusNote.textContent = isDirectPrint
+                ? `Pesanan melewati antrean tunggu dan langsung dikirim ke ${targetPrinterName}.`
+                : 'Pesanan telah dimasukkan ke dalam antrean cetak aktif (urutan FIFO).';
+            }
+            if (statusBadge) {
+              if (isDirectPrint) {
+                statusBadge.textContent = '⚡ Langsung Dicetak (Status: Printing)';
+                statusBadge.style.background = '#ccfbf1';
+                statusBadge.style.borderColor = '#5eead4';
+                statusBadge.style.color = '#0f766e';
+              } else {
+                statusBadge.textContent = 'Menunggu Antrean (FIFO)';
+                statusBadge.style.background = '#e8f5e6';
+                statusBadge.style.borderColor = '#b8dfb3';
+                statusBadge.style.color = '#1e3f18';
+              }
+            }
+            if (printerRow && printerNameEl) {
+              if (isDirectPrint) {
+                printerNameEl.textContent = targetPrinterName;
+                printerRow.style.display = 'flex';
+              } else {
+                printerRow.style.display = 'none';
+              }
             }
 
             modal.style.display = 'flex';
+
+            if (isDirectPrint) {
+              setTimeout(function () {
+                if (lastSavedOrder && window.PrintShopAPI && typeof window.PrintShopAPI.printThermalReceipt === 'function') {
+                  window.PrintShopAPI.printThermalReceipt(lastSavedOrder);
+                } else {
+                  window.print();
+                }
+              }, 250);
+            }
           } else {
             alert(`Pesanan #${orderCode} berhasil disimpan ke antrean cetak!`);
             window.location.href = 'antrean.html';
@@ -353,7 +448,7 @@
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Simpan & Masukkan Antrean';
+            submitBtn.innerHTML = origQueueHtml;
           }
         }
       });

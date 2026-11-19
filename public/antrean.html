@@ -271,7 +271,7 @@
             <div class="stat-card-body">
               <div class="stat-card-content">
                 <span class="stat-card-label">Total Antrean Aktif</span>
-                <strong class="stat-card-value">11</strong>
+                <strong class="stat-card-value">0</strong>
                 <span class="stat-card-sub">Pesanan dalam antrean saat ini</span>
               </div>
               <div class="stat-card-icon stat-card-icon--primary" aria-hidden="true">
@@ -292,7 +292,7 @@
             <div class="stat-card-body">
               <div class="stat-card-content">
                 <span class="stat-card-label">Menunggu Antrean</span>
-                <strong class="stat-card-value stat-card-value--warning">5</strong>
+                <strong class="stat-card-value stat-card-value--warning">0</strong>
                 <span class="stat-card-sub">Waiting in Queue</span>
               </div>
               <div class="stat-card-icon stat-card-icon--warning" aria-hidden="true">
@@ -309,7 +309,7 @@
             <div class="stat-card-body">
               <div class="stat-card-content">
                 <span class="stat-card-label">Sedang Diproses</span>
-                <strong class="stat-card-value stat-card-value--info">1</strong>
+                <strong class="stat-card-value stat-card-value--info">0</strong>
                 <span class="stat-card-sub">Processing / Reviewing</span>
               </div>
               <div class="stat-card-icon stat-card-icon--info" aria-hidden="true">
@@ -328,7 +328,7 @@
             <div class="stat-card-body">
               <div class="stat-card-content">
                 <span class="stat-card-label">Sedang Dicetak</span>
-                <strong class="stat-card-value stat-card-value--primary">2</strong>
+                <strong class="stat-card-value stat-card-value--primary">0</strong>
                 <span class="stat-card-sub">Printing di mesin</span>
               </div>
               <div class="stat-card-icon stat-card-icon--primary" aria-hidden="true">
@@ -346,7 +346,7 @@
             <div class="stat-card-body">
               <div class="stat-card-content">
                 <span class="stat-card-label">Siap Diambil</span>
-                <strong class="stat-card-value stat-card-value--success">3</strong>
+                <strong class="stat-card-value stat-card-value--success">0</strong>
                 <span class="stat-card-sub">Ready for Pickup</span>
               </div>
               <div class="stat-card-icon stat-card-icon--success" aria-hidden="true">
@@ -408,22 +408,23 @@
                   </svg>
                   Terapkan
                 </button>
-                <a href="antrean.html" class="btn-ghost btn-sm">Reset</a>
+                <a href="antrean.html" id="btn-reset-filter" class="btn-ghost btn-sm">Reset</a>
               </div>
             </form>
+            <div id="queue-filter-feedback" class="queue-filter-feedback" hidden role="status" aria-live="polite"></div>
           </div>
         </section>
 
         <!-- Tabel Daftar Antrean -->
-        <section class="console-card" aria-labelledby="tabel-antrean-heading">
+        <section id="queue-section-card" class="console-card" aria-labelledby="tabel-antrean-heading">
           <div class="console-card-header">
             <h2 id="tabel-antrean-heading" class="console-card-title">
               Daftar Antrean Masuk
-              <span class="badge-count">11 Pesanan</span>
+              <span class="badge-count">0 Pesanan</span>
             </h2>
             <p class="console-card-subtitle" aria-live="polite" role="status">
               <span class="pulse-dot"></span>
-              Data diperbarui otomatis setiap 10 detik | Terakhir: <strong id="last-update-time">07:42:15
+              Data diperbarui otomatis setiap 10 detik | Terakhir: <strong id="last-update-time">--:--:--
                 WIB</strong>
               | Urutan FIFO
             </p>
@@ -446,361 +447,9 @@
                   </tr>
                 </thead>
                 <tbody id="queue-table-tbody">
-                  <!-- Baris 1: Printing -->
                   <tr>
-                    <td>1</td>
-                    <td><strong class="order-id">#ORD-040</strong></td>
-                    <td><time datetime="2026-10-09T07:28:00+07:00">07:28 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        skripsi-bab1-2.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">2 Copy</span>
-                      <span class="spec-tag">Duplex</span>
-                    </td>
-                    <td class="text-center">48</td>
-                    <td><strong>Rp24.000</strong></td>
-                    <td>Printer 1</td>
-                    <td><span class="status-badge status-badge--printing">Printing</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--success" title="Tandai siap ambil">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          Siap Ambil
-                        </button>
-                        <button type="button" class="btn-action-icon" title="Lihat detail">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 2: Printing -->
-                  <tr>
-                    <td>2</td>
-                    <td><strong class="order-id">#ORD-041</strong></td>
-                    <td><time datetime="2026-10-09T07:35:00+07:00">07:35 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        ktp-fotokopi.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">1 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">1</td>
-                    <td><strong>Rp500</strong></td>
-                    <td>Printer 2</td>
-                    <td><span class="status-badge status-badge--printing">Printing</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--success" title="Tandai siap ambil">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          Siap Ambil
-                        </button>
-                        <button type="button" class="btn-action-icon" title="Lihat detail">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 3: Processing -->
-                  <tr>
-                    <td>3</td>
-                    <td><strong class="order-id">#ORD-042</strong></td>
-                    <td><time datetime="2026-10-09T07:42:00+07:00">07:42 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        tugas-akhir-bab3.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">1 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">24</td>
-                    <td><strong>Rp12.000</strong></td>
-                    <td>-</td>
-                    <td><span class="status-badge status-badge--processing">Processing</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--primary" title="Mulai cetak">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                          </svg>
-                          Mulai Cetak
-                        </button>
-                        <button type="button" class="btn-action-icon btn-action-icon--danger" title="Batalkan pesanan">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="15" y1="9" x2="9" y2="15"></line>
-                            <line x1="9" y1="9" x2="15" y2="15"></line>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 4: Waiting -->
-                  <tr>
-                    <td>4</td>
-                    <td><strong class="order-id">#ORD-043</strong></td>
-                    <td><time datetime="2026-10-09T07:43:00+07:00">07:43 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        makalah-pancasila.docx
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">1 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">15</td>
-                    <td><strong>Rp7.500</strong></td>
-                    <td>-</td>
-                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--primary" title="Proses pesanan">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path
-                              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.27.4.69.67 1.17.71H21a2 2 0 0 1 0 4h-.09c-.48.04-.9.31-1.17.71z">
-                            </path>
-                          </svg>
-                          Proses
-                        </button>
-                        <button type="button" class="btn-action-icon" title="Lihat detail">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 5: Waiting -->
-                  <tr>
-                    <td>5</td>
-                    <td><strong class="order-id">#ORD-044</strong></td>
-                    <td><time datetime="2026-10-09T07:44:00+07:00">07:44 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        presentasi-seminar.pptx
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag spec-tag--color">Full Color</span>
-                      <span class="spec-tag">1 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">20</td>
-                    <td><strong>Rp40.000</strong></td>
-                    <td>-</td>
-                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--primary"
-                          title="Proses pesanan">Proses</button>
-                        <button type="button" class="btn-action-icon" title="Lihat detail">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 6: Waiting -->
-                  <tr>
-                    <td>6</td>
-                    <td><strong class="order-id">#ORD-045</strong></td>
-                    <td><time datetime="2026-10-09T07:45:00+07:00">07:45 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        laporan-pkl.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">F4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">2 Copy</span>
-                      <span class="spec-tag">Duplex</span>
-                    </td>
-                    <td class="text-center">60</td>
-                    <td><strong>Rp36.000</strong></td>
-                    <td>-</td>
-                    <td><span class="status-badge status-badge--waiting">Waiting</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--primary"
-                          title="Proses pesanan">Proses</button>
-                        <button type="button" class="btn-action-icon" title="Lihat detail">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 7: Ready for Pickup -->
-                  <tr class="row-ready">
-                    <td>7</td>
-                    <td><strong class="order-id">#ORD-037</strong></td>
-                    <td><time datetime="2026-10-09T07:10:00+07:00">07:10 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        transkrip-nilai.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag">B&amp;W</span>
-                      <span class="spec-tag">3 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">3</td>
-                    <td><strong>Rp4.500</strong></td>
-                    <td>Printer 1</td>
-                    <td><span class="status-badge status-badge--ready">Ready</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--success" title="Selesaikan pesanan">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          Selesai
-                        </button>
-                        <button type="button" class="btn-action-icon" title="Cetak tiket">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <!-- Baris 8: Ready for Pickup -->
-                  <tr class="row-ready">
-                    <td>8</td>
-                    <td><strong class="order-id">#ORD-038</strong></td>
-                    <td><time datetime="2026-10-09T07:15:00+07:00">07:15 WIB</time></td>
-                    <td>
-                      <div class="file-info">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        buku-panduan.pdf
-                      </div>
-                    </td>
-                    <td>
-                      <span class="spec-tag">A4</span>
-                      <span class="spec-tag spec-tag--color">Full Color</span>
-                      <span class="spec-tag">1 Copy</span>
-                      <span class="spec-tag">Simplex</span>
-                    </td>
-                    <td class="text-center">8</td>
-                    <td><strong>Rp16.000</strong></td>
-                    <td>Printer 2</td>
-                    <td><span class="status-badge status-badge--ready">Ready</span></td>
-                    <td>
-                      <div class="action-btn-group">
-                        <button type="button" class="btn-action btn-action--success" title="Selesaikan pesanan">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          Selesai
-                        </button>
-                        <button type="button" class="btn-action-icon" title="Cetak tiket">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                          </svg>
-                        </button>
-                      </div>
+                    <td colspan="10" style="text-align: center; padding: 36px 20px; color: var(--muted);">
+                      Memuat data antrean...
                     </td>
                   </tr>
                 </tbody>
@@ -809,12 +458,11 @@
 
             <!-- Footer tabel -->
             <div class="table-footer">
-              <span class="table-footer-info">Menampilkan 8 dari 11 pesanan aktif</span>
+              <span class="table-footer-info">Memuat data antrean...</span>
               <div class="table-pagination">
                 <button type="button" class="pagination-btn" disabled>&laquo;</button>
                 <button type="button" class="pagination-btn active">1</button>
-                <button type="button" class="pagination-btn">2</button>
-                <button type="button" class="pagination-btn">&raquo;</button>
+                <button type="button" class="pagination-btn" disabled>&raquo;</button>
               </div>
             </div>
           </div>
@@ -853,7 +501,7 @@
           <div class="console-card-header">
             <h2 id="riwayat-heading" class="console-card-title">
               Riwayat Pesanan
-              <span class="badge-count">47 Transaksi</span>
+              <span class="badge-count">0 Transaksi</span>
             </h2>
             <div class="section-header-actions">
               <div class="date-filter-btn-group" role="group" aria-label="Filter rentang riwayat">
@@ -878,19 +526,19 @@
             <div class="history-kpi-row">
               <div class="history-kpi-card">
                 <span class="history-kpi-label">Total Transaksi</span>
-                <strong class="history-kpi-value">47</strong>
+                <strong class="history-kpi-value">0</strong>
               </div>
               <div class="history-kpi-card history-kpi-card--success">
                 <span class="history-kpi-label">Selesai</span>
-                <strong class="history-kpi-value">43</strong>
+                <strong class="history-kpi-value">0</strong>
               </div>
               <div class="history-kpi-card history-kpi-card--danger">
                 <span class="history-kpi-label">Dibatalkan</span>
-                <strong class="history-kpi-value">4</strong>
+                <strong class="history-kpi-value">0</strong>
               </div>
               <div class="history-kpi-card history-kpi-card--primary">
                 <span class="history-kpi-label">Total Pendapatan</span>
-                <strong class="history-kpi-value">Rp187.500</strong>
+                <strong class="history-kpi-value">Rp0</strong>
               </div>
             </div>
           </div>
@@ -911,185 +559,26 @@
                   </tr>
                 </thead>
                 <tbody id="history-table-tbody">
-                  <tr>
-                    <td><strong class="order-id">#ORD-034</strong></td>
-                    <td><time datetime="2026-10-19T06:12:00+07:00">06:12 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> makalah-fisika.pdf</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span class="spec-tag">1
-                        Copy</span></td>
-                    <td class="text-center">12</td>
-                    <td><strong>Rp6.000</strong></td>
-                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-034">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong class="order-id">#ORD-035</strong></td>
-                    <td><time datetime="2026-10-19T06:28:00+07:00">06:28 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> proposal-ta-cover.pdf</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">3
-                        Copy</span></td>
-                    <td class="text-center">6</td>
-                    <td><strong>Rp9.000</strong></td>
-                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-035">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="row-cancelled">
-                    <td><strong class="order-id">#ORD-036</strong></td>
-                    <td><time datetime="2026-10-19T06:45:00+07:00">06:45 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> laporan-pkl.pdf</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span
-                        class="spec-tag">Duplex</span></td>
-                    <td class="text-center">40</td>
-                    <td><strong class="text-cancelled">Rp20.000</strong></td>
-                    <td><span class="status-badge status-badge--cancelled">Dibatalkan</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-036">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong class="order-id">#ORD-037</strong></td>
-                    <td><time datetime="2026-10-19T07:03:00+07:00">07:03 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> skripsi-bab4.docx</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">B&W</span><span class="spec-tag">2
-                        Copy</span><span class="spec-tag">Duplex</span></td>
-                    <td class="text-center">56</td>
-                    <td><strong>Rp56.000</strong></td>
-                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-037">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong class="order-id">#ORD-038</strong></td>
-                    <td><time datetime="2026-10-19T07:15:00+07:00">07:15 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> cv-lamar-kerja.pdf</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">1
-                        Copy</span></td>
-                    <td class="text-center">2</td>
-                    <td><strong>Rp3.000</strong></td>
-                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-038">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong class="order-id">#ORD-039</strong></td>
-                    <td><time datetime="2026-10-19T07:22:00+07:00">07:22 WIB</time></td>
-                    <td>
-                      <div class="file-info"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          aria-hidden="true">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg> presentasi-bisnis.pptx</div>
-                    </td>
-                    <td><span class="spec-tag">A4</span><span class="spec-tag">Color</span><span class="spec-tag">1
-                        Copy</span></td>
-                    <td class="text-center">18</td>
-                    <td><strong>Rp27.000</strong></td>
-                    <td><span class="status-badge status-badge--ready">Selesai</span></td>
-                    <td>
-                      <button type="button" class="btn-action-icon" title="Lihat detail pesanan"
-                        aria-label="Detail #ORD-039">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                          <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                      </button>
+                  <tr class="history-table-row-empty">
+                    <td colspan="8" style="text-align: center; padding: 36px 20px; color: var(--muted);">
+                      Memuat riwayat pesanan...
                     </td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th colspan="5" scope="row">Total (Hari Ini, 47 Transaksi)</th>
-                    <td colspan="3"><strong>Rp187.500</strong></td>
+                    <th colspan="5" scope="row">Total (Hari Ini, 0 Transaksi)</th>
+                    <td colspan="3"><strong>Rp0</strong></td>
                   </tr>
                 </tfoot>
               </table>
             </div>
             <div class="table-footer">
-              <span class="table-footer-info">Menampilkan 6 dari 47 transaksi</span>
+              <span class="table-footer-info">Memuat riwayat pesanan...</span>
               <div class="table-pagination">
                 <button type="button" class="pagination-btn" disabled>&laquo;</button>
                 <button type="button" class="pagination-btn active">1</button>
-                <button type="button" class="pagination-btn">2</button>
-                <button type="button" class="pagination-btn">3</button>
-                <button type="button" class="pagination-btn">&raquo;</button>
+                <button type="button" class="pagination-btn" disabled>&raquo;</button>
               </div>
             </div>
           </div>
@@ -1172,14 +661,16 @@
                         </svg>
                         Setujui Refund
                       </button>
-                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
-                        data-order-id="ORD-036" aria-label="Tolak permintaan refund #ORD-036" title="Tolak permintaan">
+                      <button type="button" class="btn-action btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-036" aria-label="Tolak permintaan refund #ORD-036" title="Tolak permintaan"
+                        style="border:1px solid #fecaca;background:#fef2f2;color:#dc2626;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="15" y1="9" x2="9" y2="15"></line>
                           <line x1="9" y1="9" x2="15" y2="15"></line>
                         </svg>
+                        <span>Tolak</span>
                       </button>
                     </div>
                   </li>
@@ -1215,14 +706,16 @@
                         </svg>
                         Setujui Refund
                       </button>
-                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
-                        data-order-id="ORD-028" aria-label="Tolak permintaan refund #ORD-028" title="Tolak permintaan">
+                      <button type="button" class="btn-action btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-028" aria-label="Tolak permintaan refund #ORD-028" title="Tolak permintaan"
+                        style="border:1px solid #fecaca;background:#fef2f2;color:#dc2626;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="15" y1="9" x2="9" y2="15"></line>
                           <line x1="9" y1="9" x2="15" y2="15"></line>
                         </svg>
+                        <span>Tolak</span>
                       </button>
                     </div>
                   </li>
@@ -1258,14 +751,16 @@
                         </svg>
                         Setujui Refund
                       </button>
-                      <button type="button" class="btn-action btn-action-icon btn-action-icon--danger btn-reject-refund"
-                        data-order-id="ORD-031" aria-label="Tolak permintaan refund #ORD-031" title="Tolak permintaan">
+                      <button type="button" class="btn-action btn-action-icon--danger btn-reject-refund"
+                        data-order-id="ORD-031" aria-label="Tolak permintaan refund #ORD-031" title="Tolak permintaan"
+                        style="border:1px solid #fecaca;background:#fef2f2;color:#dc2626;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="15" y1="9" x2="9" y2="15"></line>
                           <line x1="9" y1="9" x2="15" y2="15"></line>
                         </svg>
+                        <span>Tolak</span>
                       </button>
                     </div>
                   </li>
@@ -1307,6 +802,9 @@
                         </div>
                         <span id="cancel-order-hint" class="admin-cancel-hint">Masukkan ID pesanan yang akan
                           dibatalkan</span>
+                        <div id="cancel-lookup-feedback" hidden role="alert" aria-live="polite"
+                          style="margin-top:6px;padding:10px 12px;border-radius:8px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;font-size:12.5px;font-weight:500;">
+                        </div>
                       </div>
 
                       <!-- Order preview (hidden until lookup) -->
@@ -1371,6 +869,10 @@
                         </div>
                       </div>
 
+                      <!-- Feedback alert (hidden by default) -->
+                      <div id="admin-cancel-feedback" class="login-alert-box" hidden role="alert" aria-live="assertive">
+                      </div>
+
                       <div class="admin-cancel-actions">
                         <button type="submit" id="btn-submit-cancel" class="btn-primary"
                           style="min-height:44px;gap:8px;" aria-label="Proses pembatalan dan refund">
@@ -1380,11 +882,7 @@
                           </svg>
                           Proses Pembatalan &amp; Refund
                         </button>
-                        <button type="reset" class="btn-ghost btn-sm" aria-label="Reset form">Reset</button>
-                      </div>
-
-                      <!-- Feedback alert (hidden by default) -->
-                      <div id="admin-cancel-feedback" class="login-alert-box" hidden role="alert" aria-live="assertive">
+                        <button type="reset" id="btn-reset-cancel" class="btn-ghost btn-sm" aria-label="Reset form">Reset</button>
                       </div>
 
                     </fieldset>
@@ -3312,33 +2810,110 @@
         });
       });
 
-      // ── 8. Admin Cancel: order lookup simulation ──────────────────
+      // ── 8. Admin Cancel: order lookup & validation ─────────────────
       const lookupBtn = document.getElementById('btn-lookup-order');
       const previewEl = document.getElementById('cancel-order-preview');
       const cancelInput = document.getElementById('cancel-order-id');
+      const lookupFeedback = document.getElementById('cancel-lookup-feedback');
+      const reasonSelectEl = document.getElementById('cancel-reason-select');
 
       const fakeOrders = {
-        'ORD-040': { file: 'makalah-ppkn.pdf', total: 'Rp9.000', status: 'Waiting', statusClass: 'status-badge--waiting' },
-        'ORD-041': { file: 'skripsi-final.pdf', total: 'Rp48.000', status: 'Processing', statusClass: 'status-badge--processing' },
-        'ORD-042': { file: 'tugas-akhir-bab3.pdf', total: 'Rp12.000', status: 'Processing', statusClass: 'status-badge--processing' },
+        'ORD-040': { file: 'makalah-ppkn.pdf', total: 'Rp9.000', amount: 9000, status: 'Waiting', statusClass: 'status-badge--waiting', isCancelled: false },
+        'ORD-041': { file: 'skripsi-final.pdf', total: 'Rp48.000', amount: 48000, status: 'Processing', statusClass: 'status-badge--processing', isCancelled: false },
+        'ORD-042': { file: 'tugas-akhir-bab3.pdf', total: 'Rp12.000', amount: 12000, status: 'Processing', statusClass: 'status-badge--processing', isCancelled: false },
       };
 
+      function normalizeOrderCode(val) {
+        const cleaned = String(val || '').trim().toUpperCase().replace(/^#/, '');
+        if (!cleaned) return '';
+        if (/^\d+$/.test(cleaned)) return 'ORD-' + cleaned;
+        return cleaned.replace(/^ORD-?/, 'ORD-');
+      }
+
+      function showLookupError(msg) {
+        if (lookupFeedback) {
+          lookupFeedback.textContent = msg;
+          lookupFeedback.hidden = false;
+        }
+        if (cancelInput) cancelInput.style.borderColor = '#dc2626';
+      }
+
+      function clearLookupError() {
+        if (lookupFeedback) {
+          lookupFeedback.hidden = true;
+          lookupFeedback.textContent = '';
+        }
+        if (cancelInput) cancelInput.style.borderColor = '';
+      }
+
+      async function findOrderForCancel(rawVal) {
+        const normalized = normalizeOrderCode(rawVal);
+        if (!normalized) return { normalized: '', order: null };
+
+        if (window.PrintShopAPI && window.PrintShopAPI.getOrders) {
+          try {
+            const list = await window.PrintShopAPI.getOrders();
+            if (Array.isArray(list)) {
+              const found = list.find(function (o) {
+                const code = normalizeOrderCode(o.order_code || o.id || '');
+                return code === normalized;
+              });
+              if (found) {
+                const st = (found.status || '').toUpperCase();
+                const isCancelled = st === 'CANCELLED' || st === 'DIBATALKAN' || st === 'REFUNDED';
+                const amt = Number(found.total_price || 0);
+                return {
+                  normalized: normalized,
+                  order: {
+                    file: found.file_name || 'Dokumen.pdf',
+                    total: 'Rp' + amt.toLocaleString('id-ID'),
+                    amount: amt,
+                    status: isCancelled ? 'Dibatalkan' : (found.status || 'Active'),
+                    statusClass: isCancelled ? 'status-badge--cancelled' : 'status-badge--processing',
+                    isCancelled: isCancelled
+                  }
+                };
+              }
+            }
+          } catch (err) {
+            console.warn('Order lookup API error:', err);
+          }
+        }
+
+        const mock = fakeOrders[normalized] || null;
+        return { normalized: normalized, order: mock };
+      }
+
+      function renderOrderPreview(code, order) {
+        document.getElementById('preview-order-id').textContent = '#' + code;
+        document.getElementById('preview-file').textContent = order.file;
+        document.getElementById('preview-total').textContent = order.total;
+        const statusEl = document.getElementById('preview-status');
+        statusEl.textContent = order.status;
+        statusEl.className = 'status-badge ' + order.statusClass;
+        if (previewEl) previewEl.hidden = false;
+      }
+
       if (lookupBtn && previewEl && cancelInput) {
-        lookupBtn.addEventListener('click', function () {
-          const raw = cancelInput.value.trim().toUpperCase().replace(/^ORD-?/, 'ORD-').replace(/^#/, '');
-          const order = fakeOrders[raw];
-          if (order) {
-            document.getElementById('preview-order-id').textContent = '#' + raw;
-            document.getElementById('preview-file').textContent = order.file;
-            document.getElementById('preview-total').textContent = order.total;
-            const statusEl = document.getElementById('preview-status');
-            statusEl.textContent = order.status;
-            statusEl.className = 'status-badge ' + order.statusClass;
-            previewEl.hidden = false;
+        lookupBtn.addEventListener('click', async function () {
+          clearLookupError();
+          const rawText = cancelInput.value.trim();
+          if (!rawText) {
+            previewEl.hidden = true;
+            showLookupError('Masukkan ID pesanan terlebih dahulu.');
+            cancelInput.focus();
+            return;
+          }
+
+          const res = await findOrderForCancel(rawText);
+          if (res.order) {
+            renderOrderPreview(res.normalized, res.order);
+            if (res.order.isCancelled) {
+              showLookupError('Pesanan #' + res.normalized + ' sudah dibatalkan/di-refund sebelumnya dan tidak memenuhi syarat refund ulang.');
+            }
           } else {
             previewEl.hidden = true;
-            cancelInput.style.borderColor = '#ef4444';
-            setTimeout(function () { cancelInput.style.borderColor = ''; }, 1500);
+            showLookupError("Pesanan dengan ID '" + rawText.toUpperCase() + "' tidak ditemukan.");
           }
         });
       }
@@ -3431,27 +3006,110 @@
       // ── 9. Admin Cancel form submission ───────────────────────────
       const cancelForm = document.getElementById('form-admin-cancel');
       const cancelFeedback = document.getElementById('admin-cancel-feedback');
+      const resetCancelBtn = document.getElementById('btn-reset-cancel');
+
+      function resetAdminCancelForm() {
+        if (cancelInput) cancelInput.value = '';
+        clearLookupError();
+        if (previewEl) previewEl.hidden = true;
+        if (reasonSelectEl) {
+          reasonSelectEl.selectedIndex = 0;
+          reasonSelectEl.style.borderColor = '';
+        }
+        const notesEl = document.getElementById('cancel-notes');
+        if (notesEl) notesEl.value = '';
+        if (cancelForm) {
+          const radios = cancelForm.querySelectorAll('input[name="refund_method"]');
+          radios.forEach(function (radio, idx) {
+            radio.checked = idx === 0;
+          });
+        }
+        if (cancelFeedback) {
+          cancelFeedback.hidden = true;
+          cancelFeedback.textContent = '';
+          cancelFeedback.className = 'login-alert-box';
+        }
+      }
+
+      if (cancelInput) {
+        cancelInput.addEventListener('input', function () {
+          clearLookupError();
+          if (cancelFeedback && cancelFeedback.classList.contains('login-alert-box--error')) {
+            cancelFeedback.hidden = true;
+          }
+        });
+      }
+
+      if (reasonSelectEl) {
+        reasonSelectEl.addEventListener('change', function () {
+          reasonSelectEl.style.borderColor = '';
+          if (cancelFeedback && cancelFeedback.classList.contains('login-alert-box--error')) {
+            cancelFeedback.hidden = true;
+          }
+        });
+      }
+
+      if (resetCancelBtn) {
+        resetCancelBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          resetAdminCancelForm();
+        });
+      }
+
+      if (cancelForm) {
+        cancelForm.addEventListener('reset', function () {
+          setTimeout(resetAdminCancelForm, 0);
+        });
+      }
 
       if (cancelForm && cancelFeedback) {
         cancelForm.addEventListener('submit', async function (e) {
           e.preventDefault();
-          const orderId = (cancelInput ? cancelInput.value.trim() : '');
-          const reasonSelect = document.getElementById('cancel-reason-select');
+          clearLookupError();
+          if (reasonSelectEl) reasonSelectEl.style.borderColor = '';
+
+          const rawOrderInput = cancelInput ? cancelInput.value.trim() : '';
           const notes = document.getElementById('cancel-notes')?.value || '';
           const method = cancelForm.querySelector('input[name="refund_method"]:checked')?.value || 'qris_reversal';
 
-          if (!orderId) {
-            showFeedback(cancelFeedback, 'error', 'Masukkan ID pesanan terlebih dahulu.');
-            return;
-          }
-          if (reasonSelect && !reasonSelect.value) {
-            showFeedback(cancelFeedback, 'error', 'Pilih alasan pembatalan sebelum melanjutkan.');
+          if (!rawOrderInput) {
+            if (cancelInput) {
+              cancelInput.style.borderColor = '#dc2626';
+              cancelInput.focus();
+            }
+            showFeedback(cancelFeedback, 'error', 'ID pesanan wajib diisi.');
             return;
           }
 
-          const rawTotal = document.getElementById('preview-total')?.textContent || 'Rp12.000';
-          const amount = Number(rawTotal.replace(/[^0-9]/g, '')) || 12000;
-          const reasonText = reasonSelect.options[reasonSelect.selectedIndex]?.text || reasonSelect.value;
+          const lookup = await findOrderForCancel(rawOrderInput);
+          if (!lookup.order) {
+            if (previewEl) previewEl.hidden = true;
+            if (cancelInput) {
+              cancelInput.style.borderColor = '#dc2626';
+              cancelInput.focus();
+            }
+            showFeedback(cancelFeedback, 'error', 'ID pesanan tidak ditemukan. Periksa kembali ID pesanan sebelum memproses refund.');
+            return;
+          }
+
+          if (lookup.order.isCancelled) {
+            renderOrderPreview(lookup.normalized, lookup.order);
+            if (cancelInput) cancelInput.style.borderColor = '#dc2626';
+            showFeedback(cancelFeedback, 'error', 'Pesanan ini sudah dibatalkan sebelumnya.');
+            return;
+          }
+
+          if (reasonSelectEl && !reasonSelectEl.value) {
+            reasonSelectEl.style.borderColor = '#dc2626';
+            reasonSelectEl.focus();
+            showFeedback(cancelFeedback, 'error', 'Pilih alasan pembatalan terlebih dahulu.');
+            return;
+          }
+
+          renderOrderPreview(lookup.normalized, lookup.order);
+          const orderId = lookup.normalized;
+          const amount = Number(lookup.order.amount) || 12000;
+          const reasonText = reasonSelectEl.options[reasonSelectEl.selectedIndex]?.text || reasonSelectEl.value;
 
           try {
             if (window.PrintShopAPI && window.PrintShopAPI.createRefund) {
@@ -3470,9 +3128,8 @@
               refund_method: method,
               created_at: new Date().toISOString()
             });
-            showFeedback(cancelFeedback, 'success', `Pembatalan #${orderId.toUpperCase()} berhasil diproses dan dicatat dalam Riwayat Pengembalian.`);
-            cancelForm.reset();
-            if (previewEl) previewEl.hidden = true;
+            resetAdminCancelForm();
+            showFeedback(cancelFeedback, 'success', `Pembatalan #${orderId} berhasil diproses dan dicatat dalam Riwayat Pengembalian.`);
           } catch (err) {
             showFeedback(cancelFeedback, 'error', 'Gagal memproses refund: ' + err.message);
           }
