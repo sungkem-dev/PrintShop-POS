@@ -1100,15 +1100,35 @@
               <img src="./assets/images/file-icon-pdf.svg" alt="Ikon file PDF" />
             </div>
             <div class="doc-info-text">
-              <p class="doc-info-name" id="doc-filename">tugas-akhir-bab3.pdf</p>
+              <p class="doc-info-name" id="doc-filename">Memuat berkas...</p>
               <p class="doc-info-meta">
-                <span>Ukuran: <strong>2,4 MB</strong></span>
-                <span>Halaman: <strong id="doc-total-pages" data-total="24">24 halaman</strong></span>
-                <span style="color:#059669;font-weight:600;">✓ Terverifikasi</span>
+                <span>Ukuran: <strong>Memeriksa...</strong></span>
+                <span>Halaman: <strong id="doc-total-pages" data-total="1">—</strong></span>
+                <span style="color:#059669;font-weight:600;">Memuat info berkas...</span>
               </p>
             </div>
             <a href="unggah.html" class="doc-info-change">Ganti Berkas</a>
           </article>
+          <script>
+            (function () {
+              try {
+                var raw = sessionStorage.getItem('printshop_order') || sessionStorage.getItem('printshop_uploaded_file');
+                if (!raw) return;
+                var d = JSON.parse(raw);
+                var nameEl = document.getElementById('doc-filename');
+                var pagesEl = document.getElementById('doc-total-pages');
+                var metaSpans = document.querySelectorAll('.doc-info-meta > span');
+                if (nameEl && (d.filename || d.file_name)) nameEl.textContent = d.filename || d.file_name;
+                if (metaSpans[0] && d.file_size) metaSpans[0].innerHTML = 'Ukuran: <strong>' + d.file_size + '</strong>';
+                var p = Number(d.pagesNum || d.pages || d.total_pages || 0);
+                if (pagesEl && p > 0) {
+                  pagesEl.textContent = p + ' halaman';
+                  pagesEl.setAttribute('data-total', String(p));
+                }
+                if (metaSpans[2]) metaSpans[2].textContent = '✓ Terverifikasi';
+              } catch (e) {}
+            })();
+          </script>
 
           <form id="form-spesifikasi" action="pembayaran.html" method="get" novalidate>
 
@@ -1126,7 +1146,7 @@
                   <input type="radio" name="ukuran-kertas" value="A4" checked />
                   <span class="radio-card-body">
                     <span class="radio-card-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
                     </span>
                     <span class="radio-card-label">A4</span>
                     <span class="radio-card-desc">210 × 297 mm — Standar</span>
@@ -1138,7 +1158,7 @@
                   <input type="radio" name="ukuran-kertas" value="F4" />
                   <span class="radio-card-body">
                     <span class="radio-card-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="1.5" width="12" height="21" rx="2"/><line x1="9" y1="7.5" x2="15" y2="7.5"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16.5" x2="13" y2="16.5"/></svg>
                     </span>
                     <span class="radio-card-label">F4 / Folio</span>
                     <span class="radio-card-desc">215 × 330 mm</span>
@@ -1150,7 +1170,7 @@
                   <input type="radio" name="ukuran-kertas" value="A3" />
                   <span class="radio-card-body">
                     <span class="radio-card-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1" width="18" height="22" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="7" y1="17" x2="13" y2="17"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="10" x2="14" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
                     </span>
                     <span class="radio-card-label">A3</span>
                     <span class="radio-card-desc">297 × 420 mm — Besar</span>
@@ -1175,7 +1195,7 @@
                   <input type="radio" name="mode-warna" value="BW" checked />
                   <span class="radio-card-body">
                     <span class="radio-card-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20z"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 2.69l-5.66 5.66a8 8 0 0 0 5.66 13.65z" fill="currentColor" stroke="none"/></svg>
                     </span>
                     <span class="radio-card-label">Hitam &amp; Putih</span>
                     <span class="radio-card-desc">Standar untuk teks dokumen</span>
@@ -1187,7 +1207,7 @@
                   <input type="radio" name="mode-warna" value="Color" />
                   <span class="radio-card-body">
                     <span class="radio-card-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 22c5.5-2 8-7 8-12a8 8 0 1 0-16 0c0 5 2.5 10 8 12z"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4.5"/><circle cx="8.5" cy="14.5" r="4.5"/><circle cx="15.5" cy="14.5" r="4.5"/></svg>
                     </span>
                     <span class="radio-card-label">Full Color</span>
                     <span class="radio-card-desc">Gambar, grafik, dan presentasi</span>

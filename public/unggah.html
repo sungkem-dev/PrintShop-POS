@@ -327,7 +327,7 @@
             </p>
           </header>
 
-          <form action="spesifikasi.html" method="get">
+          <form action="spesifikasi.html" method="get" novalidate>
             <label for="file-dokumen" class="dropzone-box">
               <span class="dropzone-icon-bubble">
                 <img src="./assets/images/upload-cloud.svg" alt="Ikon Unggah Awan" />
@@ -344,6 +344,9 @@
 
               <span class="dropzone-hint-badge">Maksimal ukuran file: 50 MB per dokumen</span>
             </label>
+            <p id="upload-file-error" class="upload-inline-alert" role="alert" hidden>
+              Silakan unggah dokumen terlebih dahulu sebelum melanjutkan.
+            </p>
 
             <fieldset class="form-group-grid">
               <legend class="sr-only">Identitas Pemesan</legend>
@@ -351,30 +354,26 @@
               <div class="input-field-wrap">
                 <label for="nama-pemesan">Nama Pemesan</label>
                 <input type="text" id="nama-pemesan" name="nama-pemesan" placeholder="Contoh: Budi Santoso" required />
+                <small id="nama-pemesan-error" class="input-error-msg" role="alert" hidden>Nama pemesan wajib diisi.</small>
                 <small>Nama ini akan dicantumkan di tiket untuk verifikasi loket.</small>
               </div>
 
               <div class="input-field-wrap">
                 <label for="nomor-hp">Nomor WhatsApp (Opsional)</label>
-                <input type="tel" id="nomor-hp" name="nomor-hp" placeholder="Contoh: 081234567890" pattern="[0-9]{10,13}" inputmode="numeric" />
+                <input type="tel" id="nomor-hp" name="nomor-hp" placeholder="Contoh: 081234567890" inputmode="tel" />
+                <small id="nomor-hp-error" class="input-error-msg" role="alert" hidden></small>
                 <small>Untuk notifikasi jika cetakan sudah selesai.</small>
               </div>
             </fieldset>
 
-            <article class="ready-doc-card" aria-label="Dokumen siap cetak">
+            <article class="ready-doc-card" aria-label="Dokumen siap cetak" hidden>
               <div class="ready-doc-info">
                 <div class="doc-type-icon">
-                  <img src="./assets/images/file-icon-pdf.svg" alt="Ikon PDF" />
+                  <img src="./assets/images/file-icon-pdf.svg" alt="Ikon Dokumen" />
                 </div>
                 <div>
-                  <p class="doc-name">Makalah_Tugas_Akhir_Kelompok2.pdf</p>
-                  <p class="doc-meta">
-                    <span>Ukuran: <strong>4.2 MB</strong></span>
-                    <span> | </span>
-                    <span>Halaman: <strong class="doc-meta-pages">28 Halaman</strong></span>
-                    <span> | </span>
-                    <span class="doc-meta-ok">✓ Terverifikasi</span>
-                  </p>
+                  <p class="doc-name"></p>
+                  <p class="doc-meta"></p>
                 </div>
               </div>
 

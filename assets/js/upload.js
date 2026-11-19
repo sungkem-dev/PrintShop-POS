@@ -14,12 +14,84 @@
     const docMetaEl = document.querySelector('.doc-meta');
     const nameInput = document.getElementById('nama-pemesan');
     const phoneInput = document.getElementById('nomor-hp');
+    const fileErrorEl = document.getElementById('upload-file-error');
+    const nameErrorEl = document.getElementById('nama-pemesan-error');
+    const phoneErrorEl = document.getElementById('nomor-hp-error');
     const submitBtn = document.querySelector('.btn-submit-action');
     const form = document.querySelector('form');
 
     let currentFile = null;
-    let detectedPages = 10;
+    let detectedPages = 0;
     let uploadedFileUrl = '';
+
+    // Hide preview card initially; keep submit button active (solid green)
+    if (readyCard) {
+      readyCard.hidden = true;
+    }
+
+    function clearFileError() {
+      if (fileErrorEl) fileErrorEl.hidden = true;
+      if (dropzone) dropzone.classList.remove('is-invalid');
+    }
+
+    function clearNameError() {
+      if (nameErrorEl) nameErrorEl.hidden = true;
+      if (nameInput) nameInput.classList.remove('is-invalid');
+    }
+
+    function clearPhoneError() {
+      if (phoneErrorEl) phoneErrorEl.hidden = true;
+      if (phoneInput) phoneInput.classList.remove('is-invalid');
+    }
+
+    function showNameError(msg) {
+      if (nameErrorEl) {
+        nameErrorEl.textContent = msg;
+        nameErrorEl.hidden = false;
+      }
+      if (nameInput) nameInput.classList.add('is-invalid');
+    }
+
+    function showPhoneError(msg) {
+      if (phoneErrorEl) {
+        phoneErrorEl.textContent = msg;
+        phoneErrorEl.hidden = false;
+      }
+      if (phoneInput) phoneInput.classList.add('is-invalid');
+    }
+
+    function validateName(raw) {
+      const val = (raw || '').trim();
+      if (!val) {
+        return 'Nama pemesan wajib diisi.';
+      }
+      const allowedPattern = /^[a-zA-ZÀ-ÿ0-9\s.,'-]+$/;
+      const hasLetter = /[a-zA-ZÀ-ÿ]/.test(val);
+      if (!allowedPattern.test(val) || !hasLetter) {
+        return 'Masukkan nama pemesan yang valid (gunakan huruf, boleh disertai angka/spasi).';
+      }
+      return '';
+    }
+
+    function validatePhone(raw, isLiveInput) {
+      const val = (raw || '').trim();
+      if (!val) {
+        return '';
+      }
+      if (!/^\+?\d*$/.test(val)) {
+        return 'Nomor WhatsApp harus berupa angka, bukan huruf.';
+      }
+      if (!isLiveInput) {
+        const digits = val.replace(/^\+/, '');
+        if (!digits) {
+          return 'Nomor WhatsApp harus berupa angka, bukan huruf.';
+        }
+        if (digits.length < 10 || digits.length > 14) {
+          return 'Nomor WhatsApp harus terdiri dari 10–14 digit angka.';
+        }
+      }
+      return '';
+    }
 
     // Estimate PDF page count from file buffer if PDF
     async function estimatePdfPages(file) {
@@ -62,9 +134,11 @@
       }
 
       currentFile = file;
+      clearFileError();
 
       // UI Feedback: Calculating & verifying
       if (readyCard) {
+        readyCard.hidden = false;
         readyCard.style.display = 'flex';
         readyCard.style.opacity = '0.6';
       }
@@ -72,7 +146,7 @@
       if (docMetaEl) docMetaEl.innerHTML = `<span>Memeriksa berkas...</span>`;
 
       // Estimate pages
-      if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
         detectedPages = await estimatePdfPages(file);
       } else {
         detectedPages = Math.max(1, Math.round(file.size / (120 * 1024)));
@@ -90,6 +164,19 @@
       }
       if (readyCard) readyCard.style.opacity = '1';
 
+      // Persist selected file metadata to sessionStorage
+      try {
+        sessionStorage.setItem('printshop_uploaded_file', JSON.stringify({
+          filename: file.name,
+          file_size: formatFileSize(file.size),
+          raw_size: file.size,
+          pages: detectedPages,
+          pagesNum: detectedPages
+        }));
+      } catch (e) {
+        // Ignore storage quota errors
+      }
+
       // Upload in background to Supabase Storage / API
       try {
         if (window.PrintShopAPI) {
@@ -105,6 +192,9 @@
 
     // Event listeners
     if (fileInput) {
+      fileInput.addEventListener('click', function () {
+        fileInput.value = '';
+      });
       fileInput.addEventListener('change', function (e) {
         if (e.target.files && e.target.files[0]) {
           handleFileSelect(e.target.files[0]);
@@ -134,16 +224,73 @@
       });
     }
 
+    if (nameInput) {
+      nameInput.addEventListener('input', function () {
+        const val = nameInput.value.trim();
+        if (!val) {
+          clearNameError();
+          return;
+        }
+        const err = validateName(val);
+        if (err) {
+          showNameError(err);
+        } else {
+          clearNameError();
+        }
+      });
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function () {
+        const err = validatePhone(phoneInput.value, true);
+        if (err) {
+          showPhoneError(err);
+        } else {
+          clearPhoneError();
+        }
+      });
+    }
+
     // Submit handler
     if (form) {
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const custName = (nameInput && nameInput.value.trim()) || 'Mahasiswa';
-        const custPhone = (phoneInput && phoneInput.value.trim()) || '';
-        const fileName = currentFile ? currentFile.name : 'Makalah_Tugas_Akhir.pdf';
-        const fileSize = currentFile ? currentFile.size : 4404019;
-        const totalPages = detectedPages || 24;
+        if (!currentFile) {
+          if (fileErrorEl) fileErrorEl.hidden = false;
+          if (dropzone) {
+            dropzone.classList.add('is-invalid');
+            dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+
+        const custName = nameInput ? nameInput.value.trim() : '';
+        const nameErr = validateName(custName);
+        if (nameErr) {
+          showNameError(nameErr);
+          if (nameInput) {
+            nameInput.focus();
+            nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+        clearNameError();
+
+        const custPhone = phoneInput ? phoneInput.value.trim() : '';
+        const phoneErr = validatePhone(custPhone, false);
+        if (phoneErr) {
+          showPhoneError(phoneErr);
+          if (phoneInput) {
+            phoneInput.focus();
+            phoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+        clearPhoneError();
+        const fileName = currentFile.name;
+        const fileSize = currentFile.size;
+        const totalPages = detectedPages || 1;
 
         if (submitBtn) {
           submitBtn.disabled = true;
