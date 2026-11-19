@@ -1,199 +1,137 @@
-﻿# PrintShop POS
+﻿<div align="center">
 
-**PrintShop POS** adalah aplikasi web berbasis *self-service* (layanan mandiri) yang dirancang untuk memenuhi kebutuhan pencetakan dokumen mahasiswa dan civitas akademika di lingkungan kampus. Sistem ini mengintegrasikan proses unggah dokumen, pengaturan spesifikasi cetak, pembayaran digital berbasis QRIS, serta manajemen antrean dan kasir operasional.
+# 🖨️ PrintShop POS
 
----
+**Aplikasi Web Percetakan Kampus Berbasis Self-Service & Point of Sale**
 
-## Arsitektur Sistem dan Alur Pengguna
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-### 1. Alur Pelanggan (*Customer Journey*)
+[🐛 Laporkan Bug](https://github.com/sungkem-dev/PrintShop-POS/issues)
 
-- **Landing Page (`index.html`)**  
-  Halaman utama yang menyediakan informasi layanan dan fitur *Live Tracker* untuk melacak status pesanan menggunakan kode tiket unik.
-
-- **Unggah Dokumen (`unggah.html`)**  
-  Antarmuka untuk mengunggah berkas dengan validasi format dokumen dan navigasi yang responsif.
-
-- **Pengaturan Spesifikasi (`spesifikasi.html`)**  
-  Halaman konfigurasi cetak yang mencakup:
-  - Ukuran kertas: A4, F4, dan A3.
-  - Jenis cetakan: *Full Color* dan *Grayscale*.
-  - Jumlah halaman dan pengaturan halaman tertentu.
-  - Opsi cetak bolak-balik (*duplex*) untuk menghemat kertas.
-  - Pilihan penjilidan dokumen.
-
-- **Pembayaran QRIS (`pembayaran.html`)**  
-  Halaman pembayaran yang dirancang untuk mendukung QRIS dinamis, dilengkapi penghitung waktu mundur lima menit melalui `qris-timer.js` dan simulasi verifikasi pembayaran yang mengarahkan pelanggan ke tiket digital.
-
-- **Tiket Digital dan Pelacakan Pesanan (`tiket.html`)**  
-  Halaman untuk memantau perkembangan pesanan dengan status:
-  1. `Waiting in Queue`
-  2. `Printing in Progress`
-  3. `Ready for Pickup`
-  4. `Completed`
-
-  Halaman ini juga menyediakan notifikasi ketika kode tiket tidak ditemukan.
-
-### 2. Alur Operator dan Kasir (*Operator Console*)
-
-- **Autentikasi dan Registrasi (`login.html` dan `register.html`)**  
-  Halaman untuk masuk dan mendaftarkan akun operator. Proteksi halaman operator dirancang menggunakan `auth-guard.js`.
-
-- **Dasbor Analitik (`dasbor.html`)**  
-  Pusat informasi operasional yang dirancang untuk menampilkan:
-  - KPI omzet harian.
-  - Jumlah antrean aktif.
-  - Jumlah lembar yang dicetak.
-  - Grafik analitik selama tujuh hari.
-  - Ekspor laporan ke format CSV.
-
-- **Manajemen Antrean dan Kasir (`antrean.html`)**  
-  Halaman pengelolaan pesanan berdasarkan prinsip FIFO (*First In, First Out*), dengan fitur:
-  - Pemantauan antrean aktif.
-  - Pembaruan status pengerjaan.
-  - Pengelolaan riwayat pesanan selesai.
-  - Manajemen pengembalian dana (*refund*).
-
-- **Kasir Walk-In (`order-manual.html`)**  
-  Modul POS untuk melayani pelanggan yang datang langsung ke gerai, termasuk pencatatan pesanan dan kalkulasi uang kembalian tunai.
+</div>
 
 ---
 
-## Tech Stack dan Standar Pengkodean
+## 📖 Tentang PrintShop POS
 
-### Frontend
-- **HTML5:** Struktur halaman menggunakan elemen semantik seperti `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, dan `<footer>`.
-- **CSS3:** Pengaturan tampilan menggunakan *custom properties*, Flexbox, CSS Grid, dan desain responsif.
-- **JavaScript ES6+:** Implementasi interaksi dan logika aplikasi menggunakan Vanilla JavaScript.
+**PrintShop POS** adalah aplikasi web layanan cetak mandiri (*self-service*) untuk mahasiswa dan civitas akademika di lingkungan kampus. Tanpa perlu antre lama di depan komputer atau membawa flashdisk, mahasiswa cukup mengunggah dokumen dari HP/laptop, mengatur spesifikasi cetak, membayar lewat QRIS, lalu memantau antrean secara *real-time* hingga cetakan siap diambil.
 
-### Backend dan API
-- **Next.js API Routes:** Direncanakan sebagai lapisan API untuk menangani komunikasi antara antarmuka dan layanan backend.
-- **Supabase PostgreSQL:** Digunakan sebagai teknologi penyimpanan basis data relasional.
-
-### Tools dan Deployment
-- **Git dan GitHub:** Pengelolaan versi kode dan kolaborasi tim.
-- **Vercel:** Platform deployment aplikasi web.
-- **Figma:** Perancangan antarmuka dan wireframe UI/UX.
+Di sisi toko, operator dilengkapi **Operator Console** untuk mengelola antrean berbasis FIFO, melayani pelanggan *walk-in* (kasir tunai), memproses *refund*, serta memantau omzet harian.
 
 ---
 
-## Struktur Direktori Proyek
+## 🧭 Cara Menggunakan Aplikasi
+
+### Untuk Mahasiswa (Pelanggan)
+1. **Buka Beranda (`index.html`)** lalu klik **Mulai Cetak Sekarang**, atau masukkan kode pesanan di kolom **Lacak Pesanan** jika sudah memesan.
+2. **Unggah Dokumen (`unggah.html`)**: pilih berkas dokumen (`PDF`) dari HP atau laptop.
+3. **Atur Spesifikasi Cetak (`spesifikasi.html`)**: tentukan ukuran kertas (`A4`, `F4`, `A3`), mode warna (*Hitam Putih* / *Full Color*), sisi cetak (*Simplex* / *Duplex*), jilid, dan jumlah rangkap. Total biaya dihitung otomatis.
+4. **Bayar via QRIS (`pembayaran.html`)**: pindai kode QR sebelum batas waktu 5 menit berakhir.
+5. **Simpan Tiket Digital (`tiket.html`)**: pantau status antrean secara langsung (*Waiting in Queue → Printing in Progress → Ready for Pickup*). Tunjukkan **Kode Klaim** ke operator saat mengambil cetakan, atau cetak tiket fisik jika diperlukan.
+
+### Untuk Operator Toko
+1. **Masuk ke Console (`login.html`)**: login menggunakan akun operator (atau daftar terlebih dahulu di `register.html`).
+2. **Kelola Antrean (`antrean.html`)**: proses pesanan masuk berdasarkan urutan FIFO, perbarui status pengerjaan, lihat riwayat selesai, atau proses pengembalian dana (*refund*).
+3. **Kasir Walk-In (`order-manual.html`)**: catat pesanan pelanggan yang datang langsung ke gerai lengkap dengan kalkulasi kembalian tunai.
+4. **Pantau Performa (`dasbor.html`)**: lihat ringkasan omzet harian, antrean aktif, total lembar tercetak, grafik 7 hari terakhir, dan ekspor laporan ke format CSV.
+
+---
+
+## ✨ Fitur Utama
+
+| Modul | Fitur | Keterangan |
+| :--- | :--- | :--- |
+| **Mahasiswa** | Unggah & Konfigurasi Cetak | Validasi file, kalkulasi tarif otomatis (kertas, warna, duplex, jilid). |
+| **Mahasiswa** | Pembayaran QRIS Dinamis | Dilengkapi *countdown timer* 5 menit dan verifikasi pembayaran. |
+| **Mahasiswa** | Tiket Digital & Live Tracker | Pelacakan status *real-time*, salin kode klaim, dan cetak tiket fisik 1 halaman. |
+| **Operator** | Manajemen Antrean FIFO | Kelola pesanan aktif, ubah status, riwayat selesai, dan fitur *refund*. |
+| **Operator** | Kasir Walk-In | Pencatatan transaksi langsung di loket dengan hitung kembalian otomatis. |
+| **Operator** | Dasbor Analitik | KPI harian, grafik tren 7 hari, dan ekspor laporan CSV. |
+| **Keamanan** | API Rate Limiting | Pembatasan trafik per endpoint untuk mencegah *spam* dan menjaga stabilitas server. |
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend:** HTML5 Semantik, CSS3 (Flexbox, CSS Grid, Mobile-First Responsive), Vanilla JavaScript (ES6+)
+* **Backend & API:** Next.js API Routes
+* **Database:** Supabase PostgreSQL
+* **Pembayaran:** Integrasi QRIS / Midtrans
+* **Pengujian Beban:** k6 Load Testing
+* **Deployment & Desain:** Vercel, GitHub, Figma
+
+---
+
+## 🚀 Menjalankan Proyek Secara Lokal
+
+### Prasyarat
+* [Node.js](https://nodejs.org/) (disarankan versi 18+)
+* [Git](https://git-scm.com/)
+* Konfigurasi database Supabase (file `.env.local`)
+
+### Langkah Instalasi
+
+1. **Clone repository**
+   ```bash
+   git clone [https://github.com/sungkem-dev/PrintShop-POS.git](https://github.com/sungkem-dev/PrintShop-POS.git)
+   cd PrintShop-POS
+   ```
+
+2. **Install dependensi**
+   ```bash
+   npm install
+   ```
+
+3. **Atur Environment Variables**
+   Buat file `.env.local` di root proyek dan isi kredensial Supabase serta Midtrans yang digunakan tim.
+
+4. **Jalankan server pengembangan**
+   ```bash
+   npm run dev
+   ```
+
+5. **Buka di browser**
+   Akses aplikasi melalui `http://localhost:3000`.
+
+---
+
+## 📁 Struktur Direktori
 
 ```text
 PrintShop-POS/
-├── index.html
-├── unggah.html
-├── spesifikasi.html
-├── pembayaran.html
-├── tiket.html
-├── login.html
-├── register.html
-├── dasbor.html
-├── antrean.html
-├── order-manual.html
-├── public/
-└── assets/
-    ├── css/
-    │   └── global.css
-    └── js/
-        ├── api.js
-        ├── antrean.js
-        ├── dasbor.js
-        ├── order-manual.js
-        ├── qris-timer.js
-        ├── ticket-tracker.js
-        └── auth-guard.js
+├── index.html               # Beranda & Live Tracker
+├── unggah.html              # Langkah 1: Unggah Dokumen
+├── spesifikasi.html         # Langkah 2: Pengaturan Spesifikasi Cetak
+├── pembayaran.html          # Langkah 3: Pembayaran QRIS
+├── tiket.html               # Langkah 4: Tiket Digital & Cetak Fisik
+├── login.html               # Masuk Operator
+├── register.html            # Registrasi Operator
+├── dasbor.html              # Dasbor Analitik Operator
+├── antrean.html             # Manajemen Antrean & Refund
+├── order-manual.html        # Kasir Walk-In
+├── assets/
+│   ├── css/global.css       # Styling global & responsif mobile
+│   └── js/                  # Logika API, timer QRIS, tracker, & console
+├── public/                  # Aset publik tersinkronisasi untuk deployment
+└── load-tests/              # Skrip uji beban & rate limiting (k6)
 ```
-
-### Keterangan Direktori dan File
-
-| File atau Direktori | Fungsi |
-|---|---|
-| `index.html` | Halaman utama dan pelacakan pesanan. |
-| `unggah.html` | Antarmuka unggah dokumen. |
-| `spesifikasi.html` | Pengaturan spesifikasi dan tarif cetak. |
-| `pembayaran.html` | Antarmuka pembayaran QRIS. |
-| `tiket.html` | Tiket digital dan pelacakan status pesanan. |
-| `login.html` | Halaman masuk operator. |
-| `register.html` | Halaman registrasi operator. |
-| `dasbor.html` | Dasbor analitik operasional. |
-| `antrean.html` | Pengelolaan antrean dan riwayat pesanan. |
-| `order-manual.html` | Kasir untuk pesanan langsung. |
-| `assets/css/global.css` | Gaya visual dan komponen antarmuka global. |
-| `assets/js/api.js` | Logika komunikasi dengan API dan Supabase. |
-| `assets/js/antrean.js` | Logika pengelolaan antrean dan riwayat pesanan. |
-| `assets/js/dasbor.js` | Kalkulasi metrik dan visualisasi data dasbor. |
-| `assets/js/order-manual.js` | Logika pesanan manual dan perhitungan kembalian. |
-| `assets/js/qris-timer.js` | Penghitung waktu pembayaran QRIS. |
-| `assets/js/ticket-tracker.js` | Logika pelacakan tiket dan penanganan kesalahan. |
-| `assets/js/auth-guard.js` | Pemeriksaan akses halaman operator. |
-| `public/` | Direktori aset publik aplikasi. |
-
-*Catatan: Struktur direktori di atas merupakan struktur yang direncanakan dalam dokumentasi. Sesuaikan dengan file yang benar-benar tersedia di repository.*
 
 ---
 
-## Panduan Menjalankan Proyek
+## 🧪 Pengujian API & Rate Limiting
 
-### 1. Clone Repository
+Seluruh endpoint API dilindungi oleh *rate limiter* (default 60 request/menit per IP untuk endpoint umum, 10 request/menit untuk upload, dan 120 request/menit untuk webhook Midtrans).
 
-Jalankan perintah berikut di terminal:
+Untuk menjalankan tes kontrak dan tes beban secara lokal (pastikan **k6** terpasang dan server lokal berjalan):
 
-```bash
-git clone https://github.com/sungkem-dev/PrintShop-POS
-cd PrintShop-POS
+```powershell
+k6 run .\load-tests\orders\rate-limit-contract.js
+k6 run .\load-tests\orders\rate-limit-load.js
+k6 run .\load-tests\payment\rate-limit-contract.js
+k6 run .\load-tests\auth\rate-limit-contract.js
+k6 run .\load-tests\upload\rate-limit-contract.js
 ```
 
-### 2. Instalasi Dependensi
-
-Jika proyek menggunakan Node.js dan memiliki file `package.json`, jalankan:
-
-```bash
-npm install
-```
-
-### 3. Jalankan Server Pengembangan
-
-Jika proyek dikonfigurasi menggunakan Next.js dan menyediakan skrip `dev`, jalankan:
-
-```bash
-npm run dev
-```
-
-### 4. Buka Aplikasi
-
-Akses alamat berikut melalui browser:
-
-```text
-http://localhost:3000
-```
-
-**Penting:** Perintah `npm install` dan `npm run dev` hanya dapat digunakan apabila konfigurasi Node.js dan skrip yang sesuai tersedia. Jika proyek berupa HTML, CSS, dan JavaScript statis, jalankan menggunakan server lokal yang sesuai.
-
----
-
-## Fitur Utama
-
-| Fitur | Deskripsi |
-|---|---|
-| Unggah Dokumen | Memfasilitasi pelanggan dalam mengirimkan dokumen untuk dicetak. |
-| Konfigurasi Cetak | Menentukan ukuran kertas, warna, jumlah halaman, duplex, dan penjilidan. |
-| Pembayaran QRIS | Mendukung alur pembayaran digital sesuai integrasi yang tersedia. |
-| Tiket Digital | Menyediakan identitas pesanan untuk kebutuhan pelacakan. |
-| Pelacakan Pesanan | Memantau status pesanan berdasarkan kode tiket. |
-| Manajemen Antrean | Membantu operator mengelola pesanan berdasarkan urutan pengerjaan. |
-| Dasbor Analitik | Menampilkan metrik operasional dan laporan apabila telah terintegrasi. |
-| Kasir Walk-In | Memfasilitasi pencatatan transaksi pelanggan yang datang langsung. |
-| Refund | Mendukung pengelolaan pengembalian dana sesuai implementasi sistem. |
-
----
-
-## Tujuan Pengembangan
-
-PrintShop POS dikembangkan untuk mendukung digitalisasi layanan percetakan melalui proses pemesanan yang lebih terstruktur, pemantauan antrean yang lebih mudah, dan pengelolaan transaksi yang terintegrasi.
-
-Sistem ini diharapkan dapat meningkatkan efisiensi operasional percetakan serta memberikan pengalaman pemesanan yang praktis bagi mahasiswa dan civitas akademika.
-
----
-
-*Dokumentasi ini disusun sebagai panduan proyek PrintShop POS dan perlu diperbarui sesuai dengan implementasi, konfigurasi, serta perkembangan fitur pada repository.*
+> Jalankan tes beban hanya di lingkungan lokal atau lingkungan uji, jangan arahkan ke server *production*.
