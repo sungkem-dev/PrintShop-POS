@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PrintShop POS - Print Instan Tanpa Antre Kasir &amp; Tanpa Flashdisk</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="./assets/css/global.css?v=rev27" />
@@ -16,7 +15,7 @@
   </style>
 </head>
 
-<body>
+<body class="page-home">
 
   <header class="site-header">
     <div class="header-inner">
@@ -282,7 +281,7 @@
           <form action="tiket.html" method="get" class="track-form">
             <label for="nomor-pesanan" class="sr-only">Nomor pesanan</label>
             <input type="text" id="nomor-pesanan" name="nomor-pesanan" class="track-input"
-              placeholder="Masukkan nomor pesanan contoh: ORD-042" required />
+              placeholder="Nomor pesanan (contoh: ORD-042)" required />
             <button type="submit" class="btn-track-submit">Lacak Status &rarr;</button>
           </form>
         </div>

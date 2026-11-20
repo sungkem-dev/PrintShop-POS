@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tiket Pesanan #ORD-042 - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
   <meta name="description"
     content="Tiket pesanan cetak digital #ORD-042 PrintShop POS. Pantau status antrean live, kode klaim XK7-29F, dan panduan pengambilan dokumen di loket." />
 
@@ -1502,10 +1501,17 @@
       .toast-notification,
       .ticket-tracker-col,
       .tracker-card,
+      .ticket-info-grid,
       .guide-card,
+      .help-section,
+      .ticket-bottom-strip,
+      .bottom-loket-card,
+      .bottom-privacy-card,
+      .sidebar-card,
       .success-banner,
       .back-to-home,
       .live-status-pill,
+      #ticket-not-found-state,
       #modal-not-found {
         display: none !important;
       }
@@ -1860,7 +1866,7 @@
     <div class="container">
 
       <!-- 0. SECTION: NOT FOUND STATE (TERSEMBUNYI SECARA DEFAULT) -->
-      <section id="ticket-not-found-state" class="ticket-card not-found-card" style="display: none; max-width: 1140px; width: 100%; margin: 32px auto 28px auto; padding: 36px 28px;"
+      <section id="ticket-not-found-state" class="ticket-card not-found-card" hidden style="display: none; max-width: 1140px; width: 100%; margin: 32px auto 28px auto; padding: 36px 28px;"
         aria-live="assertive">
         <div class="not-found-icon-wrap" aria-hidden="true">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"
@@ -1877,7 +1883,7 @@
         </p>
         <form action="tiket.html" method="get" class="not-found-form">
           <input type="text" name="nomor-pesanan" id="retry-search-input"
-            placeholder="Masukkan nomor pesanan (contoh: ORD-042)" required class="not-found-input" />
+            placeholder="Contoh: ORD-042" required class="not-found-input" />
           <button type="submit" class="btn-primary not-found-btn">Lacak Ulang &rarr;</button>
         </form>
         <div class="not-found-back">
@@ -1910,10 +1916,10 @@
 
         <!-- Quick Metadata Chips -->
         <div class="success-banner-chips">
-          <span class="chip-item">No. Pesanan: <strong>#ORD-042</strong></span>
-          <span class="chip-item">Kode Klaim: <strong>XK7-29F</strong></span>
-          <span class="chip-item">Total Dibayar: <strong id="banner-total">Rp 12.000</strong></span>
-          <span class="chip-item">Status: <strong>Lunas via QRIS ✓</strong></span>
+          <span class="chip-item">No. Pesanan <strong>#ORD-042</strong></span>
+          <span class="chip-item">Kode Klaim <strong>XK7-29F</strong></span>
+          <span class="chip-item">Total Dibayar <strong id="banner-total">Rp 12.000</strong></span>
+          <span class="chip-item">Status <strong>Lunas via QRIS ✓</strong></span>
         </div>
       </section>
 
@@ -2194,10 +2200,10 @@
           Cara Mengambil Cetakan
         </h3>
         <ol class="pickup-steps-list">
-          <li class="pickup-step-item">Tunggu notifikasi atau status berubah menjadi <strong>Ready for Pickup</strong>.</li>
-          <li class="pickup-step-item">Datang ke loket toko dengan menunjukkan halaman tiket ini.</li>
-          <li class="pickup-step-item">Sebutkan nomor pesanan: <strong>#ORD-042</strong> dan kode klaim: <strong>XK7-29F</strong>.</li>
-          <li class="pickup-step-item">Terima cetakanmu dan nikmati hasilnya!</li>
+          <li class="pickup-step-item"><span>Tunggu notifikasi atau status berubah menjadi <strong>Ready for Pickup</strong>.</span></li>
+          <li class="pickup-step-item"><span>Datang ke loket toko dengan menunjukkan halaman tiket ini.</span></li>
+          <li class="pickup-step-item"><span>Sebutkan nomor pesanan: <strong>#ORD-042</strong> dan kode klaim: <strong>XK7-29F</strong>.</span></li>
+          <li class="pickup-step-item"><span>Terima cetakanmu dan nikmati hasilnya!</span></li>
         </ol>
       </article>
 
@@ -2242,21 +2248,37 @@
         </h3>
         <div class="store-info-list" style="display: flex; flex-direction: column; gap: 14px;">
           <div class="store-info-row" style="display: flex; align-items: flex-start; gap: 12px;">
-            <span class="bottom-card-icon" style="width: 28px; height: 28px; font-size: 14px;">📍</span>
+            <span class="bottom-card-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#438E38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </span>
             <div>
               <strong style="color: #152B11;">PrintShop POS — Gerai Ruko Kampus</strong><br />
               <span class="text-muted" style="font-size: 12.5px;">Jl. Kampus Timur No. 42 (Sebelah Kantin Pusat)</span>
             </div>
           </div>
           <div class="store-info-row" style="display: flex; align-items: flex-start; gap: 12px;">
-            <span class="bottom-card-icon" style="width: 28px; height: 28px; font-size: 14px;">⏰</span>
+            <span class="bottom-card-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#438E38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </span>
             <div>
               <strong style="color: #152B11;">Jam Operasional Cetak:</strong><br />
               <span class="text-muted" style="font-size: 12.5px;">07.00 – 21.00 WIB (Senin – Sabtu)</span>
             </div>
           </div>
           <div class="store-info-row" style="display: flex; align-items: flex-start; gap: 12px;">
-            <span class="bottom-card-icon" style="width: 28px; height: 28px; font-size: 14px;">🖨️</span>
+            <span class="bottom-card-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#438E38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9" />
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                <rect width="12" height="8" x="6" y="14" />
+              </svg>
+            </span>
             <div>
               <strong style="color: #152B11;">Mesin Aktif:</strong><br />
               <span class="text-muted" style="font-size: 12.5px;">Canon iR-ADV C3530 &amp; HP LaserJet Pro</span>
@@ -2309,11 +2331,8 @@
         <ul class="footer-links">
           <li><a href="index.html">Beranda</a></li>
           <li><a href="unggah.html">Mulai Cetak</a></li>
-          <li><a href="spesifikasi.html">Spesifikasi</a></li>
-          <li><a href="pembayaran.html">Kasir QRIS</a></li>
-          <li><a href="tiket.html" aria-current="page">Tiket Pesanan</a></li>
-          <li><a href="antrean.html">Konsol Antrean</a></li>
-          <li><a href="dasbor.html">Dasbor Toko</a></li>
+          <li><a href="index.html#tarif">Tarif Kertas</a></li>
+          <li><a href="index.html#lacak">Lacak Tiket</a></li>
           <li><a href="login.html" class="footer-link-badge">Login Operator &rarr;</a></li>
         </ul>
       </div>

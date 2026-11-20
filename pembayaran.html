@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pembayaran QRIS - PrintShop POS</title>
-  <!-- Microsoft Clarity -->
-  <script src="./assets/js/clarity.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
   <meta name="description"
     content="Bayar pesanan cetak Anda via QRIS. Scan kode QR dengan GoPay, OVO, Dana, atau m-Banking. Konfirmasi otomatis." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1306,7 +1305,7 @@
           <!-- Action Buttons -->
           <button type="button" class="btn-snap-pay" id="btn-snap-pay"
             aria-label="Bayar dengan Metode Lain via Midtrans Snap">
-            💳 Bayar dengan Metode Lain (Virtual Account BCA/BRI/Mandiri, ShopeePay, GoPay, QRIS)
+            💳 Bayar dengan Metode Lain
           </button>
           <div class="pay-actions">
             <button type="button" class="btn-pay-action btn-save-qr" id="btn-save-qr"
@@ -1326,7 +1325,7 @@
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                 <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
-              Refresh Status
+              Simulasi Pembayaran Berhasil
             </button>
             <button type="button" class="btn-pay-action btn-reload-qr" id="btn-reload-qr"
               aria-label="Muat ulang kode QRIS">
@@ -1353,11 +1352,10 @@
               Cara Membayar
             </h2>
             <div class="guide-steps">
-              <p class="guide-step">Buka aplikasi dompet digital (GoPay, OVO, Dana, ShopeePay) atau m-Banking Anda.</p>
-              <p class="guide-step">Pilih menu <strong>Scan QR</strong> atau <strong>Bayar dengan QR</strong>.</p>
-              <p class="guide-step">Arahkan kamera ke kode QR di atas. Pastikan nominal sesuai.</p>
-              <p class="guide-step">Konfirmasi pembayaran. Status akan otomatis berubah menjadi <strong>Lunas</strong>.
-              </p>
+              <p class="guide-step"><span>Buka aplikasi dompet digital (GoPay, OVO, Dana, ShopeePay) atau m-Banking Anda.</span></p>
+              <p class="guide-step"><span>Pilih menu <strong>Scan QR</strong> atau <strong>Bayar dengan QR</strong>.</span></p>
+              <p class="guide-step"><span>Arahkan kamera ke kode QR di atas. Pastikan nominal sesuai.</span></p>
+              <p class="guide-step"><span>Konfirmasi pembayaran. Status akan otomatis berubah menjadi <strong>Lunas</strong>.</span></p>
             </div>
           </div>
 
@@ -1448,8 +1446,6 @@
           </div>
 
           <!-- Privacy Badge -->
-          <div class="troubleshoot-card"
-            style="background: linear-gradient(145deg, #eff6ff, #fff); border-color: #bfdbfe;">
           <div class="troubleshoot-card" style="background: #FFFFFF; border: 1.5px solid #CEE9BA; border-radius: 18px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 22px;">🔒</span>

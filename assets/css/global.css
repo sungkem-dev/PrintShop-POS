@@ -1951,6 +1951,39 @@ h3 {
     color: #64748B;
 }
 
+body.page-upload .dropzone-box.is-invalid {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+body.page-upload .upload-inline-alert {
+    margin: -10px 0 18px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+body.page-upload .input-field-wrap input.is-invalid {
+    border-color: #ef4444;
+}
+
+body.page-upload .input-error-msg {
+    color: #b91c1c;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 4px 0 0;
+}
+
+.ready-doc-card[hidden] {
+    display: none !important;
+}
+
 .ready-doc-card {
     display: flex;
     align-items: center;
@@ -4039,6 +4072,77 @@ h3 {
     .console-body {
         background: #ffffff !important;
     }
+
+    body.page-ticket .site-header,
+    body.page-ticket .step-nav-bar,
+    body.page-ticket .site-footer,
+    body.page-ticket .success-banner,
+    body.page-ticket .ticket-tracker-col,
+    body.page-ticket .tracker-card,
+    body.page-ticket .simulator-panel,
+    body.page-ticket .ticket-info-grid,
+    body.page-ticket .guide-card,
+    body.page-ticket .help-section,
+    body.page-ticket .ticket-bottom-strip,
+    body.page-ticket .bottom-loket-card,
+    body.page-ticket .bottom-privacy-card,
+    body.page-ticket .sidebar-card,
+    body.page-ticket #ticket-not-found-state,
+    body.page-ticket .btn-copy-claim,
+    body.page-ticket .ticket-actions-bar,
+    body.page-ticket .toast-notification {
+        display: none !important;
+    }
+
+    body.page-ticket,
+    body.page-ticket main.ticket-main {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .ticket-main > .container,
+    body.page-ticket .ticket-page-grid {
+        display: block !important;
+        max-width: 680px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    body.page-ticket .ticket-card {
+        border: 1.5px solid #0f172a !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        padding: 18px 20px !important;
+        margin: 0 auto !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    body.page-ticket .claim-showcase {
+        padding: 10px 12px !important;
+        margin-bottom: 10px !important;
+    }
+
+    body.page-ticket .claim-code-container {
+        padding: 8px 12px !important;
+    }
+
+    body.page-ticket .ticket-meta-grid {
+        margin-bottom: 10px !important;
+        gap: 8px !important;
+    }
+
+    body.page-ticket .ticket-meta-box {
+        padding: 8px 10px !important;
+    }
+
+    body.page-ticket .ticket-spec-table th,
+    body.page-ticket .ticket-spec-table td {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4208,6 +4312,39 @@ a.btn-primary {
 .spec-file-banner,
 .file-preview-card,
 .doc-info-strip,
+body.page-upload .dropzone-box.is-invalid {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+body.page-upload .upload-inline-alert {
+    margin: -10px 0 18px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+body.page-upload .input-field-wrap input.is-invalid {
+    border-color: #ef4444;
+}
+
+body.page-upload .input-error-msg {
+    color: #b91c1c;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 4px 0 0;
+}
+
+.ready-doc-card[hidden] {
+    display: none !important;
+}
+
 .ready-doc-card {
     background-color: #E4F5D4 !important;
     background: #E4F5D4 !important;
@@ -4556,6 +4693,15 @@ button.btn-reupload,
     display: flex !important;
     flex-direction: column !important;
     box-sizing: border-box !important;
+}
+
+@keyframes ticketRefreshSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.btn-simulator.is-refreshing svg {
+    animation: ticketRefreshSpin 0.7s linear infinite;
 }
 
 /* 12. Solid Vibrant Matcha Printer Logo Boxes (Item 1) */
@@ -8235,11 +8381,2406 @@ h2:has(+ .quick-actions-grid),
     body.page-ticket main {
         padding-bottom: 40px !important;
     }
+
+    /* === INDEX.HTML (LANDING PAGE) COMPACT MOBILE SCALING === */
+    body.page-home .site-header {
+        min-height: 48px !important;
+    }
+
+    body.page-home .site-header .header-inner {
+        padding: calc(6px + env(safe-area-inset-top)) clamp(12px, 4vw, 20px) 6px clamp(12px, 4vw, 20px) !important;
+        min-height: 48px !important;
+        gap: 8px !important;
+    }
+
+    body.page-home .site-header .brand-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-home .site-header .brand-name {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-home .site-header .brand-tagline {
+        font-size: clamp(9.5px, 2.6vw, 10.5px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-home .mobile-menu-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-home .container {
+        padding-left: clamp(12px, 4vw, 20px) !important;
+        padding-right: clamp(12px, 4vw, 20px) !important;
+    }
+
+    body.page-home .section-block {
+        padding: clamp(26px, 5vw, 34px) 0 !important;
+    }
+
+    body.page-home .section-head {
+        margin-bottom: 16px !important;
+    }
+
+    body.page-home .section-tag {
+        font-size: 10.5px !important;
+        padding: 3px 10px !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.page-home .section-title {
+        font-size: clamp(18px, 5vw, 22px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.page-home .section-desc {
+        font-size: clamp(12px, 3.3vw, 13.5px) !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Hero & Info Strip (Overlap Signature + Proporsional) */
+    body.page-home .hero-section {
+        padding: clamp(12px, 4vw, 20px) clamp(12px, 4vw, 20px) 0 !important;
+    }
+
+    body.page-home .hero-stage {
+        min-height: 0 !important;
+        padding: clamp(44px, 7.5vh, 56px) clamp(20px, 6vw, 28px) clamp(62px, 9.5vh, 76px) !important;
+        border-radius: 16px !important;
+    }
+
+    body.page-home .hero-headline {
+        font-size: clamp(22px, 6vw, 26px) !important;
+        line-height: 1.26 !important;
+        margin-bottom: 14px !important;
+    }
+
+    body.page-home .hero-subtitle {
+        max-width: 310px !important;
+        margin: 0 auto 20px !important;
+        padding: 0 4px !important;
+        font-size: clamp(12.5px, 3.35vw, 13.5px) !important;
+        line-height: 1.55 !important;
+    }
+
+    body.page-home .hero-cta-group {
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    body.page-home .hero-cta-group .btn-primary,
+    body.page-home .hero-cta-group .btn-secondary {
+        min-height: 42px !important;
+        height: 42px !important;
+        padding: 0 16px !important;
+        font-size: 13.5px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-home .hero-trust-list {
+        gap: 8px !important;
+        font-size: 12px !important;
+    }
+
+    body.page-home .live-status-section {
+        margin-top: -22px !important;
+        margin-bottom: 22px !important;
+        padding: 0 clamp(18px, 5.5vw, 26px) !important;
+        position: relative !important;
+        z-index: 4 !important;
+    }
+
+    body.page-home .status-strip-card {
+        padding: 8px clamp(12px, 3.5vw, 16px) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 10px 28px rgba(21, 43, 17, 0.08) !important;
+    }
+
+    body.page-home .status-metric-col {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        padding: 12px 4px !important;
+        gap: 10px !important;
+    }
+
+    body.page-home .metric-icon-bubble {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-home .metric-icon-bubble img,
+    body.page-home .metric-icon-bubble svg {
+        width: 20px !important;
+        height: 20px !important;
+        max-width: none !important;
+    }
+
+    body.page-home .metric-content {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        gap: 1px !important;
+    }
+
+    body.page-home .metric-content span {
+        font-size: clamp(10px, 2.8vw, 11px) !important;
+    }
+
+    body.page-home .metric-content strong {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+    }
+
+    /* 4 Langkah Cepat Cetak Dokumen */
+    body.page-home .steps-grid {
+        gap: 12px !important;
+    }
+
+    body.page-home .step-card {
+        padding: 16px 16px 17px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-home .step-number {
+        font-size: 26px !important;
+        top: 14px !important;
+        right: 16px !important;
+    }
+
+    body.page-home .step-icon-wrap {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 7px !important;
+        border-radius: 10px !important;
+        margin-bottom: 11px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-home .step-icon-wrap img,
+    body.page-home .step-icon-wrap svg {
+        width: 21px !important;
+        height: 21px !important;
+        max-width: none !important;
+    }
+
+    body.page-home .step-card-title {
+        font-size: 15.5px !important;
+        margin-bottom: 5px !important;
+    }
+
+    body.page-home .step-card-desc {
+        font-size: 13px !important;
+        line-height: 1.48 !important;
+    }
+
+    /* Tarif Bersahabat & Banner Ramah Lingkungan */
+    body.page-home #tarif.section-block {
+        padding: 22px 0 13px !important;
+    }
+
+    body.page-home #tarif .section-head {
+        margin-bottom: 12px !important;
+    }
+
+    body.page-home .pricing-grid {
+        gap: 9px !important;
+    }
+
+    body.page-home .pricing-card {
+        padding: 11px 14px !important;
+        border-radius: 13px !important;
+    }
+
+    body.page-home .popular-badge {
+        font-size: 10px !important;
+        padding: 3px 9px !important;
+        margin-bottom: 5px !important;
+    }
+
+    body.page-home .pricing-paper {
+        font-size: 15px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 3px !important;
+    }
+
+    body.page-home .pricing-sub {
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 7px !important;
+        padding-bottom: 7px !important;
+    }
+
+    body.page-home .rate-box {
+        padding: 5px 0 !important;
+    }
+
+    body.page-home .rate-label {
+        font-size: 12px !important;
+    }
+
+    body.page-home .rate-price {
+        font-size: 16px !important;
+    }
+
+    body.page-home .rate-price span {
+        font-size: 11px !important;
+    }
+
+    body.page-home .pricing-action {
+        margin-top: 8px !important;
+    }
+
+    body.page-home .pricing-action .btn-primary,
+    body.page-home .pricing-action .btn-secondary {
+        height: 35px !important;
+        min-height: 35px !important;
+        font-size: 13px !important;
+        border-radius: 9px !important;
+        padding: 0 14px !important;
+    }
+
+    body.page-home .duplex-tip-card {
+        margin-top: 26px !important;
+        padding: 14px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+        align-items: flex-start !important;
+    }
+
+    body.page-home .duplex-tip-icon {
+        font-size: 17px !important;
+        line-height: 1 !important;
+        width: 26px !important;
+        height: 26px !important;
+        margin-top: 1px !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+    }
+
+    body.page-home .duplex-tip-card p {
+        margin: 0 !important;
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+    }
+
+    /* Lacak Status Pesanan & Footer */
+    body.page-home #lacak.track-section {
+        padding: 13px 0 26px !important;
+    }
+
+    body.page-home .track-order-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-home .track-order-title {
+        font-size: 17px !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.page-home .track-order-desc {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin-bottom: 14px !important;
+    }
+
+    body.page-home .track-form {
+        padding: 8px !important;
+        gap: 8px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-home .track-input {
+        height: 38px !important;
+        min-height: 38px !important;
+        font-size: 12.5px !important;
+        padding: 0 10px !important;
+        border-radius: 9px !important;
+        text-align: center !important;
+    }
+
+    body.page-home .btn-track-submit {
+        height: 38px !important;
+        min-height: 38px !important;
+        font-size: 13px !important;
+        padding: 0 16px !important;
+        border-radius: 9px !important;
+    }
+
+    body.page-home .site-footer {
+        padding: 24px 0 18px !important;
+    }
+
+    body.page-home .site-footer .brand-icon-box--sm {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-home .site-footer .brand-icon-box--sm img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-home .footer-top {
+        gap: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    body.page-home .footer-brand-desc {
+        font-size: 12px !important;
+        margin-top: 6px !important;
+    }
+
+    body.page-home .footer-links {
+        gap: 8px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    body.page-home .footer-bottom {
+        padding-top: 14px !important;
+        gap: 8px !important;
+        font-size: 11.5px !important;
+    }
+
+    body.page-home .footer-trust-chip {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
+
+    /* === UNGGAH.HTML (UPLOAD PAGE) COMPACT MOBILE SCALING === */
+    body.page-upload .site-header {
+        min-height: 48px !important;
+    }
+
+    body.page-upload .site-header .header-inner {
+        padding: calc(6px + env(safe-area-inset-top)) clamp(12px, 4vw, 20px) 6px clamp(12px, 4vw, 20px) !important;
+        min-height: 48px !important;
+        gap: 8px !important;
+    }
+
+    body.page-upload .site-header .brand-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-upload .site-header .brand-name {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-upload .site-header .brand-tagline {
+        font-size: clamp(9.5px, 2.6vw, 10.5px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-upload .mobile-menu-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-upload .step-nav-bar {
+        padding: 10px 0 !important;
+    }
+
+    body.page-upload .step-nav-inner {
+        gap: 6px !important;
+    }
+
+    body.page-upload .step-badge-indicator {
+        padding: 4px 10px !important;
+        font-size: 11.5px !important;
+        gap: 5px !important;
+    }
+
+    body.page-upload .step-separator {
+        font-size: 12px !important;
+    }
+
+    body.page-upload main.upload-main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    body.page-upload .upload-main > .container {
+        padding-left: clamp(12px, 4vw, 20px) !important;
+        padding-right: clamp(12px, 4vw, 20px) !important;
+    }
+
+    body.page-upload .upload-page-grid {
+        margin: clamp(12px, 4vw, 20px) auto 26px !important;
+        gap: 18px !important;
+    }
+
+    body.page-upload .upload-card-wrapper {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-upload .upload-card-header {
+        margin-bottom: 14px !important;
+    }
+
+    body.page-upload .upload-card-title {
+        font-size: clamp(18px, 5vw, 21px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+
+    body.page-upload .upload-card-sub {
+        font-size: 12.5px !important;
+        line-height: 1.4 !important;
+    }
+
+    body.page-upload .dropzone-box {
+        padding: 20px 16px !important;
+        border-radius: 12px !important;
+        gap: 12px !important;
+        margin-bottom: 18px !important;
+    }
+
+    body.page-upload .dropzone-icon-bubble {
+        width: 44px !important;
+        height: 44px !important;
+        padding: 10px !important;
+        border-radius: 12px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-upload .dropzone-icon-bubble img {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    body.page-upload .dropzone-title {
+        font-size: 14.5px !important;
+        line-height: 1.3 !important;
+    }
+
+    body.page-upload .dropzone-desc {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+        max-width: 280px !important;
+    }
+
+    body.page-upload .btn-browse {
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 0 14px !important;
+        font-size: 12.5px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-upload .dropzone-hint-badge {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+        border-radius: 999px !important;
+    }
+
+    body.page-upload .form-group-grid {
+        gap: 16px !important;
+        margin-bottom: 18px !important;
+    }
+
+    body.page-upload .input-field-wrap {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+    }
+
+    body.page-upload .input-field-wrap label {
+        font-size: 12.5px !important;
+        margin-bottom: 0 !important;
+    }
+
+    body.page-upload .input-field-wrap input {
+        height: 40px !important;
+        min-height: 40px !important;
+        padding: 0 12px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-upload .input-field-wrap small {
+        font-size: 11.5px !important;
+        line-height: 1.45 !important;
+        margin-top: 0 !important;
+    }
+
+    body.page-upload body.page-upload .dropzone-box.is-invalid {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+body.page-upload .upload-inline-alert {
+    margin: -10px 0 18px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+body.page-upload .input-field-wrap input.is-invalid {
+    border-color: #ef4444;
+}
+
+body.page-upload .input-error-msg {
+    color: #b91c1c;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 4px 0 0;
+}
+
+.ready-doc-card[hidden] {
+        display: none !important;
+    }
+
+    body.page-upload body.page-upload .dropzone-box.is-invalid {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+body.page-upload .upload-inline-alert {
+    margin: -10px 0 18px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+body.page-upload .input-field-wrap input.is-invalid {
+    border-color: #ef4444;
+}
+
+body.page-upload .input-error-msg {
+    color: #b91c1c;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 4px 0 0;
+}
+
+.ready-doc-card[hidden] {
+    display: none !important;
+}
+
+.ready-doc-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 14px !important;
+        border-radius: 12px !important;
+        gap: 12px !important;
+    }
+
+    body.page-upload .ready-doc-info {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+
+    body.page-upload .doc-type-icon {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        padding: 7px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-upload .doc-type-icon img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-upload .ready-doc-info > div:last-child {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: calc(100% - 46px) !important;
+    }
+
+    body.page-upload .doc-name {
+        font-size: clamp(11.5px, 3.2vw, 12.5px) !important;
+        line-height: 1.4 !important;
+        letter-spacing: -0.01em !important;
+        margin: 0 0 6px !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    body.page-upload .doc-meta {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 6px 6px !important;
+        font-size: 11.5px !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+    }
+
+    body.page-upload .doc-meta > span:nth-child(2),
+    body.page-upload .doc-meta > span:nth-child(4) {
+        display: none !important;
+    }
+
+    body.page-upload .doc-meta > span:first-child::after {
+        content: "•";
+        margin-left: 6px;
+        color: #64748b;
+    }
+
+    body.page-upload .doc-meta > span.doc-meta-ok {
+        flex-basis: 100% !important;
+        width: fit-content !important;
+        margin-top: 3px !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+        color: #15803d !important;
+    }
+
+    body.page-upload .doc-replace {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        padding: 0 14px !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        border-radius: 9px !important;
+        margin-top: 2px !important;
+        box-sizing: border-box !important;
+    }
+
+    body.page-upload .sticky-upload-bar {
+        margin-top: 14px !important;
+        margin-bottom: 12px !important;
+    }
+
+    body.page-upload .btn-submit-action {
+        min-height: 42px !important;
+        height: auto !important;
+        padding: 10px 16px !important;
+        font-size: 13.5px !important;
+        line-height: 1.3 !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-upload .dropzone-box.is-invalid {
+        border-color: #ef4444 !important;
+        background: #fef2f2 !important;
+    }
+
+    body.page-upload .upload-inline-alert {
+        margin: -6px 0 16px !important;
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        background: #fef2f2 !important;
+        border: 1px solid #fecaca !important;
+        color: #b91c1c !important;
+        font-size: 12.5px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+    }
+
+    body.page-upload .input-field-wrap input.is-invalid {
+        border-color: #ef4444 !important;
+    }
+
+    body.page-upload .input-error-msg {
+        color: #b91c1c !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+
+    body.page-upload .privacy-strip {
+        padding: 14px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+        align-items: flex-start !important;
+    }
+
+    body.page-upload .privacy-strip img {
+        width: 18px !important;
+        height: 18px !important;
+        margin-top: 1px !important;
+        flex-shrink: 0 !important;
+    }
+
+    body.page-upload .privacy-strip p {
+        margin: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+    }
+
+    body.page-upload .upload-sidebar {
+        gap: 18px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    body.page-upload .sidebar-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-upload .sidebar-card-header {
+        gap: 10px !important;
+        margin-bottom: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    body.page-upload .sidebar-icon-wrap {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-upload .sidebar-icon-wrap img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-upload .sidebar-card-title {
+        font-size: 14.5px !important;
+        line-height: 1.25 !important;
+        margin: 0 0 2px !important;
+    }
+
+    body.page-upload .sidebar-card-sub {
+        font-size: 11.5px !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    body.page-upload .sidebar-meta-list {
+        gap: 8px !important;
+    }
+
+    body.page-upload .sidebar-meta-row {
+        font-size: 12.5px !important;
+        padding: 2px 0 !important;
+    }
+
+    body.page-upload .sidebar-tips-list {
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 8px !important;
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+    }
+
+    body.page-upload .sidebar-trust-head {
+        gap: 8px !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.page-upload .trust-badge-icon {
+        font-size: 16px !important;
+    }
+
+    body.page-upload .trust-badge-title {
+        font-size: 14px !important;
+        line-height: 1.3 !important;
+    }
+
+    body.page-upload .trust-badge-desc {
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    body.page-upload .site-footer {
+        padding: 24px 0 18px !important;
+    }
+
+    body.page-upload .site-footer .brand-icon-box--sm {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-upload .site-footer .brand-icon-box--sm img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-upload .footer-top {
+        gap: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    body.page-upload .footer-brand-desc {
+        font-size: 12px !important;
+        margin-top: 6px !important;
+    }
+
+    body.page-upload .footer-links {
+        gap: 8px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    body.page-upload .footer-bottom {
+        padding-top: 14px !important;
+        gap: 8px !important;
+        font-size: 11.5px !important;
+    }
+
+    body.page-upload .footer-trust-chip {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
+
+    /* === SPESIFIKASI.HTML (SPEC PAGE) COMPACT MOBILE SCALING === */
+    body.page-spec .site-header {
+        min-height: 48px !important;
+    }
+
+    body.page-spec .site-header .header-inner {
+        padding: calc(6px + env(safe-area-inset-top)) clamp(12px, 4vw, 20px) 6px clamp(12px, 4vw, 20px) !important;
+        min-height: 48px !important;
+        gap: 8px !important;
+    }
+
+    body.page-spec .site-header .brand-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-spec .site-header .brand-name {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-spec .site-header .brand-tagline {
+        font-size: clamp(9.5px, 2.6vw, 10.5px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-spec .mobile-menu-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-spec .step-nav-bar {
+        padding: 10px 0 !important;
+    }
+
+    body.page-spec .step-nav-inner {
+        gap: 6px !important;
+    }
+
+    body.page-spec .step-badge-indicator {
+        padding: 4px 10px !important;
+        font-size: 11.5px !important;
+        gap: 5px !important;
+    }
+
+    body.page-spec .step-separator {
+        font-size: 12px !important;
+    }
+
+    body.page-spec main.spec-main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    body.page-spec .spec-main > .container {
+        padding-left: clamp(12px, 4vw, 20px) !important;
+        padding-right: clamp(12px, 4vw, 20px) !important;
+    }
+
+    body.page-spec .spec-page-grid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: clamp(12px, 4vw, 20px) auto 26px !important;
+        gap: 18px !important;
+    }
+
+    body.page-spec .spec-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-spec .spec-card-header {
+        margin-bottom: 14px !important;
+    }
+
+    body.page-spec .spec-card-title {
+        font-size: clamp(18px, 5vw, 21px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+
+    body.page-spec .spec-card-sub {
+        font-size: 12.5px !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Kotak Hijau Info Berkas (seragam dengan unggah.html) */
+    body.page-spec .doc-info-strip {
+        display: grid !important;
+        grid-template-columns: 36px minmax(0, 1fr) !important;
+        align-items: start !important;
+        gap: 12px 10px !important;
+        padding: 14px !important;
+        border-radius: 12px !important;
+        margin-bottom: 18px !important;
+    }
+
+    body.page-spec .doc-info-icon {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 9px !important;
+        padding: 7px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-spec .doc-info-icon img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-spec .doc-info-text {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+    body.page-spec .doc-info-name {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        font-size: clamp(11.5px, 3.2vw, 12.5px) !important;
+        line-height: 1.4 !important;
+        letter-spacing: -0.01em !important;
+        margin: 0 0 6px !important;
+    }
+
+    body.page-spec .doc-info-meta {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        white-space: normal !important;
+        gap: 6px 6px !important;
+        font-size: 11.5px !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .doc-info-meta > span:first-child::after {
+        content: "•";
+        margin-left: 6px;
+        color: #64748b;
+    }
+
+    body.page-spec .doc-info-meta > span:last-child {
+        flex-basis: 100% !important;
+        width: fit-content !important;
+        margin-top: 2px !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+    }
+
+    body.page-spec .doc-info-change {
+        grid-column: 1 / -1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 0 14px !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        border-radius: 9px !important;
+        margin-top: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Fieldset & Option Cards (Compact Horizontal Row Layout) */
+    body.page-spec .spec-fieldset {
+        margin-bottom: 16px !important;
+    }
+
+    body.page-spec .spec-fieldset-legend {
+        font-size: 13.5px !important;
+        gap: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-spec .legend-icon {
+        width: 26px !important;
+        height: 26px !important;
+        border-radius: 7px !important;
+    }
+
+    body.page-spec .legend-icon svg {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    body.page-spec .radio-card-grid {
+        gap: 8px !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-body {
+        display: grid !important;
+        grid-template-columns: 32px minmax(0, 1fr) auto !important;
+        grid-template-rows: auto auto !important;
+        align-items: center !important;
+        text-align: left !important;
+        column-gap: 10px !important;
+        row-gap: 1px !important;
+        padding: 10px 12px !important;
+        border-radius: 11px !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-icon {
+        grid-column: 1 !important;
+        grid-row: 1 / 3 !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-icon svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-label {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        font-size: 13px !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-desc {
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .radio-card-grid .radio-card-price-tag {
+        grid-column: 3 !important;
+        grid-row: 1 / 3 !important;
+        align-self: center !important;
+        font-size: 10.5px !important;
+        padding: 3px 8px !important;
+        border-radius: 999px !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .eco-badge-card {
+        padding: 11px 12px !important;
+        border-radius: 10px !important;
+        gap: 8px !important;
+        margin-top: 10px !important;
+    }
+
+    body.page-spec .eco-badge-text {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Stepper Jumlah Salinan & Rentang Halaman */
+    body.page-spec .stepper-wrap {
+        height: 40px !important;
+    }
+
+    body.page-spec .stepper-btn {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 16px !important;
+    }
+
+    body.page-spec .stepper-input {
+        height: 40px !important;
+        font-size: 14px !important;
+    }
+
+    body.page-spec .stepper-hint {
+        font-size: 11.5px !important;
+        margin-top: 5px !important;
+    }
+
+    body.page-spec .page-range-options {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    body.page-spec .page-range-options .radio-card {
+        display: flex !important;
+        height: 100% !important;
+    }
+
+    body.page-spec .page-range-options .radio-card-body {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 10px 8px !important;
+        gap: 2px !important;
+        border-radius: 11px !important;
+        box-sizing: border-box !important;
+    }
+
+    body.page-spec .page-range-options .radio-card-label {
+        font-size: 13px !important;
+        line-height: 1.25 !important;
+    }
+
+    body.page-spec .page-range-options .radio-card-desc {
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+    }
+
+    body.page-spec .page-range-input-field {
+        height: 40px !important;
+        min-height: 40px !important;
+        font-size: 13px !important;
+        padding: 0 12px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-spec .page-range-hint {
+        font-size: 11.5px !important;
+    }
+
+    body.page-spec .notes-textarea {
+        min-height: 76px !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+        line-height: 1.45 !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-spec .notes-counter {
+        font-size: 11px !important;
+        margin-top: 4px !important;
+    }
+
+    body.page-spec .spec-submit-bar {
+        gap: 8px !important;
+        margin-top: 16px !important;
+    }
+
+    body.page-spec .btn-spec-submit {
+        min-height: 42px !important;
+        height: 42px !important;
+        font-size: 13.5px !important;
+        border-radius: 10px !important;
+        padding: 0 16px !important;
+    }
+
+    body.page-spec .btn-spec-back {
+        min-height: 38px !important;
+        height: 38px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+        padding: 0 14px !important;
+    }
+
+    /* Sidebar Cards & Footer */
+    body.page-spec .spec-sidebar {
+        gap: 18px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    body.page-spec .summary-card,
+    body.page-spec .sidebar-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-spec .summary-card-header,
+    body.page-spec .sidebar-card-header {
+        gap: 10px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #E4F5D4 !important;
+    }
+
+    body.page-spec .summary-card-icon,
+    body.page-spec .sidebar-icon-wrap {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-spec .summary-card-icon svg,
+    body.page-spec .sidebar-icon-wrap svg,
+    body.page-spec .sidebar-icon-wrap img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-spec .summary-card-title {
+        font-size: 14.5px !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .sidebar-card-title {
+        font-size: 14.5px !important;
+        line-height: 1.25 !important;
+        margin: 0 0 2px !important;
+    }
+
+    body.page-spec .sidebar-card-sub {
+        font-size: 11.5px !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    body.page-spec .summary-rows,
+    body.page-spec .sidebar-meta-list {
+        gap: 8px !important;
+    }
+
+    body.page-spec .summary-row,
+    body.page-spec .sidebar-meta-row {
+        font-size: 12.5px !important;
+        padding: 2px 0 !important;
+    }
+
+    body.page-spec .summary-total-row {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        margin-top: 10px !important;
+    }
+
+    body.page-spec .summary-total-label {
+        font-size: 12.5px !important;
+    }
+
+    body.page-spec .summary-total-value {
+        font-size: 17px !important;
+    }
+
+    body.page-spec .summary-note {
+        font-size: 11px !important;
+        margin: 8px 0 0 !important;
+    }
+
+    body.page-spec .site-footer {
+        padding: 24px 0 18px !important;
+    }
+
+    body.page-spec .site-footer .brand-icon-box--sm {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-spec .site-footer .brand-icon-box--sm img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-spec .footer-top {
+        gap: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    body.page-spec .footer-brand-desc {
+        font-size: 12px !important;
+        margin-top: 6px !important;
+    }
+
+    body.page-spec .footer-links {
+        gap: 8px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    body.page-spec .footer-bottom {
+        padding-top: 14px !important;
+        gap: 8px !important;
+        font-size: 11.5px !important;
+    }
+
+    body.page-spec .footer-trust-chip {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
+
+    /* === PEMBAYARAN.HTML (PAY PAGE) COMPACT MOBILE SCALING === */
+    body.page-pay .site-header {
+        min-height: 48px !important;
+    }
+
+    body.page-pay .site-header .header-inner {
+        padding: calc(6px + env(safe-area-inset-top)) clamp(12px, 4vw, 20px) 6px clamp(12px, 4vw, 20px) !important;
+        min-height: 48px !important;
+        gap: 8px !important;
+    }
+
+    body.page-pay .site-header .brand-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-pay .site-header .brand-name {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-pay .site-header .brand-tagline {
+        font-size: clamp(9.5px, 2.6vw, 10.5px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-pay .mobile-menu-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-pay .step-nav-bar {
+        padding: 10px 0 !important;
+    }
+
+    body.page-pay .step-nav-inner {
+        gap: 6px !important;
+    }
+
+    body.page-pay .step-badge-indicator {
+        padding: 4px 10px !important;
+        font-size: 11.5px !important;
+        gap: 5px !important;
+    }
+
+    body.page-pay .step-separator {
+        font-size: 12px !important;
+    }
+
+    body.page-pay main.pay-main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    body.page-pay .pay-main > .container {
+        padding-left: clamp(12px, 4vw, 20px) !important;
+        padding-right: clamp(12px, 4vw, 20px) !important;
+    }
+
+    body.page-pay .pay-page-grid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: clamp(12px, 4vw, 20px) auto 26px !important;
+        gap: 18px !important;
+    }
+
+    body.page-pay .pay-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-pay .pay-card-header {
+        margin-bottom: 12px !important;
+    }
+
+    body.page-pay .pay-card-title {
+        font-size: clamp(18px, 5vw, 21px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+
+    body.page-pay .pay-card-sub {
+        font-size: 12.5px !important;
+        line-height: 1.4 !important;
+    }
+
+    body.page-pay .status-badge {
+        font-size: 12px !important;
+        padding: 5px 12px !important;
+    }
+
+    body.page-pay .timer-section {
+        margin: 12px 0 14px !important;
+    }
+
+    body.page-pay .timer-label {
+        font-size: 10.5px !important;
+        margin-bottom: 4px !important;
+    }
+
+    body.page-pay .timer-display {
+        font-size: 26px !important;
+        line-height: 1.15 !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-pay .qr-panel {
+        padding: 16px !important;
+        border-radius: 14px !important;
+        margin-bottom: 14px !important;
+    }
+
+    body.page-pay .qr-image-wrap {
+        width: 176px !important;
+        height: 176px !important;
+        padding: 10px !important;
+        border-radius: 14px !important;
+        margin: 0 auto 10px !important;
+    }
+
+    body.page-pay .qr-merchant {
+        font-size: 12px !important;
+        margin-bottom: 2px !important;
+    }
+
+    body.page-pay .qr-amount {
+        font-size: 20px !important;
+    }
+
+    body.page-pay .btn-snap-pay {
+        min-height: 42px !important;
+        height: 42px !important;
+        padding: 0 16px !important;
+        font-size: 13.5px !important;
+        line-height: 1.2 !important;
+        border-radius: 10px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-pay .pay-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        margin-bottom: 16px !important;
+    }
+
+    body.page-pay .btn-pay-action {
+        width: 100% !important;
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-pay .guide-section {
+        padding: 14px 0 0 !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+    }
+
+    body.page-pay .guide-title {
+        font-size: 13.5px !important;
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+    }
+
+    body.page-pay .guide-steps {
+        gap: 8px !important;
+    }
+
+    body.page-pay .guide-step {
+        display: block !important;
+        position: relative !important;
+        padding-left: 32px !important;
+        text-align: left !important;
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    body.page-pay .guide-step::before {
+        position: absolute !important;
+        left: 0 !important;
+        top: 1px !important;
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        font-size: 11.5px !important;
+        margin-top: 0 !important;
+    }
+
+    body.page-pay .pay-nav-bar {
+        margin-top: 14px !important;
+    }
+
+    body.page-pay .btn-pay-back {
+        width: 100% !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Sidebar Cards & Footer */
+    body.page-pay .pay-sidebar {
+        gap: 18px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    body.page-pay .summary-card,
+    body.page-pay .troubleshoot-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+        margin: 0 !important;
+    }
+
+    body.page-pay .summary-card-header {
+        gap: 10px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #E4F5D4 !important;
+    }
+
+    body.page-pay .summary-card-icon {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-pay .summary-card-icon svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-pay .summary-card-title {
+        font-size: 14.5px !important;
+        line-height: 1.25 !important;
+        margin: 0 !important;
+    }
+
+    body.page-pay .summary-rows {
+        gap: 8px !important;
+    }
+
+    body.page-pay .summary-row {
+        font-size: 12.5px !important;
+        padding: 2px 0 !important;
+        gap: 10px !important;
+        align-items: flex-start !important;
+    }
+
+    body.page-pay #pay-filename {
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+        text-align: right !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 65% !important;
+    }
+
+    body.page-pay .summary-total-row {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        margin-top: 10px !important;
+    }
+
+    body.page-pay .summary-total-label {
+        font-size: 12.5px !important;
+    }
+
+    body.page-pay .summary-total-value {
+        font-size: 17px !important;
+    }
+
+    body.page-pay .summary-note {
+        font-size: 11px !important;
+        margin: 8px 0 0 !important;
+    }
+
+    body.page-pay .troubleshoot-title {
+        font-size: 14px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-pay .troubleshoot-list {
+        gap: 6px !important;
+    }
+
+    body.page-pay .troubleshoot-item {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+    }
+
+    body.page-pay .site-footer {
+        padding: 24px 0 18px !important;
+    }
+
+    body.page-pay .site-footer .brand-icon-box--sm {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-pay .site-footer .brand-icon-box--sm img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-pay .footer-top {
+        gap: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    body.page-pay .footer-brand-desc {
+        font-size: 12px !important;
+        margin-top: 6px !important;
+    }
+
+    body.page-pay .footer-links {
+        gap: 8px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    body.page-pay .footer-bottom {
+        padding-top: 14px !important;
+        gap: 8px !important;
+        font-size: 11.5px !important;
+    }
+
+    body.page-pay .footer-trust-chip {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
+
+    /* Midtrans Snap Modal Polish on Mobile */
+    body.page-pay iframe#snap-midtrans {
+        top: 12px !important;
+        left: 12px !important;
+        width: calc(100% - 24px) !important;
+        height: calc(100% - 24px) !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100dvh - 24px) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.35), 0 0 0 100vmax rgba(15, 23, 42, 0.55) !important;
+        background: #ffffff !important;
+    }
+
+    body.page-pay .snap-overlay {
+        padding: 12px !important;
+        background: rgba(15, 23, 42, 0.55) !important;
+    }
+
+    /* === TIKET.HTML (TICKET PAGE) COMPACT MOBILE SCALING === */
+    body.page-ticket .site-header {
+        min-height: 48px !important;
+    }
+
+    body.page-ticket .site-header .header-inner {
+        padding: calc(6px + env(safe-area-inset-top)) clamp(12px, 4vw, 20px) 6px clamp(12px, 4vw, 20px) !important;
+        min-height: 48px !important;
+        gap: 8px !important;
+    }
+
+    body.page-ticket .site-header .brand-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-ticket .site-header .brand-name {
+        font-size: clamp(12.5px, 3.5vw, 14px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-ticket .site-header .brand-tagline {
+        font-size: clamp(9.5px, 2.6vw, 10.5px) !important;
+        line-height: 1.2 !important;
+    }
+
+    body.page-ticket .mobile-menu-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    body.page-ticket .step-nav-bar {
+        padding: 10px 0 !important;
+    }
+
+    body.page-ticket .step-nav-inner {
+        gap: 4px !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        padding: 0 8px !important;
+    }
+
+    body.page-ticket .step-badge-indicator {
+        padding: 3px 7px !important;
+        font-size: 10.5px !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+    }
+
+    body.page-ticket .step-separator {
+        font-size: 10px !important;
+        flex-shrink: 0 !important;
+    }
+
+    body.page-ticket main.ticket-main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    body.page-ticket .ticket-main > .container {
+        padding: clamp(12px, 4vw, 20px) clamp(12px, 4vw, 20px) 26px !important;
+    }
+
+    body.page-ticket .ticket-page-grid,
+    body.page-ticket .ticket-info-grid,
+    body.page-ticket .ticket-tracker-col {
+        gap: 18px !important;
+        margin: 0 0 18px !important;
+        padding: 0 !important;
+    }
+
+    body.page-ticket .ticket-bottom-strip {
+        gap: 18px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Banner Hijau Pembayaran Berhasil */
+    body.page-ticket .success-banner {
+        padding: 16px !important;
+        border-radius: 14px !important;
+        margin: 0 0 18px !important;
+    }
+
+    body.page-ticket .success-banner figure {
+        display: grid !important;
+        grid-template-columns: 44px minmax(0, 1fr) !important;
+        align-items: start !important;
+        gap: 12px !important;
+        text-align: left !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .success-icon-wrap {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 12px !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .success-icon-wrap img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    body.page-ticket .success-pill {
+        font-size: 10.5px !important;
+        padding: 4px 10px !important;
+        margin-bottom: 6px !important;
+        line-height: 1.3 !important;
+        width: fit-content !important;
+    }
+
+    body.page-ticket .success-title {
+        font-size: 19px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+
+    body.page-ticket .success-desc {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .success-banner-chips {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-top: 14px !important;
+        padding-top: 12px !important;
+    }
+
+    body.page-ticket .chip-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 10.5px !important;
+        line-height: 1.3 !important;
+        padding: 8px 10px !important;
+        border-radius: 9px !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+    }
+
+    body.page-ticket .chip-item strong {
+        font-size: 12.5px !important;
+        line-height: 1.3 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Tiket Pesanan Digital */
+    body.page-ticket .ticket-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-ticket .ticket-header-strip {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #E4F5D4 !important;
+    }
+
+    body.page-ticket .ticket-badge-icon {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        border-radius: 9px !important;
+    }
+
+    body.page-ticket .ticket-badge-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    body.page-ticket .ticket-card-title {
+        font-size: 15px !important;
+        line-height: 1.25 !important;
+    }
+
+    body.page-ticket .ticket-status-chip {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+    }
+
+    body.page-ticket .claim-showcase {
+        padding: 14px !important;
+        border-radius: 12px !important;
+    }
+
+    body.page-ticket .claim-label-title {
+        font-size: 11px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-ticket .claim-code-container {
+        padding: 10px 12px !important;
+        gap: 10px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-ticket .claim-code-text {
+        font-size: 20px !important;
+        letter-spacing: 1px !important;
+    }
+
+    body.page-ticket .btn-copy-claim {
+        min-height: 34px !important;
+        height: 34px !important;
+        padding: 0 12px !important;
+        font-size: 12px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-ticket .claim-instruction-text {
+        margin-top: 8px !important;
+        font-size: 11.5px !important;
+        line-height: 1.4 !important;
+    }
+
+    body.page-ticket .ticket-meta-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-bottom: 14px !important;
+    }
+
+    body.page-ticket .ticket-meta-box {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+    }
+
+    body.page-ticket .ticket-meta-box h3 {
+        font-size: 10.5px !important;
+        margin-bottom: 3px !important;
+    }
+
+    body.page-ticket .ticket-meta-box p {
+        font-size: 12.5px !important;
+        line-height: 1.3 !important;
+    }
+
+    body.page-ticket .ticket-spec-heading {
+        font-size: 13.5px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-ticket .ticket-spec-table th,
+    body.page-ticket .ticket-spec-table td {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+    }
+
+    body.page-ticket #order-filename {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    body.page-ticket .ticket-actions-bar {
+        gap: 8px !important;
+        margin-top: 14px !important;
+    }
+
+    body.page-ticket .btn-ticket-action {
+        width: 100% !important;
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Status Pesanan (Live) & Simulator */
+    body.page-ticket .tracker-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+        min-height: 0 !important;
+        height: auto !important;
+        flex: 0 0 auto !important;
+    }
+
+    body.page-ticket .tracker-card-header {
+        gap: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    body.page-ticket .tracker-card-title {
+        font-size: 15px !important;
+    }
+
+    body.page-ticket .live-status-pill {
+        font-size: 11.5px !important;
+        padding: 4px 10px !important;
+    }
+
+    body.page-ticket .tracker-update-note {
+        font-size: 12px !important;
+        margin-bottom: 10px !important;
+    }
+
+    body.page-ticket .tracker-steps {
+        gap: 10px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body.page-ticket .tracker-step-item {
+        padding: 12px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+    }
+
+    body.page-ticket .tracker-step-icon {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+    }
+
+    body.page-ticket .tracker-step-icon img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-ticket .tracker-step-title {
+        font-size: 13px !important;
+    }
+
+    body.page-ticket .tracker-step-badge {
+        font-size: 10.5px !important;
+        padding: 2px 8px !important;
+    }
+
+    body.page-ticket .tracker-step-desc,
+    body.page-ticket .tracker-step-meta {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    body.page-ticket .simulator-panel {
+        padding: 12px !important;
+        border-radius: 12px !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .simulator-controls {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    body.page-ticket .btn-simulator {
+        width: 100% !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        font-size: 12.5px !important;
+        border-radius: 9px !important;
+    }
+
+    @keyframes ticketRefreshSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    body.page-ticket .btn-simulator.is-refreshing svg {
+        animation: ticketRefreshSpin 0.7s linear infinite !important;
+    }
+
+    /* Cara Mengambil Cetakan, Butuh Bantuan, Lokasi Gerai & Privasi */
+    body.page-ticket .guide-card,
+    body.page-ticket .help-section,
+    body.page-ticket .sidebar-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .guide-card-title,
+    body.page-ticket .help-section-title,
+    body.page-ticket .sidebar-card-title {
+        font-size: 14.5px !important;
+        line-height: 1.25 !important;
+        gap: 10px !important;
+        margin: 0 0 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #E4F5D4 !important;
+    }
+
+    body.page-ticket .guide-card-icon,
+    body.page-ticket .bottom-card-icon {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 6px !important;
+        border-radius: 9px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+    }
+
+    body.page-ticket .store-info-row .bottom-card-icon {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        padding: 6px !important;
+        border-radius: 8px !important;
+        background: #E4F5D4 !important;
+    }
+
+    body.page-ticket .pickup-steps-list {
+        gap: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body.page-ticket .pickup-step-item {
+        display: block !important;
+        position: relative !important;
+        padding-left: 32px !important;
+        text-align: left !important;
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .pickup-step-item::before {
+        position: absolute !important;
+        left: 0 !important;
+        top: 1px !important;
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        font-size: 11.5px !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .help-list {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin: 0 0 12px !important;
+        padding-left: 18px !important;
+    }
+
+    body.page-ticket .help-cta-wrap {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        margin: 0 !important;
+    }
+
+    body.page-ticket .help-cta-wrap a,
+    body.page-ticket .help-cta-wrap .btn-primary,
+    body.page-ticket .help-cta-wrap .btn-ticket-action {
+        width: 100% !important;
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* State: Pesanan Tidak Ditemukan */
+    body.page-ticket #ticket-not-found-state[hidden] {
+        display: none !important;
+    }
+
+    body.page-ticket #ticket-not-found-state.not-found-card {
+        padding: 20px 16px !important;
+        margin: 0 0 18px !important;
+        border-radius: 14px !important;
+    }
+
+    body.page-ticket .not-found-icon-wrap {
+        width: 52px !important;
+        height: 52px !important;
+        margin: 0 auto 12px !important;
+    }
+
+    body.page-ticket .not-found-icon-wrap svg {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    body.page-ticket .not-found-title {
+        font-size: 18px !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.page-ticket .not-found-desc {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin-bottom: 14px !important;
+    }
+
+    body.page-ticket .not-found-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    body.page-ticket .not-found-input {
+        width: 100% !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        font-size: 13px !important;
+        padding: 0 12px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    body.page-ticket .not-found-btn {
+        width: 100% !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        font-size: 13px !important;
+        padding: 0 16px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    body.page-ticket .not-found-back {
+        margin-top: 12px !important;
+        font-size: 12.5px !important;
+    }
+
+    /* Footer */
+    body.page-ticket .site-footer {
+        padding: 24px 0 18px !important;
+    }
+
+    body.page-ticket .site-footer .brand-icon-box--sm {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    body.page-ticket .site-footer .brand-icon-box--sm img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    body.page-ticket .footer-top {
+        gap: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    body.page-ticket .footer-brand-desc {
+        font-size: 12px !important;
+        margin-top: 6px !important;
+    }
+
+    body.page-ticket .footer-links {
+        gap: 8px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    body.page-ticket .footer-bottom {
+        padding-top: 14px !important;
+        gap: 8px !important;
+        font-size: 11.5px !important;
+    }
+
+    body.page-ticket .footer-trust-chip {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
 }
 
 @media (max-width: 480px) {
     main {
         padding-left: 12px;
         padding-right: 12px;
+    }
+
+    body.page-home main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }

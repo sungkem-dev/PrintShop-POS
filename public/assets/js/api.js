@@ -567,5 +567,45 @@
     }
   };
 
+  // Auto-blur active input/textarea on scroll, touchmove, or wheel to prevent floating browser cursor/touch handles
+  let focusScrollY = window.scrollY || 0;
+  let touchStartY = 0;
+
+  function blurActiveTextControl() {
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+      active.blur();
+    }
+  }
+
+  document.addEventListener('focusin', function (e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+      focusScrollY = window.scrollY || 0;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches && e.touches[0]) {
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function (e) {
+    if (e.touches && e.touches[0] && Math.abs(e.touches[0].clientY - touchStartY) > 6) {
+      blurActiveTextControl();
+    }
+  }, { passive: true });
+
+  window.addEventListener('wheel', function () {
+    blurActiveTextControl();
+  }, { passive: true });
+
+  window.addEventListener('scroll', function () {
+    const currentY = window.scrollY || 0;
+    if (Math.abs(currentY - focusScrollY) > 8) {
+      blurActiveTextControl();
+    }
+  }, { passive: true });
+
   window.PrintShopAPI = PrintShopAPI;
 })();

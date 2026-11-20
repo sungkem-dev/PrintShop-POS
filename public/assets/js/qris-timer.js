@@ -341,7 +341,7 @@
   if (btnSimulate) {
     btnSimulate.addEventListener('click', async function () {
       btnSimulate.disabled = true;
-      btnSimulate.textContent = 'Memverifikasi & Memasukkan ke Antrean...';
+      btnSimulate.textContent = 'Memverifikasi Pembayaran...';
 
       let settledOrder = null;
       if (currentOrderId && window.PrintShopAPI) {

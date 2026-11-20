@@ -163,17 +163,28 @@
   // ── Load Order Data (Strict Database / ORD-042 / Active Checkout) ──
   async function loadOrder() {
     const params = new URLSearchParams(window.location.search);
-    const codeParam = (params.get('code') || params.get('nomor-pesanan') || params.get('order') || '').trim();
+    const codeParam = (params.get('nomor-pesanan') || params.get('code') || params.get('kode') || params.get('order') || '').trim();
     const idParam = (params.get('order_id') || params.get('id') || '').trim();
     const statusParam = (params.get('status') || params.get('error') || '').trim().toLowerCase();
     const isExplicitNotFound = (statusParam === 'not-found' || statusParam === 'not_found' || statusParam === 'error');
+
+    const normalizeCode = (v) => String(v || '').trim().replace(/^#/, '').toUpperCase();
+    const matchOrderInList = (list, target) => {
+      if (!Array.isArray(list) || !target) return null;
+      const norm = normalizeCode(target);
+      return list.find(o => o && (
+        normalizeCode(o.order_code) === norm ||
+        normalizeCode(o.claim_code) === norm ||
+        String(o.id || '').trim().toLowerCase() === target.toLowerCase()
+      )) || null;
+    };
 
     let order = null;
 
     if (window.PrintShopAPI && !isExplicitNotFound) {
       try {
         if (codeParam) {
-          order = await window.PrintShopAPI.trackOrder(codeParam);
+          order = await window.PrintShopAPI.trackOrder(normalizeCode(codeParam));
         } else if (idParam) {
           order = await window.PrintShopAPI.getOrder(idParam);
         }
@@ -182,14 +193,36 @@
       }
     }
 
+    // Check sessionStorage & localStorage cache if API didn't return a match
+    const lookupKey = codeParam || idParam;
+    if (!order && lookupKey && !isExplicitNotFound) {
+      try {
+        const sRaw = sessionStorage.getItem('printshop_order');
+        if (sRaw) {
+          const sObj = JSON.parse(sRaw);
+          order = matchOrderInList([sObj], lookupKey);
+        }
+      } catch (e) {}
+
+      if (!order) {
+        try {
+          const lRaw = localStorage.getItem('printshop_orders_cache');
+          if (lRaw) {
+            const lList = JSON.parse(lRaw);
+            order = matchOrderInList(lList, lookupKey);
+          }
+        } catch (e) {}
+      }
+    }
+
     // Explicitly reject any dummy codes that might linger in client cache
     const forbiddenDummies = ['ORD-041', 'ORD-040', 'ORD-043', 'ORD-039', '#ORD-041', '#ORD-040', '#ORD-043', '#ORD-039'];
-    if (order && forbiddenDummies.includes(order.order_code)) {
+    if (order && forbiddenDummies.includes(String(order.order_code || '').toUpperCase())) {
       order = null;
     }
 
-    // Special allowance ONLY for ORD-042 simulation test
-    if (!order && (codeParam.toUpperCase() === 'ORD-042' || codeParam.toUpperCase() === '#ORD-042')) {
+    // Special allowance for ORD-042 simulation test (case-insensitive)
+    if (!order && !isExplicitNotFound && normalizeCode(codeParam) === 'ORD-042') {
       order = {
         order_code: 'ORD-042',
         customer_name: 'Budi Santoso',
@@ -207,21 +240,34 @@
       };
     }
 
-    // Fallback to active checkout session ONLY if user didn't enter a query parameter
-    if (!order && !codeParam && !idParam) {
+    // Fallback to active checkout session or latest cached order if user didn't enter a query parameter
+    if (!order && !codeParam && !idParam && !isExplicitNotFound) {
       try {
         const raw = sessionStorage.getItem('printshop_order');
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (parsed && !forbiddenDummies.includes(parsed.order_code)) {
+          if (parsed && !forbiddenDummies.includes(String(parsed.order_code || '').toUpperCase())) {
             order = parsed;
           }
         }
       } catch (e) {}
+
+      if (!order) {
+        try {
+          const lRaw = localStorage.getItem('printshop_orders_cache');
+          if (lRaw) {
+            const lList = JSON.parse(lRaw);
+            if (Array.isArray(lList) && lList.length > 0) {
+              const latest = lList.find(o => o && !forbiddenDummies.includes(String(o.order_code || '').toUpperCase()));
+              if (latest) order = latest;
+            }
+          }
+        } catch (e) {}
+      }
     }
 
     // Default visit to ticket page with NO query params -> default demo ORD-042
-    if (!order && !codeParam && !idParam) {
+    if (!order && !codeParam && !idParam && !isExplicitNotFound) {
       order = {
         order_code: 'ORD-042',
         customer_name: 'Budi Santoso',
@@ -242,6 +288,8 @@
     const notFoundEl = document.getElementById('ticket-not-found-state');
     const notFoundCode = document.getElementById('not-found-code-text');
     const successBanner = document.querySelector('.success-banner');
+    const ticketPageGrid = document.querySelector('.ticket-page-grid');
+    const ticketInfoGrid = document.querySelector('.ticket-info-grid');
     const ticketCard = document.querySelector('.ticket-card:not(#ticket-not-found-state)');
     const trackerCard = document.querySelector('.tracker-card');
     const guideCard = document.querySelector('.guide-card');
@@ -251,9 +299,11 @@
     // ── Handle Order Not Found (STRICT 404) ────────────────
     if (!order) {
       const queryTerm = (codeParam || idParam || 'yang dicari').trim();
-      
-      // Hide all ticket sections completely!
+
+      // Hide all ticket sections & empty wrapper grids completely!
       if (successBanner) successBanner.style.setProperty('display', 'none', 'important');
+      if (ticketPageGrid) ticketPageGrid.style.setProperty('display', 'none', 'important');
+      if (ticketInfoGrid) ticketInfoGrid.style.setProperty('display', 'none', 'important');
       if (ticketCard) ticketCard.style.setProperty('display', 'none', 'important');
       if (trackerCard) trackerCard.style.setProperty('display', 'none', 'important');
       if (guideCard) guideCard.style.setProperty('display', 'none', 'important');
@@ -262,10 +312,11 @@
 
       // Show ONLY the clean Not Found State card
       if (notFoundEl) {
+        notFoundEl.hidden = false;
         notFoundEl.style.setProperty('display', 'block', 'important');
         if (notFoundCode) notFoundCode.textContent = queryTerm;
         const retryInput = document.getElementById('retry-search-input');
-        if (retryInput) retryInput.value = queryTerm;
+        if (retryInput) retryInput.value = queryTerm === 'yang dicari' ? '' : queryTerm;
       }
       if (toastEl) toastEl.classList.remove('visible');
       if (!isExplicitNotFound && window.history && window.history.replaceState) {
@@ -275,8 +326,13 @@
     }
 
     // ── Order Found: Show Normal Ticket Sections ────
-    if (notFoundEl) notFoundEl.style.setProperty('display', 'none', 'important');
+    if (notFoundEl) {
+      notFoundEl.hidden = true;
+      notFoundEl.style.setProperty('display', 'none', 'important');
+    }
     if (successBanner) successBanner.style.setProperty('display', '', '');
+    if (ticketPageGrid) ticketPageGrid.style.setProperty('display', '', '');
+    if (ticketInfoGrid) ticketInfoGrid.style.setProperty('display', '', '');
     if (ticketCard) ticketCard.style.setProperty('display', '', '');
     if (trackerCard) trackerCard.style.setProperty('display', '', '');
     if (guideCard) guideCard.style.setProperty('display', '', '');
@@ -636,14 +692,32 @@
   }
 
   if (btnRefreshStatus) {
+    const refreshIconSvg = btnRefreshStatus.querySelector('svg') ? btnRefreshStatus.querySelector('svg').outerHTML : '';
+    const originalRefreshHtml = btnRefreshStatus.innerHTML;
+
     btnRefreshStatus.addEventListener('click', async function () {
+      if (btnRefreshStatus.disabled) return;
       btnRefreshStatus.disabled = true;
-      showToast('Memeriksa status antrean...');
-      await loadOrder();
+      btnRefreshStatus.classList.add('is-refreshing');
+      btnRefreshStatus.innerHTML = `${refreshIconSvg} Menyegarkan...`;
+
+      try {
+        await loadOrder();
+        if (currentOrder && currentOrder.status) {
+          applyStageUI(currentOrder.status);
+        }
+        refreshSeconds = 5;
+        if (trackerCountdown) trackerCountdown.textContent = '5 detik';
+      } catch (e) {
+        console.warn('Refresh status error:', e);
+      }
+
       setTimeout(() => {
+        btnRefreshStatus.classList.remove('is-refreshing');
+        btnRefreshStatus.innerHTML = originalRefreshHtml;
         btnRefreshStatus.disabled = false;
-        showToast('Status antrean telah diperbarui');
-      }, 500);
+        showToast('Status pesanan berhasil diperbarui');
+      }, 450);
     });
   }
 
